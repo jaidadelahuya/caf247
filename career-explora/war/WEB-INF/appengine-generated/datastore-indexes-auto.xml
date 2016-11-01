@@ -1,0 +1,25 @@
+<!-- Indices written at Sat, 29 Oct 2016 07:38:01 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 13 times in query history -->
+    <datastore-index kind="Discussion" ancestor="false" source="auto">
+        <property name="subscriber" direction="asc"/>
+        <property name="tags" direction="asc"/>
+        <property name="dateCreated" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 23 times in query history -->
+    <datastore-index kind="Discussion" ancestor="false" source="auto">
+        <property name="tags" direction="asc"/>
+        <property name="dateCreated" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 13 times in query history -->
+    <datastore-index kind="Discussion" ancestor="false" source="auto">
+        <property name="owner" direction="asc"/>
+        <property name="tags" direction="asc"/>
+        <property name="dateCreated" direction="desc"/>
+    </datastore-index>
+
+</datastore-indexes>
