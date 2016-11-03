@@ -226,24 +226,6 @@ public class GeneralController {
 		return r;
 	}
 
-	public static QueryResultList<Entity> getFriends(PeoplePageBean ppb, AzureUser u) {
-		Query q = new Query(Friends.class.getSimpleName());
-		FetchOptions options = FetchOptions.Builder.withLimit(20);
-		if (ppb.getCursor() != null) {
-			options.startCursor(Cursor.fromWebSafeString(ppb.getCursor()));
-		}
-		
-		Query.Filter f = new Query.FilterPredicate("friends",
-				Query.FilterOperator.EQUAL, u.getKey());
-		
-		q.setFilter(f);
-		PreparedQuery pq = ds.prepare(q);
-		QueryResultList<Entity> r = pq.asQueryResultList(options);
-
-		return r;
-		
-		
-
-	}
+	
 
 }

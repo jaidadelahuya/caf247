@@ -1360,7 +1360,7 @@ public class Util {
 
 	}
 
-	public static PeoplePageBean getPeoplePageBean(PeoplePageBean ppb,
+	public static Map<String,Object> getPeopleSet(PeoplePageBean ppb,
 			AzureUser u) {
 		if (ppb.getCategory().equals("2")) {
 			return getFriends(ppb, u);
@@ -1372,90 +1372,148 @@ public class Util {
 
 	}
 
-	public static PeoplePageBean getPeoplePageBean(String category, AzureUser u) {
-		if (category.equals("2")) {
-			return getFriends(null, u);
-		} else if (category.equals("3")) {
-			return getFollowing(null, u);
-		} else {
-			return getSuggestedPeople(null, u);
-		}
+	
 
-	}
-
-	private static PeoplePageBean getFollowing(PeoplePageBean ppb, AzureUser u) {
-		if (ppb == null) {
-			return getNewFollowing();
-		} else {
-			return updateFollowing(ppb, u);
-		}
-	}
-
-	private static PeoplePageBean updateFollowing(PeoplePageBean ppb,
-			AzureUser u) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private static PeoplePageBean getNewFollowing() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private static PeoplePageBean getFriends(PeoplePageBean ppb, AzureUser u) {
-		QueryResultList<Entity> r = GeneralController.getFriends(ppb,u);
-		ppb.setCursor(r.getCursor().toWebSafeString());
-		List<Friends> friends = new ArrayList<>();
+	private static Map<String, Object> getFollowing(PeoplePageBean ppb, AzureUser u) {
 		
-		for(Entity e : r) {
-			friends.add(EntityConverter.entityToFriends(e));
+		List<Key> following = u.getFollowing();
+		if(following == null) {
+			following = new ArrayList<>();
 		}
-		
-		List<Key> frs = new ArrayList<>();
-		
-		for(Friends f : friends) {
-			for(Key k: f.getFriends()) {
-				if(k!=u.getKey()) {
-					frs.add(k);
-				}
+		int set = ppb.getFollowingMarker();
+		int i = set*12;
+		int j = i+12;
+		if(j > following.size()) {
+			j = following.size();
+			ppb.setFollowingMarker(0);
+			
+		}else {
+			ppb.setFollowingMarker(set++);
+		}
+		List<Key> sub = following.subList(i, j);
+		List<Person> people = Util.getPeopleFromIndex(sub, u);
+		List<Person> f = ppb.getFollowing();
+		if(f==null) {
+			f = new ArrayList<>();
+		}
+		if(people!=null) {
+			Collections.shuffle(people);
+			f.addAll(people);
+		}
+		ppb.setFollowing(f);
+		Map<String,Object> map = new HashMap<>();
+		map.put("newList", people);
+		map.put("peoplepageBean", ppb);
+		return map;
+	}
+
+	
+
+	
+
+	private static List<Person> getPeopleFromIndex(List<Key> sub, AzureUser u) {
+		if(sub == null) {
+			return null;
+		}else {
+			List<Person> people = new ArrayList<>();
+			for(Key key : sub) {
+				String wk = KeyFactory.keyToString(key);
+				Document d = SearchDocumentIndexService.retrieveDocument("PEOPLE", wk);
+				Person p = documentToPerson(d,u);
+				people.add(p);
 			}
+			return people;
 		}
 		
-		//get Person using key
-		return null;
+	}
+
+	private static Person documentToPerson(Document sd, AzureUser u) {
+		Person p  = new Person();
+		p.setGrade(sd.getOnlyField("class").getText());
+		p.setInterest(sd.getOnlyField("interest").getText());
+		p.setName(sd.getOnlyField("firstName").getText() + " "
+				+ sd.getOnlyField("lastName").getText());
+		p.setPicture(sd.getOnlyField("picture").getText());
+		p.setWebKey(sd.getId());
+		Key key = KeyFactory.stringToKey(p.getWebKey());
+		if (u.getFriendsId() != null && u.getFriendsId().contains(key)) {
+			p.setFriend(true);
+		}
+
+		if (u.getFollowing() != null && u.getFollowing().contains(key)) {
+			p.setFollowing(true);
+		}
+		return p;
+	}
+
+	private static Map<String,Object> getFriends(PeoplePageBean ppb, AzureUser u) {
+		
+		List<Key> friends = u.getFriendsId();
+		if(friends == null) {
+			friends = new ArrayList<>();
+		}
+		int set = ppb.getFollowingMarker();
+		int i = set*12;
+		int j = i+12;
+		if(j > friends.size()) {
+			j = friends.size();
+			ppb.setFriendsMarker(0);
+			
+		}else {
+			ppb.setFriendsMarker(set++);
+		}
+		List<Key> sub = friends.subList(i, j);
+		List<Person> people = Util.getPeopleFromIndex(sub, u);
+		List<Person> f = ppb.getFriends();
+		if(f==null) {
+			f = new ArrayList<>();
+		}
+		if(people!=null) {
+			Collections.shuffle(people);
+			f.addAll(people);
+		}
+		ppb.setFriends(f);
+		Map<String,Object> map = new HashMap<>();
+		map.put("newList", people);
+		map.put("peoplepageBean", ppb);
+		return map;
 	}
 
 	
 
 	
 
-	private static PeoplePageBean getSuggestedPeople(PeoplePageBean ppb,
+	public static Map<String,Object> getSuggestedPeople(PeoplePageBean ppb,
 			AzureUser u) {
 
-		int limit = 20;
+		int limit = 12;
 		if (ppb == null) {
 			ppb = new PeoplePageBean();
 
 		}
-		Results<ScoredDocument> result = (ppb.getCursor() == null) ? searchSuggestedPeople(
+		Results<ScoredDocument> result = (ppb.getSuggestedCusor() == null) ? searchSuggestedPeople(
 				limit, u, null) : searchSuggestedPeople(limit, u, Cursor
-				.newBuilder().build(ppb.getCursor()));
+				.newBuilder().build(ppb.getSuggestedCusor()));
 
 		List<Person> people = new ArrayList<>();
 		people = addSuggestPeople(people, result, u);
 		people = removeFriends(people, u);
-		while (people.size() < 20 && limit - result.getNumberReturned() == 0) {
-			limit = 20 - people.size();
+		while (people.size() < 12 && limit - result.getNumberReturned() == 0) {
+			limit = 12 - people.size();
 			result = searchSuggestedPeople(limit, u, result.getCursor());
 			people = addSuggestPeople(people, result, u);
 			people = removeFriends(people, u);
 		}
 
-		ppb.setPeople(people);
+		Collections.shuffle(people);
+		ppb.setSuggested(people);
 		ppb.setCategory("SUGGESTED");
-		ppb.setCursor((result.getCursor() == null) ? null : result.getCursor()
+		ppb.setSuggestedCusor((result.getCursor() == null) ? null : result.getCursor()
 				.toWebSafeString());
-		return ppb;
+		Map<String,Object> map = new HashMap<>();
+		map.put("newList", people);
+		map.put("peoplepageBean", ppb);
+		return map;
 
 	}
 

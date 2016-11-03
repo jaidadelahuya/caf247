@@ -1,7 +1,7 @@
-/*** Eclipse Class Decompiler plugin, copyright (c) 2016 Chen Chao (cnfree2000@hotmail.com) ***/
 package com.jevalab.azure.people;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,53 +10,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.jevalab.azure.persistence.AzureUser;
-import com.jevalab.helper.classes.MainNav;
 import com.jevalab.helper.classes.StringConstants;
 import com.jevalab.helper.classes.Util;
 
-public class InitPeople extends HttpServlet {
-	private static final long serialVersionUID = -2838555889945911714L;
+public class GetPeople extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 642986451647754377L;
+	
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String category = req.getParameter("category");
+		if (Util.notNull(category)) {
+			category = "1";
+		}
 		HttpSession session = req.getSession();
-		
 		AzureUser u = null;
 		Object o2 = null;
-		Object o = null;
 		Object o1 = null;
 		synchronized (session) {
-			o = session.getAttribute("mainNav");
 			o2 = session.getAttribute(StringConstants.AZURE_USER);
 			o1 = session.getAttribute("peoplePageBean");
 		}
-		if (o != null && o2 != null) {
+		if (o1 != null && o2 != null) {
 			u = (AzureUser) o2;
-			synchronized (session) {
-				session.removeAttribute("peopleError");
-				MainNav mn = (MainNav) o;
-				mn.setPeople(Boolean.valueOf(true));
-				session.setAttribute("mainNav", mn);
-			}
-
-			PeoplePageBean ppb = null;
-			if(o1 == null) {
-				ppb = new PeoplePageBean();
-				ppb.setCategory("1");
-			}else {
-				ppb=(PeoplePageBean) o1;
-			}
+			PeoplePageBean ppb = (PeoplePageBean) o1;
+			ppb.setCategory(category);
 			
-			Map<String,Object> map = Util.getSuggestedPeople(ppb, u);
-			ppb = (PeoplePageBean) map.get("peoplepageBean");
+			
+			Map<String,Object> map = Util.getPeopleSet(ppb, u);
+			ppb = (PeoplePageBean) map.get("peoplePageBean");
+			List<Person> newSet = (List<Person>) map.get("newSet");
+			
 			
 			synchronized (session) {
 				session.setAttribute("peoplePageBean", ppb);
 			}
-			req.getRequestDispatcher("/WEB-INF/people/index.jsp").include(req,
-					resp);
+			resp.setContentType("application/json");
+			resp.getWriter().write(new Gson().toJson(newSet));
 		}
-
 	}
+
 }

@@ -6,6 +6,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>GetPeople</servlet-name>
+		<servlet-class>com.jevalab.azure.people.GetPeople</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetPeople</servlet-name>
+		<url-pattern>/azure/people/get</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>AddFollowing</servlet-name>
 		<servlet-class>com.jevalab.azure.people.AddFollowing</servlet-class>
 	</servlet>
@@ -814,14 +823,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/blobupload</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>UserProfile</servlet-name>
-		<servlet-class>com.jevalab.azure.UserProfileServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>UserProfile</servlet-name>
-		<url-pattern>/getuserprofile</url-pattern>
-	</servlet-mapping>
+	
 
 
 	<servlet>

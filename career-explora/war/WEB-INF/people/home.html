@@ -4,14 +4,14 @@
 		<div class="row">
 			<div class="col s12">
 				<ul class="tabs">
-					<li class="tab col s4"><a class="active" href="#test1">Suggested</a></li>
-					<li class="tab col s4"><a href="#test2">Friends</a></li>
-					<li class="tab col s4"><a href="#test4">Following</a></li>
+					<li class="tab col s4"><a id="1" class="active people-tab" href="#test1">Suggested</a></li>
+					<li class="tab col s4"><a id="2" class="people-tab" href="#test2">Friends</a></li>
+					<li class="tab col s4"><a id="3" class="people-tab" href="#test4">Following</a></li>
 				</ul>
 			</div>
 			<div id="test1" class="col s12">
 
-				<c:forEach var="item" items="${peoplePageBean.people}">
+				<c:forEach var="item" items="${peoplePageBean.suggested}">
 
 					<div class="col s6 m3">
 						<div class="card">

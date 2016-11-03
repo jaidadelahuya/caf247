@@ -62,14 +62,14 @@ public class AddFollowing extends HttpServlet {
 			GeneralController.createWithCrossGroup(EntityConverter.userToEntity(u),
 					EntityConverter.userToEntity(user));
 			PeoplePageBean ppb = (PeoplePageBean) o1;
-			List<Person> people = ppb.getPeople();
+			List<Person> people = ppb.getFollowing();
 			for(Person p: people) {
 				if(p.getWebKey().equals(webKey)) {
 					p.setFollowing(true);
 				}
 			}
 			
-			ppb.setPeople(people);
+			ppb.setFollowing(people);
 			
 			synchronized (session) {
 				session.setAttribute(StringConstants.AZURE_USER, u);
