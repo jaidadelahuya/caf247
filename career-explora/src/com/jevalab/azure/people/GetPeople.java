@@ -28,6 +28,7 @@ public class GetPeople extends HttpServlet {
 		String category = req.getParameter("category");
 		if (Util.notNull(category)) {
 			category = "1";
+			//hello world
 		}
 		HttpSession session = req.getSession();
 		AzureUser u = null;
