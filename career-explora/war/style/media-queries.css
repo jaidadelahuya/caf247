@@ -1,4 +1,23 @@
+.modal {
+	width: 35%;
+	max-height: 100% !important;
+	overflow-y: hidden !important;
+}
+
+@media only screen and (max-width : 1200px) {
+	.modal {
+		width: 45% !important;
+	}
+}
+
 @media screen and (max-width: 992px) {
+	
+	main {
+		padding-left: 0;
+	}
+	.modal {
+		width: 55% !important;
+	}
 	.side-nav a {
 		line-height: 35px !important;
 		height: 35px;
@@ -15,6 +34,9 @@
 }
 
 @media screen and (max-width: 767px) {
+	.modal {
+		width: 75% !important;
+	}
 	.center-main-content {
 		width: 80% !important;
 	}
@@ -27,6 +49,10 @@
 }
 
 @media screen and (max-width: 480px) {
+	
+	.modal {
+		width: 98% !important;
+	}
 	
 	.center-main-content {
 		width: 98% !important;

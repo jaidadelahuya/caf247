@@ -73,15 +73,7 @@ public class LoginHelper {
 		return user;
 	}
 
-	public static User getFacebookDetails(String accessToken, String appSecret,
-			Version version) throws FacebookOAuthException {
-
-		FacebookClient fbClient = new DefaultFacebookClient(accessToken,
-				appSecret, version);
-
-		User me = fbClient.fetchObject("me", User.class);
-		return me;
-	}
+	
 
 	public static AzureUser editExistingUser(User me, AzureUser user) {
 		if (me != null) {
@@ -115,6 +107,9 @@ public class LoginHelper {
 		wpb.setProfileImg(user.getPicture());
 		wpb.setSchool(user.getSchool());
 		wpb.setsClass(user.getsClass());
+		if(user.getNewNotifications()!=null){
+			wpb.setNewNotification(user.getNewNotifications().size());
+		}
 		return wpb;
 	}
 
@@ -230,15 +225,7 @@ public class LoginHelper {
 
 
 
-	public static void redirectUser(AzureUser user, HttpServletResponse res,
-			HttpServletRequest req) throws ServletException, IOException {
-		if (user.isFromAuthorization() || user.isAuthorized()) {
-			LoginHelper.requestDispatcher(req, res);
-		} else {
 
-			req.getRequestDispatcher("/authorization").forward(req, res);
-		}
-	}
 
 	public synchronized static String getNextId() {
 		IdSequenceJpaController cont = new IdSequenceJpaController();

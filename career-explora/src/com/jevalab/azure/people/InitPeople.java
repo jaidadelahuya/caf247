@@ -44,16 +44,14 @@ public class InitPeople extends HttpServlet {
 			if(o1 == null) {
 				ppb = new PeoplePageBean();
 				ppb.setCategory("1");
-			}else {
-				ppb=(PeoplePageBean) o1;
+				Map<String,Object> map = Util.getSuggestedPeople(ppb, u);
+				ppb = (PeoplePageBean) map.get("peoplePageBean");
+				synchronized (session) {
+					session.setAttribute("peoplePageBean", ppb);
+				}
 			}
 			
-			Map<String,Object> map = Util.getSuggestedPeople(ppb, u);
-			ppb = (PeoplePageBean) map.get("peoplepageBean");
 			
-			synchronized (session) {
-				session.setAttribute("peoplePageBean", ppb);
-			}
 			req.getRequestDispatcher("/WEB-INF/people/index.jsp").include(req,
 					resp);
 		}

@@ -26,8 +26,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
-import com.jevalab.azure.people.Friends;
-import com.jevalab.azure.people.PeoplePageBean;
+import com.jevalab.azure.notifications.MessageNotification;
+import com.jevalab.azure.notifications.Notification;
 import com.jevalab.helper.classes.EntityConverter;
 import com.jevalab.helper.classes.Util;
 
@@ -36,6 +36,8 @@ public class GeneralController {
 	public static final DatastoreService ds = DatastoreServiceFactory
 			.getDatastoreService();
 	private static Transaction txn = null;
+	
+	
 
 	public static List<Article> getLatestArticles(String categoryName, int i) {
 
@@ -192,6 +194,7 @@ public class GeneralController {
 		options.offset(offset * 10);
 		List<Discussion> articles = new ArrayList<>();
 		QueryResultList<Entity> rs = pq.asQueryResultList(options);
+
 		Iterator<Entity> ents = rs.iterator();
 		if (rs.size() < 10) {
 			offset = 0;
@@ -226,6 +229,75 @@ public class GeneralController {
 		return r;
 	}
 
+	public static QueryResultList<Entity> getNotifications(AzureUser u,
+			String cursor) {
+		Query q = new Query(Notification.class.getSimpleName());
+		Query.Filter f = new Query.FilterPredicate("recipient",
+				Query.FilterOperator.EQUAL, u.getKey());
+		Query.Filter f1 = new Query.FilterPredicate("viewed",
+				Query.FilterOperator.EQUAL, false);
+		List<Filter> list = new ArrayList<>();
+		list.add(f1); list.add(f);
+		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.AND, list);
+		q.setFilter(f2);
+		FetchOptions options = null;
+		Cursor s = null;
+		if (cursor != null) {
+			s = Cursor.fromWebSafeString(cursor);
+			options = FetchOptions.Builder.withStartCursor(s).limit(10);
+		} else {
+			options = FetchOptions.Builder.withLimit(10);
+		}
+		q.addSort("date", SortDirection.DESCENDING);
+		PreparedQuery pq = ds.prepare(q);
+
+		QueryResultList<Entity> r = pq.asQueryResultList(options);
+		return r;
+
+	}
+
+	public static QueryResultList<Entity> getMessages(Key sender,
+			Key recipient, int i) {
+		Query q = new Query(Notification.class.getSimpleName());
+		Query.Filter f1 = new Query.FilterPredicate("recipient",
+				Query.FilterOperator.EQUAL, recipient);
+		Query.Filter f2 = new Query.FilterPredicate("sender",
+				Query.FilterOperator.EQUAL, sender);
+		List<Filter> first = new ArrayList<>();
+		first.add(f1);
+		first.add(f2);
+		Query.Filter fx = new Query.CompositeFilter(
+				CompositeFilterOperator.AND, first);
+		Query.Filter f3 = new Query.FilterPredicate("recipient",
+				Query.FilterOperator.EQUAL, sender);
+		Query.Filter f4 = new Query.FilterPredicate("sender",
+				Query.FilterOperator.EQUAL, recipient);
+		List<Filter> second = new ArrayList<>();
+		second.add(f3);
+		second.add(f4);
+		Query.Filter fy = new Query.CompositeFilter(
+				CompositeFilterOperator.AND, second);
+		List<Filter> third = new ArrayList<>();
+		third.add(fx);
+		third.add(fy);
+		Query.Filter fz = new Query.CompositeFilter(CompositeFilterOperator.OR,
+				third);
+		Query.Filter f5 = new Query.FilterPredicate("type",
+				Query.FilterOperator.EQUAL, MessageNotification.class.getSimpleName());
+		List<Filter> fourth = new ArrayList<>();
+		fourth.add(f5); fourth.add(fz);
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				fourth);
+		q.setFilter(f);
+		q.addSort("date", SortDirection.DESCENDING);
+		PreparedQuery pq = ds.prepare(q);
+		FetchOptions options = FetchOptions.Builder.withOffset(i).limit(15);
+		QueryResultList<Entity> r = pq.asQueryResultList(options);
+		return r;
+	}
 	
+	public static Map<Key, Entity> getEntities(List<Key> keys) {
+		return ds.get(keys);
+	}
 
 }

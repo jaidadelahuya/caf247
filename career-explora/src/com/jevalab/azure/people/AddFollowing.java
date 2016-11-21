@@ -63,6 +63,9 @@ public class AddFollowing extends HttpServlet {
 					EntityConverter.userToEntity(user));
 			PeoplePageBean ppb = (PeoplePageBean) o1;
 			List<Person> people = ppb.getFollowing();
+			if(people == null) {
+				people = new ArrayList<>();
+			}
 			for(Person p: people) {
 				if(p.getWebKey().equals(webKey)) {
 					p.setFollowing(true);

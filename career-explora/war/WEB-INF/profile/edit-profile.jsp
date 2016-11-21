@@ -18,10 +18,12 @@
 <link rel="stylesheet" href="/style/main.css">
 <link rel="stylesheet" href="/style/media-queries.css">
 <style type="text/css">
-	.card-title {
-		color: #3b5998;
-		font-weight: bold !important;
-	}
+.card-title {
+	color: #3b5998;
+	font-weight: bold !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -50,14 +52,15 @@
 										<div class="input-field col s12 m6">
 											<input value="${userProfile.firstName}" id="first_name"
 												type="text" name="first-name" required="required"
-												class="validate"> <label for="first_name" data-error="Enter your first name">First
-												Name</label>
+												class="validate"> <label for="first_name"
+												data-error="Enter your first name">First Name</label>
 										</div>
 										<div class="input-field col s12 m6">
 											<input id="last_name" type="text" class="validate"
 												name="last-name" required="required"
-												value="${userProfile.lastName}"> <label data-error="Enter your first name"
-												for="last_name">Last Name</label>
+												value="${userProfile.lastName}"> <label
+												data-error="Enter your first name" for="last_name">Last
+												Name</label>
 										</div>
 									</div>
 									<div class="row">
@@ -114,11 +117,17 @@
 
 									<div class="row">
 										<div class="input-field col s12">
-											<textarea id="textarea1" class="materialize-textarea"
-												name="summary" placeholder="Write about you">
+											<div class="ca-textarea">
+												<textarea id="textarea1" class="materialize-textarea"
+													style="display: none;" name="summary"
+													placeholder="Write about you">
 												${userProfile.about}
 												</textarea>
-											<label for="textarea1">Profile Summary</label>
+												<label class="text-label" for="textarea1">Profile Summary</label>
+												<div contenteditable="true" class="textarea-editableDiv">
+													${userProfile.about}</div>
+												<div class="ca-textarea-div-border"></div>
+											</div>
 										</div>
 									</div>
 
@@ -148,6 +157,10 @@
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/jquery.webui-popover.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript">
+		
+		
+	</script>
 
 </body>
 </body>

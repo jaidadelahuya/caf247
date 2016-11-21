@@ -17,14 +17,15 @@
 						<div class="card">
 							<div class="card-image">
 								<a
-									href="<c:out value='/azure/profile/get?web-key=${item.webKey}' />"><img
+									href="<c:out value='/azure/profile/get?web-key=${item.webKey}' />"><img class="person-image"
 									src="${item.picture}"></a>
 							</div>
 							<div class="card-content"
 								style="text-align: center; padding: 5px">
+								
 								<h6
 									style="font-size: 14px; font-weight: bold; color: #3b5998; margin-top: 0px; height: 30px">
-									<a
+									<a class="person-name"
 										href="<c:out value='/azure/profile/get?web-key=${item.webKey}' />"><c:out
 											value="${item.name}" /></a>
 								</h6>
@@ -39,15 +40,16 @@
 							</div>
 							<div class="card-action"
 								style="text-align: center; padding: 5px; border: none; background-color: #9daccb; color: white;">
+								<input type="hidden" class="person-webkey" value="${item.webKey}">
 								<c:if test="${not item.following}">
-									<a class="follow" href="<c:url value='/azure/people/follow/add?web-key=${item.webKey}' />"><i
+									<i
 										data-position="bottom" data-delay="50" data-tooltip="Follow"
-										class="material-icons tooltipped">directions_walk</i></a>
+										class="material-icons tooltipped follow">directions_walk</i>
 								</c:if>
 								<i data-position="bottom" data-delay="50"
-									data-tooltip="Friend Request" class="material-icons tooltipped">add</i>
+									data-tooltip="Friend Request" class="material-icons tooltipped friend-request">add</i>
 								<i data-position="bottom" data-delay="50"
-									data-tooltip="Send Message" class="material-icons tooltipped">message</i>
+									data-tooltip="Send Message" class="material-icons tooltipped message">message</i>
 							</div>
 						</div>
 					</div>

@@ -1,4 +1,58 @@
+.ca-textarea-div-border {
+	border-bottom: 1px solid gray
+}
 
+.textarea-editableDiv {
+	padding: 2% 0px;
+}
+
+[contenteditable="true"]:active,[contenteditable="true"]:focus {
+	border: none !important;
+	outline: none !important;
+}
+
+.btn-sm {
+	font-size: 100%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	padding: 4px !important;
+}
+
+.ca-btn-danger {
+	font-weight: bold !important;
+	background: linear-gradient(#cc0000, #d11919);
+	background-color: #d63232;
+	box-shadow: inset 0 1px 1px #cc0000;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: white;
+	border-color: #cc0000 #d11919 #d63232;
+}
+
+.ca-btn-danger:hover {
+	background: linear-gradient(#cc0000, #a30000);
+}
+
+.ca-btn-primary {
+	font-weight: bold !important;
+	background: linear-gradient(#59983b, #69a24e);
+	background-color: #69a74e;
+	box-shadow: inset 0 1px 1px #a4e388;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+	border: 1px solid;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	color: white;
+	border-color: #3b6e22 #3b6e22 #2c5115;
+}
+
+.ca-btn-primary:hover {
+	background: linear-gradient(#59983b, #508835);
+}
 .profile-value {
 	margin-top: 1%;
 	margin-bottom: 1%

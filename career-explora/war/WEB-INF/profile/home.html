@@ -90,7 +90,7 @@
 					</c:if>
 					<c:if test="${not empty userProfile.about}">
 						<div class="col s12 profile-value">
-							<label>ABOUT ME</label><br> ${userProfile.about}
+							<label>ABOUT ME</label><br><div style="overflow: hidden">${userProfile.about}</div>
 						</div>
 					</c:if>
 					<c:if test="${not empty userProfile.mits}">

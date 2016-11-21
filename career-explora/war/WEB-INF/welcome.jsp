@@ -17,40 +17,6 @@
 <link rel="stylesheet" href="/style/main.css">
 <link rel="stylesheet" href="/style/media-queries.css">
 
-<style type="text/css">
-.modal {
-	width: 35%;
-	max-height: 100% !important;
-	overflow-y: hidden !important;
-}
-
-@media only screen and (max-width : 1200px) {
-	.modal {
-		width: 45%;
-	}
-}
-
-@media only screen and (max-width : 992px) {
-	main {
-		padding-left: 0;
-	}
-	.modal {
-		width: 55%;
-	}
-}
-
-@media only screen and (max-width : 750px) {
-	.modal {
-		width: 75%;
-	}
-}
-
-@media only screen and (max-width : 500px) {
-	.modal {
-		width: 95%;
-	}
-}
-</style>
 </head>
 <body style="background-color: #f1f3f7">
 	<%@ include file="/WEB-INF/main-nav.html"%>

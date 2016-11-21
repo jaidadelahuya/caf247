@@ -50,8 +50,8 @@
 			<div class="col s12 ca-collection <c:if test='${mainNav.notification}'>nav-active</c:if>">
 				<a href="<c:url value='/azure/notifications' />"><i style="background-color: #59983b;"
 					class="material-icons circle ca-collection-icon">flag</i><span
-					class="ca-collection-text">Notifications</span><span
-					class="new badge">4</span></a>
+					class="ca-collection-text">Notifications</span><c:if test="${welcomePage.newNotification > 0}"><span
+					class="new badge"><c:out value="${welcomePage.newNotification}" /></span></c:if></a>
 			</div>
 		</div>
 		<div class="row"

@@ -26,7 +26,7 @@ public class GetPeople extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String category = req.getParameter("category");
-		if (Util.notNull(category)) {
+		if (!Util.notNull(category)) {
 			category = "1";
 			//hello world
 		}

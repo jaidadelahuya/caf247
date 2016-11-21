@@ -46,6 +46,7 @@ public class UpdateProfile extends HttpServlet {
 		String country = req.getParameter("country");
 		String hobbies = req.getParameter("hobbies");
 		String summary = req.getParameter("summary");
+		summary=summary.trim();
 
 		HttpSession session = req.getSession();
 		Object o = null;

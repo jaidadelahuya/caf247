@@ -6,6 +6,50 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>GetMessages</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.GetMessages</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMessages</servlet-name>
+		<url-pattern>/azure/notifications/messages</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>DeleteNotification</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.DeleteNotification</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteNotification</servlet-name>
+		<url-pattern>/azure/notifications/delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AcceptFriendRequest</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.AcceptFriendRequest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AcceptFriendRequest</servlet-name>
+		<url-pattern>/azure/notifications/friend/request/accept</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>SendMessage</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.SendMessage</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendMessage</servlet-name>
+		<url-pattern>/azure/notifications/friend/message/send</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>SendFriendRequest</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.SendFriendRequest</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendFriendRequest</servlet-name>
+		<url-pattern>/azure/notifications/friend/request</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>GetPeople</servlet-name>
 		<servlet-class>com.jevalab.azure.people.GetPeople</servlet-class>
 	</servlet>
@@ -333,10 +377,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<location>/WEB-INF/general-error.jsp</location>
 	</error-page>
 
-	<error-page>
-		<exception-type>com.restfb.exception.FacebookException</exception-type>
-		<location>/WEB-INF/facebook-error.jsp</location>
-	</error-page>
+	
 
 	<error-page>
 		<!-- for invalid username and password -->
@@ -902,14 +943,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/confirmcode</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>FacebookHandlerServlet</servlet-name>
-		<servlet-class>com.jevalab.azure.FacebookHandlerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>FacebookHandlerServlet</servlet-name>
-		<url-pattern>/facebookhandler</url-pattern>
-	</servlet-mapping>
+	
 
 	<servlet>
 		<servlet-name>InsertSequenceServlet</servlet-name>

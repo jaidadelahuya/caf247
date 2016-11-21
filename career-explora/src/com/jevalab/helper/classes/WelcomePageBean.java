@@ -12,7 +12,7 @@ public class WelcomePageBean implements Serializable {
 	private static final long serialVersionUID = -4377293919591287101L;
 	
 	private String firstName, lastName, profileImg, backgroundImg, school, sClass;
-	private Integer offset;
+	private Integer offset,newNotification;
 	private List<DiscussionBean> posts;
 	@Override
 	public String toString() {
@@ -23,16 +23,22 @@ public class WelcomePageBean implements Serializable {
 	}
 	
 	
-	
 
+	public Integer getNewNotification() {
+		return newNotification;
+	}
 
-	public Integer getOffset() {
-		return offset;
+	public void setNewNotification(Integer newNotification) {
+		this.newNotification = newNotification;
 	}
 
 
 
 
+
+	public Integer getOffset() {
+		return offset;
+	}
 
 	public void setOffset(Integer offset) {
 		this.offset = offset;

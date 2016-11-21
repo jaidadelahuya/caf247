@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -65,7 +67,12 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
-import com.jevalab.azure.people.Friends;
+import com.jevalab.azure.notifications.FriendRequestNotification;
+import com.jevalab.azure.notifications.MessageNotification;
+import com.jevalab.azure.notifications.MessagePageBean;
+import com.jevalab.azure.notifications.Notification;
+import com.jevalab.azure.notifications.NotificationBean;
+import com.jevalab.azure.notifications.NotificationPageBean;
 import com.jevalab.azure.people.PeoplePageBean;
 import com.jevalab.azure.people.Person;
 import com.jevalab.azure.persistence.AzureUser;
@@ -1360,7 +1367,7 @@ public class Util {
 
 	}
 
-	public static Map<String,Object> getPeopleSet(PeoplePageBean ppb,
+	public static Map<String, Object> getPeopleSet(PeoplePageBean ppb,
 			AzureUser u) {
 		if (ppb.getCategory().equals("2")) {
 			return getFriends(ppb, u);
@@ -1372,63 +1379,59 @@ public class Util {
 
 	}
 
-	
+	public static Map<String, Object> getFollowing(PeoplePageBean ppb,
+			AzureUser u) {
 
-	private static Map<String, Object> getFollowing(PeoplePageBean ppb, AzureUser u) {
-		
 		List<Key> following = u.getFollowing();
-		if(following == null) {
+		if (following == null) {
 			following = new ArrayList<>();
 		}
 		int set = ppb.getFollowingMarker();
-		int i = set*12;
-		int j = i+12;
-		if(j > following.size()) {
+		int i = set * 12;
+		int j = i + 12;
+		if (j > following.size()) {
 			j = following.size();
 			ppb.setFollowingMarker(0);
-			
-		}else {
+
+		} else {
 			ppb.setFollowingMarker(set++);
 		}
 		List<Key> sub = following.subList(i, j);
 		List<Person> people = Util.getPeopleFromIndex(sub, u);
 		List<Person> f = ppb.getFollowing();
-		if(f==null) {
+		if (f == null) {
 			f = new ArrayList<>();
 		}
-		if(people!=null) {
+		if (people != null) {
 			Collections.shuffle(people);
 			f.addAll(people);
 		}
 		ppb.setFollowing(f);
-		Map<String,Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("newList", people);
-		map.put("peoplepageBean", ppb);
+		map.put("peoplePageBean", ppb);
 		return map;
 	}
 
-	
-
-	
-
 	private static List<Person> getPeopleFromIndex(List<Key> sub, AzureUser u) {
-		if(sub == null) {
+		if (sub == null) {
 			return null;
-		}else {
+		} else {
 			List<Person> people = new ArrayList<>();
-			for(Key key : sub) {
+			for (Key key : sub) {
 				String wk = KeyFactory.keyToString(key);
-				Document d = SearchDocumentIndexService.retrieveDocument("PEOPLE", wk);
-				Person p = documentToPerson(d,u);
+				Document d = SearchDocumentIndexService.retrieveDocument(
+						"PEOPLE", wk);
+				Person p = documentToPerson(d, u);
 				people.add(p);
 			}
 			return people;
 		}
-		
+
 	}
 
 	private static Person documentToPerson(Document sd, AzureUser u) {
-		Person p  = new Person();
+		Person p = new Person();
 		p.setGrade(sd.getOnlyField("class").getText());
 		p.setInterest(sd.getOnlyField("interest").getText());
 		p.setName(sd.getOnlyField("firstName").getText() + " "
@@ -1436,57 +1439,55 @@ public class Util {
 		p.setPicture(sd.getOnlyField("picture").getText());
 		p.setWebKey(sd.getId());
 		Key key = KeyFactory.stringToKey(p.getWebKey());
-		if (u.getFriendsId() != null && u.getFriendsId().contains(key)) {
+		if (u != null && u.getFriendsId() != null
+				&& u.getFriendsId().contains(key)) {
 			p.setFriend(true);
 		}
 
-		if (u.getFollowing() != null && u.getFollowing().contains(key)) {
+		if (u != null && u.getFollowing() != null
+				&& u.getFollowing().contains(key)) {
 			p.setFollowing(true);
 		}
 		return p;
 	}
 
-	private static Map<String,Object> getFriends(PeoplePageBean ppb, AzureUser u) {
-		
+	public static Map<String, Object> getFriends(PeoplePageBean ppb, AzureUser u) {
+
 		List<Key> friends = u.getFriendsId();
-		if(friends == null) {
+		if (friends == null) {
 			friends = new ArrayList<>();
 		}
 		int set = ppb.getFollowingMarker();
-		int i = set*12;
-		int j = i+12;
-		if(j > friends.size()) {
+		int i = set * 12;
+		int j = i + 12;
+		if (j > friends.size()) {
 			j = friends.size();
 			ppb.setFriendsMarker(0);
-			
-		}else {
+
+		} else {
 			ppb.setFriendsMarker(set++);
 		}
 		List<Key> sub = friends.subList(i, j);
 		List<Person> people = Util.getPeopleFromIndex(sub, u);
 		List<Person> f = ppb.getFriends();
-		if(f==null) {
+		if (f == null) {
 			f = new ArrayList<>();
 		}
-		if(people!=null) {
+		if (people != null) {
 			Collections.shuffle(people);
 			f.addAll(people);
 		}
 		ppb.setFriends(f);
-		Map<String,Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("newList", people);
-		map.put("peoplepageBean", ppb);
+		map.put("peoplePageBean", ppb);
 		return map;
 	}
 
-	
-
-	
-
-	public static Map<String,Object> getSuggestedPeople(PeoplePageBean ppb,
+	public static Map<String, Object> getSuggestedPeople(PeoplePageBean ppb,
 			AzureUser u) {
 
-		int limit = 12;
+		int limit = 8;
 		if (ppb == null) {
 			ppb = new PeoplePageBean();
 
@@ -1498,8 +1499,8 @@ public class Util {
 		List<Person> people = new ArrayList<>();
 		people = addSuggestPeople(people, result, u);
 		people = removeFriends(people, u);
-		while (people.size() < 12 && limit - result.getNumberReturned() == 0) {
-			limit = 12 - people.size();
+		while (people.size() < 8 && limit - result.getNumberReturned() == 0) {
+			limit = 8 - people.size();
 			result = searchSuggestedPeople(limit, u, result.getCursor());
 			people = addSuggestPeople(people, result, u);
 			people = removeFriends(people, u);
@@ -1508,11 +1509,11 @@ public class Util {
 		Collections.shuffle(people);
 		ppb.setSuggested(people);
 		ppb.setCategory("SUGGESTED");
-		ppb.setSuggestedCusor((result.getCursor() == null) ? null : result.getCursor()
-				.toWebSafeString());
-		Map<String,Object> map = new HashMap<>();
+		ppb.setSuggestedCusor((result.getCursor() == null) ? null : result
+				.getCursor().toWebSafeString());
+		Map<String, Object> map = new HashMap<>();
 		map.put("newList", people);
-		map.put("peoplepageBean", ppb);
+		map.put("peoplePageBean", ppb);
 		return map;
 
 	}
@@ -1582,4 +1583,147 @@ public class Util {
 		return people;
 	}
 
+	public static NotificationPageBean initNotificationPageBean(AzureUser u) {
+		QueryResultList<Entity> r = GeneralController.getNotifications(u, null);
+
+		NotificationPageBean npb = new NotificationPageBean();
+		if (r.getCursor() != null) {
+			npb.setCursor(r.getCursor().toWebSafeString());
+		}
+
+		List<NotificationBean> list = new ArrayList<>();
+		for (Entity e : r) {
+			Notification n = EntityConverter.entityToNotification(e);
+			NotificationBean nb = null;
+			switch(n.getType()) {
+			case "MessageNotification" :
+				nb = new MessageNotification(n);
+				break;
+			case "FriendRequestNotification" :
+				nb = new FriendRequestNotification(n);
+				break;
+			}
+			
+			Iterator<NotificationBean> it = list.iterator();
+			NotificationBean existingBean = null;
+			while(it.hasNext()) {
+				NotificationBean nn = it.next();
+				if(nn.equals(nb)) {
+					existingBean = nn;
+					it.remove();
+					break;
+				}
+			}
+			
+			if(existingBean == null) {
+				list.add(nb);
+			}else {
+				existingBean.addNotification(n);
+				list.add(existingBean);
+			}	
+			
+		}
+		//Collections.sort(list);
+		npb.setNotifications(list);
+		return npb;
+	}
+
+	
+
+	public static Person getPersonFromIndex(Key sender, AzureUser u) {
+		Document d = SearchDocumentIndexService.retrieveDocument("PEOPLE",
+				KeyFactory.keyToString(sender));
+		Person p = documentToPerson(d, u);
+		return p;
+	}
+
+	private static Person userToPerson(AzureUser u, Key sender) {
+		Person p = new Person();
+		if (u.getFollowing() != null && u.getFollowing().contains(sender)) {
+			p.setFollowing(true);
+		}
+		if (u.getFriendsId() != null && u.getFriendsId().contains(sender)) {
+			p.setFriend(true);
+		}
+		p.setGrade(u.getsClass());
+		// p.setInterest(u.getAreaOfInterest());
+		p.setName(u.getFirstName() + " " + u.getLastName());
+		p.setPicture(u.getPicture());
+		p.setWebKey(KeyFactory.keyToString(u.getKey()));
+
+		return p;
+	}
+
+	public static MessagePageBean getMessages(Key sender, AzureUser u) {
+		QueryResultList<Entity> qr = GeneralController.getMessages(sender,
+				u.getKey(), 0);
+
+		MessagePageBean mpb = new MessagePageBean();
+		Person p = getPersonFromIndex(sender, u);
+		mpb.setSender(p);
+		Map<Date, List<com.jevalab.azure.notifications.Message>> messages = getOrderedMessages(qr);
+		mpb.setMessages(messages);
+		if (qr.size() < 5) {
+			mpb.setOffset(-1);
+		} else {
+			mpb.setOffset(mpb.getOffset() + qr.size());
+		}
+		return mpb;
+	}
+
+	private static Map<Date, List<com.jevalab.azure.notifications.Message>> getOrderedMessages(
+			QueryResultList<Entity> qr) {
+		Map<Date, List<com.jevalab.azure.notifications.Message>> map = new TreeMap<>();
+		List<com.jevalab.azure.notifications.Message> list = null;
+		for (Entity e : qr) {
+			Notification n = EntityConverter.entityToNotification(e);
+			com.jevalab.azure.notifications.Message m = new com.jevalab.azure.notifications.Message();
+			m.setOwnerKey(KeyFactory.keyToString(n.getSender()));
+			if (n.getMessage() != null) {
+				m.setBody(n.getMessage().getValue());
+			}
+			m.setDate(n.getDate());
+
+			list = map.get(m.getTruncatedDate());
+			if (list == null) {
+				list = new ArrayList<>();
+			}
+			list.add(m);
+			map.put(m.getTruncatedDate(), list);
+		}
+		for (Date d : map.keySet()) {
+			List<com.jevalab.azure.notifications.Message> list1 = map.get(d);
+			Collections.sort(list1,
+					new Comparator<com.jevalab.azure.notifications.Message>() {
+
+						@Override
+						public int compare(
+								com.jevalab.azure.notifications.Message o1,
+								com.jevalab.azure.notifications.Message o2) {
+							if (o1.getDate().after(o2.getDate())) {
+								return 1;
+							} else if (o1.getDate().before(o2.getDate())) {
+								return -1;
+							} else {
+								return 0;
+							}
+						}
+					});
+			map.put(d, list1);
+		}
+		return map;
+	}
+
+	public static void updateMessageNotifications(NotificationBean bean) {
+		Entity[] ents = new Entity[bean.getNotifications().size()];
+		int i = 0;
+		for(Notification n : bean.getNotifications()) {
+			n.setViewed(true);
+			ents[i]=(EntityConverter.notificationToEntity(n));
+			i++;
+		}
+		
+		GeneralController.createWithCrossGroup(ents);
+		
+	}
 }

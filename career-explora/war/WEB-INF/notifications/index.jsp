@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -13,8 +14,8 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 <link rel="stylesheet" href="/style/jquery.webui-popover.css">
-<link rel="stylesheet" href="/style/dashboard.css">
 <link rel="stylesheet" href="/style/main.css">
+<link rel="stylesheet" href="/style/media-queries.css">
 </head>
 <body style="background-color: #f1f3f7">
 	<%@ include file="/WEB-INF/main-nav.html"%>
@@ -24,6 +25,7 @@
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/jquery.webui-popover.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/notification.js"></script>
 	
 </body>
 </html>
