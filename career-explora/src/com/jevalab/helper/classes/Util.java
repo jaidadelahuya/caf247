@@ -1683,7 +1683,7 @@ public class Util {
 				m.setBody(n.getMessage().getValue());
 			}
 			m.setDate(n.getDate());
-
+			m.setWebKey(n.getWebKey());
 			list = map.get(m.getTruncatedDate());
 			if (list == null) {
 				list = new ArrayList<>();

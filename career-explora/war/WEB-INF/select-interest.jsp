@@ -25,7 +25,7 @@
 	<div class="container">
 		<h2
 			style="text-align: center; margin-bottom: 2%; margin-left: 1%; color: white; font-weight: bold; text-shadow: 1px 1px black; font-size: 28pt"
-			class="mobile-font-header">Let's help you get started</h2>
+			class="mobile-font-header">Welcome <c:out value="${azureUser.firstName}" />, let's help you get started</h2>
 		<div class="card-panel">
 			<div class="row">
 				<div class="col s12">

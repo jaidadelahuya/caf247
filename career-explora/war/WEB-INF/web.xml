@@ -6,12 +6,47 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>ProfileGetMessages</servlet-name>
+		<servlet-class>com.jevalab.azure.profile.GetMessages</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ProfileGetMessages</servlet-name>
+		<url-pattern>/azure/profile/messages</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminInitAddQuestion</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitAddQuestion</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminInitAddQuestion</servlet-name>
+		<url-pattern>/ca/admin/i/question/new</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>AdminNewQuestion</servlet-name>
+		<jsp-file>/WEB-INF/admin/add-question.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminNewQuestion</servlet-name>
+		<url-pattern>/ca/admin/question/new</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>GetMessages</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.GetMessages</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>GetMessages</servlet-name>
 		<url-pattern>/azure/notifications/messages</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>MessagesPage</servlet-name>
+		<jsp-file>/WEB-INF/notifications/messages.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MessagesPage</servlet-name>
+		<url-pattern>/azure/notifications/p/messages</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -697,7 +732,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>SaveQuestion</servlet-name>
-		<url-pattern>/savequestion</url-pattern>
+		<url-pattern>/ca/admin/question/save</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

@@ -33,11 +33,21 @@ public class AddFollowing extends HttpServlet {
 		HttpSession session = req.getSession();
 		Object o = null;
 		Object o1 = null;
+		Object o2 = null;
 		synchronized (session) {
 			o = session.getAttribute(StringConstants.AZURE_USER);
 			o1 = session.getAttribute("peoplePageBean");
+			o2 = session.getAttribute("userProfile");
 		}
-		if (Util.notNull(webKey) && o != null && o1!=null) {
+		if (Util.notNull(webKey) && o != null) {
+			UserProfile up = null;
+			if (o2 != null) {
+				up = (UserProfile) o2;
+				up.setFollow(true);
+				synchronized (session) {
+					session.setAttribute("userProfile", up);
+				}
+			}
 			Key key = KeyFactory.stringToKey(webKey);
 			AzureUser u = (AzureUser) o;
 			AzureUser user = EntityConverter.entityToUser(GeneralController
@@ -48,6 +58,7 @@ public class AddFollowing extends HttpServlet {
 			}
 			if (!followers.contains(u.getKey())) {
 				followers.add(u.getKey());
+
 			}
 			user.setFollowers(followers);
 			List<Key> following = u.getFollowing();
@@ -59,26 +70,31 @@ public class AddFollowing extends HttpServlet {
 			}
 			u.setFollowing(following);
 
-			GeneralController.createWithCrossGroup(EntityConverter.userToEntity(u),
+			GeneralController.createWithCrossGroup(
+					EntityConverter.userToEntity(u),
 					EntityConverter.userToEntity(user));
-			PeoplePageBean ppb = (PeoplePageBean) o1;
-			List<Person> people = ppb.getFollowing();
-			if(people == null) {
-				people = new ArrayList<>();
-			}
-			for(Person p: people) {
-				if(p.getWebKey().equals(webKey)) {
-					p.setFollowing(true);
+			if (o1 != null) {
+				PeoplePageBean ppb = (PeoplePageBean) o1;
+				List<Person> people = ppb.getFollowing();
+				if (people == null) {
+					people = new ArrayList<>();
+				}
+				for (Person p : people) {
+					if (p.getWebKey().equals(webKey)) {
+						p.setFollowing(true);
+					}
+				}
+
+				ppb.setFollowing(people);
+				synchronized (session) {
+					session.setAttribute("peoplePageBean", ppb);
 				}
 			}
-			
-			ppb.setFollowing(people);
-			
+
 			synchronized (session) {
 				session.setAttribute(StringConstants.AZURE_USER, u);
-				session.setAttribute("peoplePageBean", ppb);
+				
 			}
-			
 
 		} else {
 			req.getRequestDispatcher("/session/invalid").include(req, resp);

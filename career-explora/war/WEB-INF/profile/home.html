@@ -9,12 +9,16 @@
 						<img src="${userProfile.cover}">
 						<div class="card-title"
 							style="width: 40%; height: 100%; padding-top: 4%; text-align: center; background-color: rgba(137, 155, 193, 0.5)">
-							<img class="profile-img" src="${userProfile.picture}">
+							<a
+								href="<c:url value='/azure/profile/messages?web-key=${userProfile.webKey}' />"><img
+								class="profile-img" src="${userProfile.picture}"></a>
 							<div>
-								<div class="flow-text"
-									style="font-weight: bold; line-height: 1.5; color: #f4ebee">
-									<c:out value='${userProfile.firstName}' />
-									<c:out value='${userProfile.lastName}' />
+								<div class="flow-text">
+									<a
+										style="font-weight: bold; line-height: 1.5; color: #f4ebee; text-decoration: none; margin: 0px"
+										href="<c:url value='/azure/profile/message?web-key=${userProfile.webKey}' />"><c:out
+											value='${userProfile.firstName}' /> <c:out
+											value='${userProfile.lastName}' /></a>
 								</div>
 								<h6 style="color: #eef4eb">
 									<c:out value='${userProfile.school}' />
@@ -90,7 +94,8 @@
 					</c:if>
 					<c:if test="${not empty userProfile.about}">
 						<div class="col s12 profile-value">
-							<label>ABOUT ME</label><br><div style="overflow: hidden">${userProfile.about}</div>
+							<label>ABOUT ME</label><br>
+							<div style="overflow: hidden">${userProfile.about}</div>
 						</div>
 					</c:if>
 					<c:if test="${not empty userProfile.mits}">
@@ -111,7 +116,8 @@
 						<div class="col s12 profile-value">
 							<label>MY CAREER CLUSTERS</label><br>
 							<c:out value="${userProfile.clusters}" />
-							<div id="show-career-cluster-report" class="report">View Report</div>
+							<div id="show-career-cluster-report" class="report">View
+								Report</div>
 						</div>
 					</c:if>
 					<c:if test="${not empty userProfile.learntSkills}">

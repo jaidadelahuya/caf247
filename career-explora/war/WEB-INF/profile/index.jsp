@@ -43,14 +43,15 @@
 		</c:when>
 		<c:otherwise>
 			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-				<a class="btn-floating btn-large red"> <i class="material-icons">&#xE5D4;</i>
-				</a>
+				<input type="hidden" class="person-webkey" value="${userProfile.webKey}">
+				<c:if test="${not userProfile.friend}"><a class="btn-floating btn-large red"> <i class="material-icons">&#xE5D4;</i>
+				</a></c:if>
 				<ul>
-					<li><a class="btn-floating purple darken-1"><i
-							class="material-icons">directions_walk</i></a></li>
-					<li><a class="btn-floating green"><i
-							class="material-icons">add</i></a></li>
-					<li><a class="btn-floating blue"><i class="material-icons">message</i></a></li>
+					<c:if test="${not userProfile.follow}"><li><a class="btn-floating purple darken-1 follow"><i
+							class="material-icons">directions_walk</i></c:if></a><c:if test="${not userProfile.friend}"></li>
+					<li><a class="btn-floating green friend-request"><i
+							class="material-icons">add</i></c:if></a></li>
+					<li><a class="btn-floating blue message"><i class="material-icons">message</i></a></li>
 				</ul>
 			</div>
 		</c:otherwise>

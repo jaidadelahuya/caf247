@@ -19,7 +19,7 @@ function allLetter($input) {
 
 function allNumeric($input) {
 	var val = $input.val().trim(); 
-      	var numbers = /^[0-9]+$/;
+      	var numbers = /^\+?(0|[1-9]\d*)$/;
       	if(val.match(numbers)) {
       		return true;
       	} else {
@@ -47,9 +47,9 @@ function validateGender($male, $female) {
 	}
 }
 
-function lengthRange($input, minlength, maxlength) {  	
+function lengthRange($input, minlength) {  	
 	var val = $input.val().trim();  
-	if(val.length >= minlength && val.length <= maxlength) {  	
+	if(val.length >= minlength) {  	
         return true;  	
 	} else {  	
         return false;  	
@@ -67,6 +67,13 @@ function checkPassword($input) {
 		return false;
 	}
 }  
+
+function removeError() {
+	var errDiv = $("#reg-error-div");
+	$("input").removeClass("reg-input-error");
+	errDiv.removeClass("alert alert-danger");
+	errDiv.text("");
+}
 
 
 function regInputOk($input) {

@@ -13,7 +13,7 @@ $(document).ready(
 							msgDiv.text("verifying...");
 							var jqxhr = $.post("/confirmcode",
 									myForm.serialize()).done(function(data) {
-								msgDiv.text("redirecting...");
+								msgDiv.text("Please wait...");
 								window.location.assign(data);
 							}).error(function(jqXHR, status, errorThrown) {
 								msgDiv.removeClass("alert alert-success");

@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
@@ -20,6 +22,7 @@ import com.google.appengine.api.images.ServingUrlOptions;
 import com.jevalab.azure.persistence.Question;
 import com.jevalab.azure.persistence.QuestionJpaController;
 import com.jevalab.exceptions.RollbackFailureException;
+import com.jevalab.helper.classes.Util;
 
 public class QuestionInputServlet extends HttpServlet {
 
@@ -27,48 +30,104 @@ public class QuestionInputServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
+		BlobstoreService blobstoreService = BlobstoreServiceFactory
+				.getBlobstoreService();
+		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
+		List<BlobKey> blobKeys = blobs.get("picture-url");
+		BlobKey blobKey = null;
+		if (blobKeys == null || blobKeys.isEmpty()) {
+			// do nothing
+		} else {
+			blobKey = blobKeys.get(0);
+		}
+
+		HttpSession session = req.getSession();
 		Question q = new Question();
+
 		String subjectName = req.getParameter("subject-name");
-		subjectName = subjectName.trim().toLowerCase();
-		q.setSubjectName(subjectName);
-		q.setBody(req.getParameter("body"));
-		q.setExplanation(req.getParameter("explanation"));
-		q.setVendor(req.getParameter("vendor"));
-		String year = req.getParameter("year");
-		q.setYear(year);
-		q.setCorrectAlternative(req.getParameter("correct-alt"));
-		List<String> alts = new ArrayList<String>();
-		if(req.getParameter("alt-a")!=null) {
-			alts.add(req.getParameter("alt-a"));
+		if (Util.notNull(subjectName)) {
+			subjectName = subjectName.trim().toUpperCase();
+			q.setSubjectName(subjectName);
+		} else {
+			session.setAttribute("addQuestionError", "Select a subject");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
 		}
-		if(req.getParameter("alt-b")!=null) {
-			alts.add(req.getParameter("alt-b"));
+
+		String vendor = req.getParameter("vendor");
+		if (Util.notNull(vendor)) {
+			q.setVendor(vendor);
+		} else {
+			session.setAttribute("addQuestionError", "Select a Vendor");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
+		}
+
+		String year = req.getParameter("year");
+		if (Util.notNull(year)) {
+			q.setYear(year);
+		} else {
+			session.setAttribute("addQuestionError", "Select a year");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
+		}
+
+		String body = req.getParameter("body");
+		if (Util.notNull(body)) {
+			q.setBody(body);
+		} else {
+			session.setAttribute("addQuestionError", "Enter the question body");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
+		}
+
+		String altA = req.getParameter("alt-a");
+		String altB = req.getParameter("alt-b");
+		List<String> alts = new ArrayList<String>();
+		if (Util.notNull(altA,altB)) {
+			alts.add(altA);
+			alts.add(altB);
+		} else {
+			session.setAttribute("addQuestionError", "Enter at least two alternatives");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
 		}
 		
-		if(req.getParameter("alt-c")!=null) {
+		if (req.getParameter("alt-c") != null) {
 			alts.add(req.getParameter("alt-c"));
 		}
-		
-		if(req.getParameter("alt-d")!=null) {
+
+		if (req.getParameter("alt-d") != null) {
 			alts.add(req.getParameter("alt-d"));
 		}
-		
-		if(req.getParameter("alt-e")!=null) {
+
+		if (req.getParameter("alt-e") != null) {
 			alts.add(req.getParameter("alt-e"));
 		}
-		
+
 		q.setAlternatives(alts);
-		String pUrl = req.getParameter("picture-url");
-		String url = "/images/"+subjectName+"/"+year+"/"+pUrl;
-		q.setPictureUrl(url);
 		
+		q.setExplanation(req.getParameter("explanation"));
+
+		String correctAlt = req.getParameter("correct-alt");
+		
+		if(Util.notNull(correctAlt)) {
+			q.setCorrectAlternative(correctAlt);
+		}else {
+			session.setAttribute("addQuestionError", "Choose the correct alternative");
+			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
+			return;
+		}
+		
+		q.setImageKey(blobKey);
+
 		q.setCategoryName(req.getParameter("category-name"));
 
-		
 		QuestionJpaController cont = new QuestionJpaController();
 		try {
 			cont.create(q);
@@ -79,7 +138,9 @@ public class QuestionInputServlet extends HttpServlet {
 			resp.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
 			e.printStackTrace();
 		}
+		session.removeAttribute("addQuestionError");
+		session.setAttribute("addQuestionSuccess", "Question saved successfully");
+		resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/question/new"));
 
-		
 	}
 }

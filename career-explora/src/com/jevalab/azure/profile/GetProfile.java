@@ -1,6 +1,7 @@
 package com.jevalab.azure.profile;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.GeneralController;
@@ -41,8 +43,10 @@ public class GetProfile extends HttpServlet {
 		
 		if(o!= null && Util.notNull(webKey)) {
 			AzureUser u = (AzureUser) o;
+			AzureUser currentUser = null;
 			UserProfile up = new UserProfile();
 			if(!u.getKey().equals(KeyFactory.stringToKey(webKey))) {
+				currentUser = u;
 				Entity e= GeneralController.findByKey(KeyFactory.stringToKey(webKey));
 				u = EntityConverter.entityToUser(e);
 				Object o1 = null;
@@ -64,7 +68,16 @@ public class GetProfile extends HttpServlet {
 			}
 			
 			up = ProfileHelper.getProfileData(u, up);
-			
+			if(currentUser!=null) {
+				List<Key> l = u.getFollowing();
+				if(l!=null && l.contains(currentUser.getKey())) {
+					up.setFollow(true);
+				}
+				l = u.getFriendsId();
+				if(l!=null && l.contains(currentUser.getKey())) {
+					up.setFriend(true);
+				}
+			}
 			synchronized (session) {
 				session.setAttribute("userProfile", up);
 			}

@@ -12,14 +12,39 @@ public class UserProfile implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String clusters, talents, mits, learntSkills,
 			skillToLearn;
-	private String firstName, lastName, middleName, gender, email,
+	private String firstName, lastName, middleName, gender, email, webKey,
 			school, state, country, picture, cover, lastSeenDate, hobbies, about, grade, interest;
 	private Date birthDate;
 	private int following, followers, friends, communities, collections,
 	percentageComplete;
 	private boolean currentUser;
+	private boolean follow,friend;
 
 	
+
+	public boolean isFollow() {
+		return follow;
+	}
+
+	public void setFollow(boolean follow) {
+		this.follow = follow;
+	}
+
+	public boolean isFriend() {
+		return friend;
+	}
+
+	public void setFriend(boolean friend) {
+		this.friend = friend;
+	}
+
+	public String getWebKey() {
+		return webKey;
+	}
+
+	public void setWebKey(String webKey) {
+		this.webKey = webKey;
+	}
 
 	public boolean isCurrentUser() {
 		return currentUser;

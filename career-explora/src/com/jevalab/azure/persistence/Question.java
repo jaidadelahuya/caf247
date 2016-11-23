@@ -12,6 +12,8 @@ import javax.persistence.Transient;
 
 import org.datanucleus.api.jpa.annotations.Extension;
 
+import com.google.appengine.api.blobstore.BlobKey;
+
 
 
 @Entity(name="question")
@@ -36,7 +38,8 @@ public class Question implements Serializable {
 	private String subjectName,vendor,year,difficulty,categoryName;
 	
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String body,explanation,imageKey,pictureUrl,correctAlternative;
+	private String body,explanation,pictureUrl,correctAlternative;
+	private BlobKey imageKey;
 	
 	
 	@Basic
@@ -87,10 +90,10 @@ public class Question implements Serializable {
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
 	}
-	public String getImageKey() {
+	public BlobKey getImageKey() {
 		return imageKey;
 	}
-	public void setImageKey(String imageKey) {
+	public void setImageKey(BlobKey imageKey) {
 		this.imageKey = imageKey;
 	}
 	public String getVendor() {

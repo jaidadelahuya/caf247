@@ -9,46 +9,105 @@ var talents = null;
 $(document)
 		.ready(
 				function() {
-					
-					$("#show-career-cluster-report").click(function(){
-						$.ajax({
-							url : "/azure/profile/careercluster/report",
-							success : function(data) {
-								window.open("/azure/profile/career-clusters/report/view","Career Clusters Test Report",
-										"toolbar=yes, scrollbars=yes, fullscreen=1");
-							},
-							error : function(jqXHR, status, errorThrown) {
-								//alert(errorThrown);
-							}
-						});
-					});
-					
-					$("#show-talents-report").click(function(){
-						$.ajax({
-							url : "/azure/profile/talent/report",
-							success : function(data) {
-								window.open("/azure/profile/talent/report/view","Talent Hunt Test Report",
-										"toolbar=yes, scrollbars=yes, fullscreen=1");
-							},
-							error : function(jqXHR, status, errorThrown) {
-								//alert(errorThrown);
-							}
-						});
-					});
-					
-					$("#show-mits-report").click(function() {
-						$.ajax({
-							url : "/azure/profile/mit/report",
-							success : function(data) {
-								window.open("/azure/profile/mit/report/view","Multiple Intelligence Test Report",
-										"toolbar=yes, scrollbars=yes, fullscreen=1");
-							},
-							error : function(jqXHR, status, errorThrown) {
-								//alert(errorThrown);
-							}
-						});
 
+					$(".follow").click(
+							function(e) {
+								e.preventDefault();
+								var webKey = $(this).closest(".fixed-action-btn")
+										.find(".person-webkey").val();
+								var me = $(this);
+								$.ajax({
+									url : "/azure/people/follow/add",
+									data : {
+										"web-key" : webKey,
+									},
+									success : function(data) {
+										me.fadeOut();
+									}
+								});
+							});
+
+					$(".friend-request").click(function(e) {
+						e.preventDefault();
+						var webKey = $(this).closest(".fixed-action-btn")
+						.find(".person-webkey").val();
+						var me = $(this);
+						$.ajax({
+							url : "/azure/notifications/friend/request",
+							method : "POST",
+							data : {
+								"web-key" : webKey
+							},
+							success : function(data) {
+								me.fadeOut();
+							}
+						});
 					});
+
+					$(".message").click(function() {
+						alert("click");
+					});
+
+					$("#show-career-cluster-report")
+							.click(
+									function() {
+										$
+												.ajax({
+													url : "/azure/profile/careercluster/report",
+													success : function(data) {
+														window
+																.open(
+																		"/azure/profile/career-clusters/report/view",
+																		"Career Clusters Test Report",
+																		"toolbar=yes, scrollbars=yes, fullscreen=1");
+													},
+													error : function(jqXHR,
+															status, errorThrown) {
+														// alert(errorThrown);
+													}
+												});
+									});
+
+					$("#show-talents-report")
+							.click(
+									function() {
+										$
+												.ajax({
+													url : "/azure/profile/talent/report",
+													success : function(data) {
+														window
+																.open(
+																		"/azure/profile/talent/report/view",
+																		"Talent Hunt Test Report",
+																		"toolbar=yes, scrollbars=yes, fullscreen=1");
+													},
+													error : function(jqXHR,
+															status, errorThrown) {
+														// alert(errorThrown);
+													}
+												});
+									});
+
+					$("#show-mits-report")
+							.click(
+									function() {
+										$
+												.ajax({
+													url : "/azure/profile/mit/report",
+													success : function(data) {
+														window
+																.open(
+																		"/azure/profile/mit/report/view",
+																		"Multiple Intelligence Test Report",
+																		"toolbar=yes, scrollbars=yes, fullscreen=1");
+													},
+													error : function(jqXHR,
+															status, errorThrown) {
+														// alert(errorThrown);
+													}
+												});
+
+									});
 
 					$("#profile-dob").datepicker();
 
@@ -225,8 +284,6 @@ $(document)
 
 										}
 									});
-					
-					
 
 					$(".editable").mouseenter(function() {
 						var l = $(this);
@@ -239,7 +296,7 @@ $(document)
 					});
 
 					$("#show-me-more-styles").on('click', function() {
-						
+
 						showMoreStyles($(this));
 
 					});

@@ -1,39 +1,31 @@
-<!-- Indices written at Sun, 20 Nov 2016 11:21:05 UTC -->
+<!-- Indices written at Wed, 23 Nov 2016 17:22:42 UTC -->
 
 <datastore-indexes>
 
-    <!-- Used 3 times in query history -->
+    <!-- Used 4 times in query history -->
     <datastore-index kind="Discussion" ancestor="false" source="auto">
         <property name="subscriber" direction="asc"/>
         <property name="tags" direction="asc"/>
         <property name="dateCreated" direction="desc"/>
     </datastore-index>
 
-    <!-- Used 3 times in query history -->
+    <!-- Used 4 times in query history -->
     <datastore-index kind="Discussion" ancestor="false" source="auto">
         <property name="owner" direction="asc"/>
         <property name="tags" direction="asc"/>
         <property name="dateCreated" direction="desc"/>
     </datastore-index>
 
-    <!-- Used 3 times in query history -->
+    <!-- Used 4 times in query history -->
     <datastore-index kind="Discussion" ancestor="false" source="auto">
         <property name="tags" direction="asc"/>
         <property name="dateCreated" direction="desc"/>
     </datastore-index>
 
-    <!-- Used 3 times in query history -->
+    <!-- Used 1 time in query history -->
     <datastore-index kind="Notification" ancestor="false" source="auto">
         <property name="recipient" direction="asc"/>
         <property name="viewed" direction="asc"/>
-        <property name="date" direction="desc"/>
-    </datastore-index>
-
-    <!-- Used 2 times in query history -->
-    <datastore-index kind="Notification" ancestor="false" source="auto">
-        <property name="recipient" direction="asc"/>
-        <property name="sender" direction="asc"/>
-        <property name="type" direction="asc"/>
         <property name="date" direction="desc"/>
     </datastore-index>
 

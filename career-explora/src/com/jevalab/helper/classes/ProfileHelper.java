@@ -10,6 +10,7 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.Record;
@@ -28,7 +29,7 @@ public class ProfileHelper {
 
 	public static UserProfile getProfileData(AzureUser user, UserProfile profile) {
 
-
+		profile.setWebKey(KeyFactory.keyToString(user.getKey()));
 		profile.setFirstName(user.getFirstName());
 		profile.setLastName(user.getLastName());
 		profile.setMiddleName(user.getMiddleName());

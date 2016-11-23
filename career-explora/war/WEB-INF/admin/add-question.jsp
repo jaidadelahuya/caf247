@@ -1,3 +1,11 @@
+<%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
+<%@page import="com.google.appengine.api.blobstore.BlobstoreService"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+
 <html>
 <head>
 <meta charset="ISO-8859-1">
@@ -10,19 +18,27 @@
 
 </head>
 <body>
-
-
-	<div class="container-fluid">
+	<% BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
+	<div class="container">
 
 		<div class="row">
-			<div class="col-sm-5">
-				<h2>Work Area</h2>
-				<textarea rows="25" cols="80" class="form-control tiny"></textarea>
-			</div>
-			<div class="col-sm-7">
-				<h2>Enter question parameters</h2>
-				<form action="" method="post" enctype="multipart/form-data"
-					id="my-form">
+
+			<div class="col-sm-12 col-md-offset-2 col-md-8">
+				<h5 class="text-primary">New Question</h5>
+				<c:choose>
+					<c:when test="${not empty addQuestionError}">
+						<div class="alert alert-danger">
+							<c:out value="${addQuestionError}" />
+						</div>
+					</c:when>
+					<c:when test="${not empty addQuestionSuccess}">
+						<div class="alert alert-success">
+							<c:out value="${addQuestionSuccess}" />
+						</div>
+					</c:when>
+				</c:choose>
+				<form action="<%=blobstoreService.createUploadUrl("/ca/admin/question/save")%>"
+					method="post" enctype="multipart/form-data">
 					<div class="form-group complex-form-section">
 						<div class="row">
 							<div class="col-sm-4">
@@ -82,58 +98,78 @@
 					<div class="form-group complex-form-section">
 						<div class="row" style="padding: 3%;">
 							<div class="row">
-								<label for="question">Question Body:</label>
-								<textarea rows="2" cols="" name="body" id="question"
-									class="form-control tiny"></textarea>
+								<div class="col-sm-12">
+									<label for="question">Question Body:</label>
+									<textarea rows="2" cols="" name="body" id="question"
+										class="form-control tiny"></textarea>
+								</div>
 							</div>
 							<div class="row">
-								<label for="alt-a">Alternative A:</label> <textarea
-									id="alt-a" name="alt-a" class="form-control tiny" ></textarea>
+								<div class="col-sm-12">
+									<label for="alt-a">Alternative A:</label>
+									<textarea id="alt-a" name="alt-a" class="form-control tiny"></textarea>
+								</div>
 							</div>
 							<div class="row">
-								<label for="alt-b">Alternative B:</label> <textarea
-									id="alt-b" name="alt-b" class="form-control tiny"></textarea>
+								<div class="col-sm-12">
+									<label for="alt-b">Alternative B:</label>
+									<textarea id="alt-b" name="alt-b" class="form-control tiny"></textarea>
+								</div>
 							</div>
 							<div class="row">
-								<label for="alt-c">Alternative C:</label> <textarea
-									id="alt-c" name="alt-c" class="form-control tiny"></textarea>
+								<div class="col-sm-12">
+									<label for="alt-c">Alternative C:</label>
+									<textarea id="alt-c" name="alt-c" class="form-control tiny"></textarea>
+								</div>
 							</div>
 							<div class="row">
-								<label for="alt-d">Alternative D:</label> <textarea
-									id="alt-d" name="alt-d" class="form-control tiny"></textarea>
+								<div class="col-sm-12">
+									<label for="alt-d">Alternative D:</label>
+									<textarea id="alt-d" name="alt-d" class="form-control tiny"></textarea>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-12">
+									<label for="alt-e">Alternative E:</label>
+									<textarea id="alt-e" name="alt-e" class="form-control tiny"></textarea>
+								</div>
 							</div>
 							<div class="row">
-								<label for="alt-e">Alternative E:</label> <textarea
-									id="alt-e" name="alt-e" class="form-control tiny"></textarea>
-							</div>
-							<div class="row">
+								<div class="col-sm-12">
+									<label for="table">Correct Alternative:</label><br>
+									<div class="col-sm-2">
+										<label class="opts"><input type="radio" value="A"
+											name="correct-alt">A</label>
+									</div>
+									<div class="col-sm-2">
+										<label class="opts"><input type="radio" value="B"
+											name="correct-alt">B</label>
+									</div>
+									<div class="col-sm-2">
+										<label class="opts"><input type="radio" value="C"
+											name="correct-alt">C</label>
+									</div>
+									<div class="col-sm-2">
+										<label class="opts"><input type="radio" value="D"
+											name="correct-alt">D</label>
+									</div>
+									<div class="col-sm-2">
+										<label class="opts"><input type="radio" value="E"
+											name="correct-alt">E</label>
+									</div>
+								</div>
 
-								<label for="table">Correct Alternative:</label>
-								<table id="table" class="table" style="padding-bottom: 0px">
-									<tr>
-										<td><input type="radio" name="correct-alt" value="A"
-											class="opts">A</td>
-										<td><input type="radio" name="correct-alt" value="B"
-											class="opts">B</td>
-										<td><input type="radio" name="correct-alt" value="C"
-											class="opts">C</td>
-										<td><input type="radio" name="correct-alt" value="D"
-											class="opts">D</td>
-										<td><input type="radio" name="correct-alt" value="E"
-											class="opts">E</td>
-									</tr>
-								</table>
-
-
 							</div>
-							<div class="row">
+							<div class="row form-group">
 								<div class="col-sm-6">
-									<label for="picture-url">Picture Url:</label> <input type="text"
-										id="picture-url" name="picture-url" class="form-control" />
+									<label for="picture-url">Picture Url:</label> <input
+										type="file" id="picture-url" name="picture-url"
+										class="form-control" />
 								</div>
 								<div class="col-sm-6">
-									<label for="category-name">Category name:</label> <select
-										id="category-name" class="form-control" name="category-name">
+									<label for="category-name">Category name:(For English
+										only)</label> <select id="category-name" class="form-control"
+										name="category-name">
 										<option></option>
 										<option>COMPREHENSION</option>
 										<option>SYNONYMS</option>
@@ -156,9 +192,11 @@
 							</div>
 
 
-							<div class="row" style="padding-top: 2%">
-								<input type="button" class="btn btn-primary btn-lg active"
-									id="save" value="Save" />
+							<div class="row form-group">
+								<div class="col-sm-12">
+									<input type="submit" class="btn btn-primary btn-lg active"
+										id="save" value="Save" />
+								</div>
 							</div>
 						</div>
 					</div>
@@ -172,53 +210,11 @@
 	<script src="/js/waitMe.js"></script>
 	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 	<script type="text/javascript">
-		var $form = $("#my-form");
-		function successCallBack() {
-
-			$("#question").val("");
-			$("#alt-a").val("");
-			$("#alt-b").val("");
-			$("#alt-c").val("");
-			$("#alt-d").val("");
-			$("#extra-text").val("");
-			$("#image").val("");
-			$(".opts").prop('selected', false);
-
-		}
-
-		function run_waitMe(effect) {
-
-			$form.waitMe({
-				effect : 'ios',
-				text : 'Processing...',
-				bg : 'rgba(255,255,255,0.7)',
-				color : 'orange',
-				sizeW : '15',
-				sizeH : '15'
-			});
-		}
-
 		$(document).ready(function() {
-			tinymce.init({ selector:'.tiny' });
-			$("#save").click(function() {
-				run_waitMe('ios');
-				$.ajax({
-					url : "/savequestion",
-					type : "POST",
-					data : $form.serialize(),
-					success : function(data) {
-						successCallBack();
-						$form.waitMe('hide');
-						alert("Save Successful");
-					},
-					error : function() {
-						$form.waitMe('hide');
-						alert("unable to save");
-					}
-				});
-
+			tinymce.init({
+				selector : '.tiny'
 			});
+
 		});
 	</script>
 </body>
-</html>

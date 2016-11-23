@@ -1,84 +1,10 @@
-/*function checkLoginState() {
-
-	FB.getLoginStatus(function(response) {
-		statusChangeCallback(response);
-	});
-}
-
-function statusChangeCallback(response) {
-
-	if (response.status === 'connected') {
-		getPhotoData(response);
-	} else if (response.status === 'not_authorized') {
-		getPhotoData(response);
-	} else {
-
-	}
-}*/
-
-function getPhotoData(resp) {
-
-	FB
-			.api(
-					'/',
-					'POST',
-					{
-						batch : [
-								{
-									method : 'GET',
-									relative_url : 'me?fields=cover&include_headers=false'
-								},
-								{
-									method : "GET",
-									relative_url : "me/picture?type=normal&redirect=false&height=250&width=250&include_headers=false"
-								} ]
-					}, function(response) {
-						var x = response[0].body;
-						x = JSON.parse(x);
-						var coverSource = null;
-						if (x.hasOwnProperty("cover")) {
-							coverSource = x.cover.source;
-						}
-						var a = response[1].body;
-						a = JSON.parse(a);
-						var pictureUrl = null;
-						if (a.hasOwnProperty("data")) {
-							pictureUrl = a.data.url;
-						}
-
-						$("#picture").val(pictureUrl);
-						$("#cover").val(coverSource);
-						callServer(resp);
-					});
-}
-
-function login() {
-
-	FB.login(function(response) {
-		if (response.authResponse) {
-
-			getPhotoData(response);
-		} else {
-			console.log("user cancelled action");
-		}
-	}, {
-		scope : 'public_profile,email',
-		return_scopes : true
-	});
-}
-
-function callServer(response) {
-
-	$("#access").val(response.authResponse.accessToken);
-	$("#name").val(response.authResponse.userID);
-
-	$("#login-form").submit();
-}
 
 $(document)
 		.ready(
 				function() {
-					
+					$("input").focus(function() {
+						removeError();
+					});
 					$("#new-account-button").click(function() {
 						window.location.assign("/sign-up");
 					});
@@ -89,9 +15,7 @@ $(document)
 						$form.submit();
 					});
 
-					$(".fblogin").click(function() {
-						login();
-					});
+					
 
 					var userid = $("#userid");
 					$("#use-phone").click(function() {
@@ -117,15 +41,13 @@ $(document)
 													.removeClass("alert alert-danger");
 											msgDiv
 													.addClass("alert alert-success");
-											msgDiv.text("processing...");
+											msgDiv.text("Please wait...");
 											var myForm = $("#register-user-form");
 											var jqxhr = $
 													.post("/registeruser",
 															myForm.serialize(),function() {},'text')
 													.done(
 															function(data) {
-																msgDiv
-																		.text("redirecting...");
 																window.location
 																		.assign(data);
 															})
@@ -145,30 +67,7 @@ $(document)
 										}
 									});
 
-					$("#first-name").blur(function() {
-						validateFirstName($(this));
-					});
 
-					$("#last-name").blur(function() {
-						validateLastName($(this));
-					});
-
-					$("#userid").blur(function() {
-						var $usingUsername = $("#using-username").val();
-						if (!$usingUsername) {
-							validateUserId($(this));
-						}
-
-					});
-
-					$("#pass1").blur(function() {
-						validatePassword($(this));
-					});
-
-					$("#pass2").blur(function() {
-						validatePassword2($(this));
-
-					});
 
 				});
 
@@ -178,7 +77,7 @@ function validateFirstName($input) {
 		regInputOk($input);
 	} else {
 		regInputBad($input, "Please enter your first name.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -187,7 +86,7 @@ function validateFirstName($input) {
 
 	} else {
 		regInputBad($input, "Please enter a real name.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -200,7 +99,7 @@ function validateLastName($input) {
 		regInputOk($input);
 	} else {
 		regInputBad($input, "Please enter your last name.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -208,7 +107,7 @@ function validateLastName($input) {
 		regInputOk($input);
 	} else {
 		regInputBad($input, "Please enter a real name.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -224,7 +123,7 @@ function validateUserId($input) {
 			regInputOk($input);
 		} else {
 			regInputBad($input, "Please enter your mobile number.");
-			$input.select();
+			
 			return false;
 		}
 
@@ -232,15 +131,15 @@ function validateUserId($input) {
 			regInputOk($input);
 		} else {
 			regInputBad($input, "Your mobile number cannot contain alphabets.");
-			$input.select();
+			
 			return false;
 		}
 
-		if (lengthRange($input, 11, 11)) {
+		if (lengthRange($input, 6)) {
 			regInputOk($input);
 		} else {
 			regInputBad($input, "Your mobile number is not valid .");
-			$input.select();
+			
 			return false;
 		}
 
@@ -249,7 +148,7 @@ function validateUserId($input) {
 			regInputOk($input);
 		} else {
 			regInputBad($input, "Please enter your e-mail address.");
-			$input.select();
+			
 			return false;
 		}
 
@@ -257,7 +156,7 @@ function validateUserId($input) {
 			regInputOk($input);
 		} else {
 			regInputBad($input, "Please enter a valid e-mail address.");
-			$input.select();
+			
 			return false;
 		}
 
@@ -272,7 +171,7 @@ function validatePassword($input) {
 		regInputOk($input);
 	} else {
 		regInputBad($input, "Please enter a password.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -281,7 +180,7 @@ function validatePassword($input) {
 	} else {
 		regInputBad($input,
 				"Your password should have between 7 to 21 characters.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -290,7 +189,7 @@ function validatePassword($input) {
 	} else {
 		regInputBad($input,
 				"Your password should contain at least a digit and a special character.");
-		$input.select();
+		
 		return false;
 	}
 
@@ -303,7 +202,7 @@ function validatePassword2($pass2) {
 		regInputOk($pass2);
 	} else {
 		regInputBad($pass2, "Please re-enter your password.");
-		$pass2.select();
+		
 		return false;
 	}
 	return true;
@@ -319,7 +218,7 @@ function matchPasswords($input, $pass2) {
 	} else {
 		regInputBad($input, "Passwords do not match.");
 		regInputBad($pass2, "Passwords do not match.");
-		$input.select();
+		
 		return false;
 	}
 

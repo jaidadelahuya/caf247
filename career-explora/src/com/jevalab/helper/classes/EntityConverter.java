@@ -91,7 +91,10 @@ public class EntityConverter {
 		u.setPassword((String) e.getProperty("Password"));
 		List<String> pids = (List<String>) e.getProperty("PasswordRecoveryIds");
 		Set<String> sps = new HashSet<>();
-		sps.addAll(pids);
+		if(pids!=null) {
+			sps.addAll(pids);
+		}
+		
 		u.setPasswordRecoveryIds(sps);
 		u.setPicture((String) e.getProperty("Picture"));
 		u.setSchool((String) e.getProperty("School"));
