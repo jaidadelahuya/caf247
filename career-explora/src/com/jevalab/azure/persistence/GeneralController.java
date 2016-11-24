@@ -28,6 +28,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.Notification;
+import com.jevalab.azure.notifications.messages.MessageN;
 import com.jevalab.helper.classes.EntityConverter;
 import com.jevalab.helper.classes.Util;
 
@@ -258,7 +259,7 @@ public class GeneralController {
 
 	public static QueryResultList<Entity> getMessages(Key sender,
 			Key recipient, int i) {
-		Query q = new Query(Notification.class.getSimpleName());
+		Query q = new Query(MessageNotification.class.getSimpleName());
 		Query.Filter f1 = new Query.FilterPredicate("recipient",
 				Query.FilterOperator.EQUAL, recipient);
 		Query.Filter f2 = new Query.FilterPredicate("sender",
@@ -298,6 +299,32 @@ public class GeneralController {
 	
 	public static Map<Key, Entity> getEntities(List<Key> keys) {
 		return ds.get(keys);
+	}
+
+	public static QueryResultList<Entity> getMessageNotifications(AzureUser u,
+			String cursor) {
+		Query q = new Query(MessageN.class.getSimpleName());
+		Query.Filter f = new Query.FilterPredicate("recipient",
+				Query.FilterOperator.EQUAL, u.getKey());
+		Query.Filter f1 = new Query.FilterPredicate("type",
+				Query.FilterOperator.EQUAL, MessageNotification.class.getSimpleName());
+		List<Filter> list = new ArrayList<>();
+		list.add(f1); list.add(f);
+		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.AND, list);
+		q.setFilter(f2);
+		FetchOptions options = null;
+		Cursor s = null;
+		if (cursor != null) {
+			s = Cursor.fromWebSafeString(cursor);
+			options = FetchOptions.Builder.withStartCursor(s).limit(10);
+		} else {
+			options = FetchOptions.Builder.withLimit(10);
+		}
+		q.addSort("date", SortDirection.DESCENDING);
+		PreparedQuery pq = ds.prepare(q);
+
+		QueryResultList<Entity> r = pq.asQueryResultList(options);
+		return r;
 	}
 
 }

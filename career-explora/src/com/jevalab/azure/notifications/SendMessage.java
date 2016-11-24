@@ -15,6 +15,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Text;
+import com.jevalab.azure.notifications.messages.MessageN;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.GeneralController;
 import com.jevalab.helper.classes.EntityConverter;
@@ -53,7 +54,7 @@ public class SendMessage extends HttpServlet {
 
 			if (o != null) {
 				u = (AzureUser) o;
-				Notification not = new Notification();
+				MessageN not = new MessageN();
 				not.setDate(new Date());
 				not.setRecipient(KeyFactory.stringToKey(webKey));
 				not.setSender(u.getKey());
@@ -62,16 +63,16 @@ public class SendMessage extends HttpServlet {
 				Entity e = GeneralController.findByKey(not.getRecipient());
 				if (e != null) {
 					AzureUser re = EntityConverter.entityToUser(e);
-					List<Key> keys = re.getNewNotifications();
+					List<Key> keys = re.getNewMessageNotifications();
 					if (keys == null) {
 						keys = new ArrayList<>();
 					}
 					keys.add(not.getRecipient());
-					re.setNewNotifications(keys);
+					re.setNewMessageNotifications(keys);
 
 					GeneralController.createWithCrossGroup(
 							EntityConverter.userToEntity(re),
-							EntityConverter.notificationToEntity(not));
+							EntityConverter.MessageNToEntity(not));
 				}
 			} else {
 				resp.sendError(HttpServletResponse.SC_EXPECTATION_FAILED,

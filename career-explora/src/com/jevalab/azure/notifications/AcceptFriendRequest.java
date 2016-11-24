@@ -2,6 +2,7 @@ package com.jevalab.azure.notifications;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.jevalab.azure.persistence.AzureUser;
@@ -49,13 +51,35 @@ public class AcceptFriendRequest extends HttpServlet {
 					its.remove();
 					AzureUser u = (AzureUser) o1;
 					List<Key> friends = u.getFriendsId();
-					if(friends == null) {
+					if (friends == null) {
 						friends = new ArrayList<>();
 					}
-					friends.add(KeyFactory.stringToKey(nb.getSender().getWebKey()));
+					friends.add(KeyFactory.stringToKey(nb.getSender()
+							.getWebKey()));
 					u.setFriendsId(friends);
-					GeneralController.create(EntityConverter.userToEntity(u));
-					GeneralController.delete(KeyFactory.stringToKey(nb.getNotificationKey()));
+
+					Notification n = new Notification();
+					n.setDate(new Date());
+					n.setRecipient(KeyFactory.stringToKey(nb.getSender()
+							.getWebKey()));
+					n.setSender(u.getKey());
+					n.setType(FriendRequestAcceptedNotification.class
+							.getSimpleName());
+					AzureUser uu = EntityConverter
+							.entityToUser(GeneralController
+									.findByKey(KeyFactory.stringToKey(nb
+											.getSender().getWebKey())));
+					List<Key> nots = uu.getNewNotifications();
+					if(nots == null) {
+						nots = new ArrayList<>();
+					}
+					nots.add(n.getId());
+					uu.setNewNotifications(nots);
+					Entity ee = EntityConverter.notificationToEntity(n);
+					GeneralController.createWithCrossGroup(EntityConverter.userToEntity(u), ee,EntityConverter.userToEntity(uu) );
+
+					GeneralController.delete(KeyFactory.stringToKey(nb
+							.getNotificationKey()));
 					break;
 				}
 			}
@@ -63,7 +87,6 @@ public class AcceptFriendRequest extends HttpServlet {
 				session.setAttribute("notificationPage", npb);
 			}
 
-			
 		}
 	}
 

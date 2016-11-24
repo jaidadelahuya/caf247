@@ -2,6 +2,8 @@ package com.jevalab.azure.people;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 public class Person implements Serializable {
 
 	/**
@@ -70,7 +72,7 @@ public class Person implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = WordUtils.capitalize(name);
 	}
 
 	public String getGrade() {

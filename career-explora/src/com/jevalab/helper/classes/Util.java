@@ -67,12 +67,15 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
+import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
 import com.jevalab.azure.notifications.FriendRequestNotification;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.MessagePageBean;
 import com.jevalab.azure.notifications.Notification;
 import com.jevalab.azure.notifications.NotificationBean;
 import com.jevalab.azure.notifications.NotificationPageBean;
+import com.jevalab.azure.notifications.messages.MPageBean;
+import com.jevalab.azure.notifications.messages.MessageN;
 import com.jevalab.azure.people.PeoplePageBean;
 import com.jevalab.azure.people.Person;
 import com.jevalab.azure.persistence.AzureUser;
@@ -1596,11 +1599,11 @@ public class Util {
 			Notification n = EntityConverter.entityToNotification(e);
 			NotificationBean nb = null;
 			switch(n.getType()) {
-			case "MessageNotification" :
-				nb = new MessageNotification(n);
-				break;
 			case "FriendRequestNotification" :
 				nb = new FriendRequestNotification(n);
+				break;
+			case "FriendRequestAcceptedNotification" :
+				nb = new FriendRequestAcceptedNotification(n);
 				break;
 			}
 			
@@ -1714,16 +1717,53 @@ public class Util {
 		return map;
 	}
 
-	public static void updateMessageNotifications(NotificationBean bean) {
+	public static void updateMessageNotifications(MessageNotification bean) {
 		Entity[] ents = new Entity[bean.getNotifications().size()];
 		int i = 0;
-		for(Notification n : bean.getNotifications()) {
+		for(MessageN n : bean.getNotifications()) {
 			n.setViewed(true);
-			ents[i]=(EntityConverter.notificationToEntity(n));
+			ents[i]=(EntityConverter.MessageNToEntity(n));
 			i++;
 		}
 		
 		GeneralController.createWithCrossGroup(ents);
 		
+	}
+
+	public static MPageBean initMessagePageBean(AzureUser u) {
+		QueryResultList<Entity> r = GeneralController.getMessageNotifications(u, null);
+
+		MPageBean npb = new MPageBean();
+		if (r.getCursor() != null) {
+			npb.setCursor(r.getCursor().toWebSafeString());
+		}
+
+		List<MessageNotification> list = new ArrayList<>();
+		for (Entity e : r) {
+			MessageN n = EntityConverter.entityToMessageN(e);
+			MessageNotification nb = new MessageNotification(n);
+			
+			Iterator<MessageNotification> it = list.iterator();
+			MessageNotification existingBean = null;
+			while(it.hasNext()) {
+				MessageNotification nn = it.next();
+				if(nn.getId().equals(nb.getId())) {
+					existingBean = nn;
+					it.remove();
+					break;
+				}
+			}
+			
+			if(existingBean == null) {
+				list.add(nb);
+			}else {
+				existingBean.addNotification(n);
+				list.add(existingBean);
+			}
+			
+		}
+		//Collections.sort(list);
+		npb.setNotifications(list);
+		return npb;
 	}
 }

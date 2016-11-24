@@ -12,6 +12,7 @@
 			<ul class="side-nav" id="mobile-demo">
 				<li><a href="<c:url value='/azure/success' />">Home</a></li>
 				<li><a href="<c:url value='/azure/profile' />">Profile</a></li>
+				<li><a href="<c:url value='/azure/messages' />">Messages</a></li>
 				<li><a href="<c:url value='/azure/notifications' />">Notifications</a></li>
 				<li><a href="<c:url value='/azure/cbt'/>">CBT</a></li>
 				<li><a href="<c:url value='/azure/careerplus'/>">Career Plus</a></li>
@@ -44,6 +45,14 @@
 				<a href="<c:url value='/azure/profile' />"><i style="background-color: #3b5998;"
 					class="material-icons circle ca-collection-icon">face</i><span
 					class="ca-collection-text">Profile</span></a>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 0px">
+			<div class="col s12 ca-collection <c:if test='${mainNav.messages}'>nav-active</c:if>">
+				<a href="<c:url value='/azure/messages' />"><i style="background-color: #39889b;"
+					class="material-icons circle ca-collection-icon">question_answer</i><span
+					class="ca-collection-text">Messages</span><c:if test="${welcomePage.newMessageNotification > 0}"><span
+					class="new badge"><c:out value="${welcomePage.newMessageNotification}" /></span></c:if></a>
 			</div>
 		</div>
 		<div class="row" style="margin-bottom: 0px">
@@ -128,7 +137,7 @@
 		<div class="row" style="margin-bottom: 0px">
 			<div class="col s12 ca-collection <c:if test='${mainNav.feedback}'>nav-active</c:if>">
 				<a href="<c:url value='/azure/feedback' />"><i style="background-color: #3b5998;"
-					class="material-icons circle ca-collection-icon">chat</i><span
+					class="material-icons circle ca-collection-icon">feedback</i><span
 					class="ca-collection-text">Send Us Feedback</span></a>
 			</div>
 		</div>

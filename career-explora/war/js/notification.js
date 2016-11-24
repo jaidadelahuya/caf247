@@ -78,9 +78,5 @@ $(document).ready(function() {
 		});
 	});
 	
-	$(".reply-message").click(function(e){
-		var par = $(this).closest("li");
-		var key = par.find(".notification-bean-key").val();
-		window.location.assign("/azure/notifications/messages?web-key="+key);
-	});
+	
 });

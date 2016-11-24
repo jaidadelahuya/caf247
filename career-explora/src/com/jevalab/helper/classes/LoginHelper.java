@@ -110,6 +110,9 @@ public class LoginHelper {
 		if(user.getNewNotifications()!=null){
 			wpb.setNewNotification(user.getNewNotifications().size());
 		}
+		if(user.getNewMessageNotifications()!=null){
+			wpb.setNewMessageNotification(user.getNewMessageNotifications().size());
+		}
 		return wpb;
 	}
 
@@ -228,49 +231,14 @@ public class LoginHelper {
 
 
 	public synchronized static String getNextId() {
-		IdSequenceJpaController cont = new IdSequenceJpaController();
 		
-		IdSequence seq = (IdSequence)cont.getSequence(1l);
-		long val = seq.getValue();
-		try {
-			cont.destroy(1l);
-			val += 1;
-			IdSequence sq = new IdSequence();
-			sq.setValue(val);
-			cont.create(sq);
-		} catch (NonexistentEntityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RollbackFailureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		long val = new Date().getTime();
+		
 		String randomString = Util.generateRandomCode(100000, 900000);
-		return randomString+"@"+seq.getValue();
+		return randomString+"@"+val;
 	}
 
-	private static String getDateString(Calendar cd) {
-		int x = cd.get(Calendar.DAY_OF_MONTH);
-		String xs = "";
-		if (x < 10) {
-			xs = "0" + x;
-		} else {
-			xs += x;
-		}
-		x = cd.get(Calendar.MONTH);
-		if (x < 10) {
-			xs = xs + "0" + x;
-		} else {
-			xs += x;
-		}
 
-		x = cd.get(Calendar.YEAR);
-		xs += x;
-		return xs;
-	}
 
 	public static void checkIdSequence() {
 		IdSequenceJpaController cont = new IdSequenceJpaController();

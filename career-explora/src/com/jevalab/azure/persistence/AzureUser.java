@@ -158,6 +158,11 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private List<Key> newNotifications;
 	
+	@Basic
+	@Column(name = "NewMessageNotifications")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private List<Key> newMessageNotifications;
+	
 
 	@Column(name = "Class")
 	private String sClass;
@@ -173,6 +178,14 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 	private List<Key> collections, followers, following;
 	
 	
+
+	public List<Key> getNewMessageNotifications() {
+		return newMessageNotifications;
+	}
+
+	public void setNewMessageNotifications(List<Key> newMessageNotifications) {
+		this.newMessageNotifications = newMessageNotifications;
+	}
 
 	public List<Key> getNewNotifications() {
 		return newNotifications;

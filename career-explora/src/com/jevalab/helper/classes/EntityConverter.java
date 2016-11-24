@@ -11,6 +11,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Link;
 import com.google.appengine.api.datastore.Text;
 import com.jevalab.azure.notifications.Notification;
+import com.jevalab.azure.notifications.messages.MessageN;
 import com.jevalab.azure.people.Following;
 import com.jevalab.azure.people.Friends;
 import com.jevalab.azure.persistence.Article;
@@ -22,6 +23,30 @@ import com.jevalab.azure.persistence.Discussion;
 import com.jevalab.azure.persistence.Unit;
 
 public class EntityConverter {
+	
+	public static MessageN entityToMessageN(Entity e) {
+		MessageN n = new MessageN(e.getKey());
+		n.setDate((Date) e.getProperty("date"));
+		n.setMessage((Text) e.getProperty("message"));
+		n.setRecipient((Key) e.getProperty("recipient"));
+		n.setSender((Key) e.getProperty("sender"));
+		n.setType((String) e.getProperty("type"));
+		n.setViewed((boolean) e.getProperty("viewed"));
+		return n;
+		
+	}
+	
+	public static Entity MessageNToEntity(MessageN n) {
+		Entity e = new Entity(n.getId());
+		e.setIndexedProperty("type", n.getType());
+		e.setIndexedProperty("date", n.getDate());
+		e.setIndexedProperty("recipient", n.getRecipient());
+		e.setUnindexedProperty("message", n.getMessage());
+		e.setIndexedProperty("sender", n.getSender());
+		e.setIndexedProperty("viewed", n.isViewed());
+		
+		return e;
+	}
 	
 	public static Notification entityToNotification(Entity e) {
 		Notification n = new Notification(e.getKey());
@@ -116,6 +141,7 @@ public class EntityConverter {
 		u.setFollowing((List<Key>) e.getProperty("Following"));
 		u.setFriendsId((List<Key>) e.getProperty("Friends"));
 		u.setNewNotifications((List<Key>) e.getProperty("NewNotifications"));
+		u.setNewMessageNotifications((List<Key>) e.getProperty("NewMessageNotification"));
 		return u;
 	}
 	
@@ -160,6 +186,7 @@ public class EntityConverter {
 		e.setUnindexedProperty("Friends", user.getFriendsId());
 		e.setUnindexedProperty("Followers", user.getFollowers());
 		e.setUnindexedProperty("NewNotifications", user.getNewNotifications());
+		e.setUnindexedProperty("NewMessageNotification", user.getNewMessageNotifications());
 		return e;
 	}
 	

@@ -6,6 +6,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>InitMessages</servlet-name>
+		<servlet-class>com.jevalab.azure.notifications.messages.InitMessages</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitMessages</servlet-name>
+		<url-pattern>/azure/messages</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>ProfileGetMessages</servlet-name>
 		<servlet-class>com.jevalab.azure.profile.GetMessages</servlet-class>
 	</servlet>

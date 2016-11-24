@@ -18,6 +18,7 @@ public class MainNav implements Serializable {
 	private Boolean feedback;
 	private Boolean help;
 	private Boolean profile;
+	private Boolean messages;
 
 	private void offFields() {
 		this.home = Boolean.valueOf(false);
@@ -34,7 +35,23 @@ public class MainNav implements Serializable {
 		this.feedback = Boolean.valueOf(false);
 		this.help = Boolean.valueOf(false);
 		this.profile = Boolean.valueOf(false);
+		this.messages = Boolean.valueOf(false);
 	}
+	
+	
+
+	public Boolean getMessages() {
+		return messages;
+	}
+
+
+
+	public void setMessages(Boolean messages) {
+		offFields();
+		this.messages = messages;
+	}
+
+
 
 	public void setNone() {
 		offFields();
