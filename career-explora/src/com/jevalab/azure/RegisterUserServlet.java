@@ -16,9 +16,13 @@ import com.jevalab.helper.classes.PasswordRecovery;
 import com.jevalab.helper.classes.RegistrationForm;
 import com.jevalab.helper.classes.StringConstants;
 import com.jevalab.helper.classes.Util;
-import com.twilio.sdk.TwilioRestException;
 
 public class RegisterUserServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -240645802476995346L;
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -39,21 +43,25 @@ public class RegisterUserServlet extends HttpServlet {
 		if (usingUsername != null) {
 			if (usingUsername) {
 				username = username.toLowerCase();
-				PasswordRecovery pr = new PasswordRecovery(passWordRecoveryNumber, false, false, true, true,false);
-				RegistrationForm rf = new RegistrationForm(firstName, lastName, username, password1, password2, gender, pr);
+				PasswordRecovery pr = new PasswordRecovery(
+						passWordRecoveryNumber, false, false, true, true, false);
+				RegistrationForm rf = new RegistrationForm(firstName, lastName,
+						username, password1, password2, gender, pr);
 				Map<String, String> map = Util.validateRegistrationForm(rf);
-				
+
 				if (map.containsKey(StringConstants.ERROR)) {
-					resp = Util.sendAjaxErrorMessage(map.get(StringConstants.ERROR), resp);
+					resp = Util.sendAjaxErrorMessage(
+							map.get(StringConstants.ERROR), resp);
 					return;
 				} else {
 					AzureUser user = new AzureUser(rf);
 					HttpSession session = req.getSession();
 					synchronized (session) {
 						session.setAttribute(StringConstants.AZURE_USER, user);
-						session.setAttribute(StringConstants.REGISTRATION_FORM, rf);
+						session.setAttribute(StringConstants.REGISTRATION_FORM,
+								rf);
 					}
-					
+
 					resp.setContentType("text/html");
 					resp.getWriter().write("/authorization");
 				}
@@ -63,36 +71,31 @@ public class RegisterUserServlet extends HttpServlet {
 				} else {
 					usingPhone = true;
 				}
-				PasswordRecovery pr = new PasswordRecovery(username, false, usingEmail, usingPhone, true, true);
+				PasswordRecovery pr = new PasswordRecovery(username, false,
+						usingEmail, usingPhone, true, true);
 				RegistrationForm rf = new RegistrationForm(firstName, lastName,
 						username, password1, password2, gender, usingPhone,
-						usingEmail,pr);
-				System.out.println(rf.getConfirmationCode());
+						usingEmail, pr);
+				
 				Map<String, String> map = Util.validateRegistrationForm(rf);
 
 				if (map.containsKey(StringConstants.ERROR)) {
-					resp = Util.sendAjaxErrorMessage(map.get(StringConstants.ERROR), resp);
+					resp = Util.sendAjaxErrorMessage(
+							map.get(StringConstants.ERROR), resp);
 					return;
 				} else {
 					if (usingPhone) {
-						String accSID = getServletContext().getInitParameter(
-								StringConstants.TWILIO_SID);
-						String authToken = getServletContext()
-								.getInitParameter(
-										StringConstants.TWILIO_AUTH_TOKEN);
 
 						try {
-							Util.sendSMS(accSID, authToken, rf);
-						} catch (TwilioRestException e) {
-							e.printStackTrace();
-							
-							resp = Util.sendAjaxErrorMessage("We could not send SMS to your mobile number, try another number or use your email address.", resp);
-							return;
-						} catch (Exception e) {
-							e.printStackTrace();
-							resp = Util.sendAjaxErrorMessage("We could not send SMS to your mobile number, try another number or use your email address.", resp);
+							Util.sendSMS(rf);
+						}catch (Exception e) {
+							resp = Util
+									.sendAjaxErrorMessage(
+											"We could not send SMS to your phone, Add your country code and try again or use your email.",
+											resp);
 							return;
 						}
+						
 
 					} else {
 						String body = StringConstants.CONFIRMATION_EMAIL_BODY
@@ -103,15 +106,24 @@ public class RegisterUserServlet extends HttpServlet {
 									body);
 						} catch (AddressException e) {
 							e.printStackTrace();
-							resp = Util.sendAjaxErrorMessage("We could not send an email your email address, try another email or use your mobile number.", resp);
+							resp = Util
+									.sendAjaxErrorMessage(
+											"We could not send an email your email address, try another email or use your mobile number.",
+											resp);
 							return;
 						} catch (MessagingException e) {
 							e.printStackTrace();
-							resp = Util.sendAjaxErrorMessage("We could not send an email your email address, try another email or use your mobile number.", resp);
+							resp = Util
+									.sendAjaxErrorMessage(
+											"We could not send an email your email address, try another email or use your mobile number.",
+											resp);
 							return;
 						} catch (Exception e) {
 							e.printStackTrace();
-							resp = Util.sendAjaxErrorMessage("We could not send an email your email address, try another email or use your mobile number.", resp);
+							resp = Util
+									.sendAjaxErrorMessage(
+											"We could not send an email your email address, try another email or use your mobile number.",
+											resp);
 							return;
 						}
 					}

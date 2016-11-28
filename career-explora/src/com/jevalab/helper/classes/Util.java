@@ -45,6 +45,8 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.api.images.ImagesService;
@@ -69,6 +71,7 @@ import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
 import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
 import com.jevalab.azure.notifications.FriendRequestNotification;
+import com.jevalab.azure.notifications.LikeNotification;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.MessagePageBean;
 import com.jevalab.azure.notifications.Notification;
@@ -97,11 +100,15 @@ import com.jevalab.azure.profile.UserProfile;
 import com.jevalab.exceptions.IpnException;
 import com.jevalab.exceptions.NonexistentEntityException;
 import com.jevalab.exceptions.RollbackFailureException;
-import com.twilio.sdk.TwilioRestClient;
-import com.twilio.sdk.TwilioRestException;
-import com.twilio.sdk.resource.factory.MessageFactory;
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
+
 
 public class Util {
+	
+	public static final String ACCOUNT_SID = "AC4a2eab44a45e7810609af9afe967e701";
+    public static final String AUTH_TOKEN = "b34db573c97811749a7a53617ea94950";
+    public static final String TWILIO_NUMBER = "+17542278049";
 
 	private final static Logger LOGGER = Logger.getLogger(Util.class.getName());
 	private static final MemcacheService GROUPS = MemcacheServiceFactory
@@ -213,7 +220,7 @@ public class Util {
 				return resp;
 			}
 
-			if (form.getUsername().length() != 11) {
+			if (form.getUsername().length() < 14) {
 				resp.put(StringConstants.ERROR,
 						"Please enter a valid mobile number.");
 				return resp;
@@ -348,7 +355,7 @@ public class Util {
 	}
 
 	public static boolean isNumeric(String str) {
-		boolean x = str.matches("[0-9]+");
+		boolean x = str.matches("(\\+)?\\d+$");
 		return x;
 	}
 
@@ -385,23 +392,9 @@ public class Util {
 
 	}
 
-	public static void sendSMS(String accSID, String authToken,
-			RegistrationForm rf) throws TwilioRestException {
-		TwilioRestClient client = new TwilioRestClient(accSID, authToken);
-
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("Body",
-				StringConstants.CONFIRMATION_EMAIL_BODY
-						+ rf.getConfirmationCode()));
-		params.add(new BasicNameValuePair("To", "+2347051212230"));
-		params.add(new BasicNameValuePair("From", "+13098224750"));
-
-		MessageFactory messageFactory = client.getAccount().getMessageFactory();
-		com.twilio.sdk.resource.instance.Message message = null;
-
-		message = messageFactory.create(params);
-
-		System.out.println(message.getSid());
+	public static void sendSMS(RegistrationForm rf) {
+		String msg ="Hello "+rf.getFirstName()+", Your verification code is "+rf.getConfirmationCode();
+		sendSMS(msg, rf.getUsername());
 	}
 
 	public static String toJsonString(Object arg) {
@@ -708,13 +701,8 @@ public class Util {
 					e.printStackTrace();
 				}
 			} else if (dpr.isMobile()) {
-				try {
-					sendSMS(StringConstants.TWILIO_SID,
-							StringConstants.TWILIO_AUTH_TOKEN, rf);
-				} catch (TwilioRestException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			
+				
 			}
 
 			return true;
@@ -826,9 +814,20 @@ public class Util {
 		return map;
 	}
 
-	public static void sendSMS(String twilioSid, String twilioAuthToken,
-			String code) throws TwilioRestException {
-		TwilioRestClient client = new TwilioRestClient(twilioSid,
+	public static void sendSMS(String msg, String toNumber) {
+		
+		  Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+		  
+		 com.twilio.rest.api.v2010.account.Message
+	                .creator(new PhoneNumber(toNumber),  // to
+	                         new PhoneNumber(TWILIO_NUMBER),  // from
+	                         msg)
+	                .create();
+		  
+	    
+		
+		/*TwilioRestClient client = new TwilioRestClient(twilioSid,
 				twilioAuthToken);
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -842,7 +841,7 @@ public class Util {
 
 		message = messageFactory.create(params);
 
-		System.out.println(message.getSid());
+		System.out.println(message.getSid());*/
 
 	}
 
@@ -1111,9 +1110,9 @@ public class Util {
 	}
 
 	public static Map<String, Object> getPreferredPosts(AzureUser user,
-			int offset) {
+			String cursor) {
 		Map<String, Object> map = GeneralController.getPreferredPosts(user,
-				offset);
+				cursor);
 		List<Discussion> articles = (List<Discussion>) map.get("post");
 		List<DiscussionBean> beans = new ArrayList<>();
 		for (Discussion a : articles) {
@@ -1121,7 +1120,7 @@ public class Util {
 		}
 		Map<String, Object> nMap = new HashMap<>();
 		nMap.put("post", beans);
-		nMap.put("offset", map.get("offset"));
+		nMap.put("cursor", map.get("cursor"));
 		return nMap;
 	}
 
@@ -1133,7 +1132,7 @@ public class Util {
 				AzureUser u = new UserJpaController().findUser(a.getOwner()
 						.getName());
 
-				if (u.getValidity().equals("ADMIN")) {
+				if (u.getValidity() != null && u.getValidity().equals("ADMIN")) {
 					d.setAuthorImage("/images/admin-avatar/tav2.jpg");
 					d.setAuthor("Admin");
 				} else {
@@ -1141,16 +1140,16 @@ public class Util {
 					d.setAuthor(u.getFirstName() + " " + u.getLastName());
 				}
 
-				if (a.getLikers() != null
-						&& a.getLikers().contains(
-								KeyFactory.createKey(
-										AzureUser.class.getSimpleName(),
-										currentUser.getUserID()))) {
-					d.setLiked(true);
+				if (a.getLikers() != null) {
+					if(a.getLikers().contains(
+							currentUser.getKey())) {
+						d.setLiked(true);
+					}
+					
 					d.setLikes(a.getLikers().size());
 				}
 			} else {
-				d.setAuthor("Career Explora");
+				d.setAuthor("Kareer Plus");
 				d.setAuthorImage("/images/male-unknown-user.jpg");
 			}
 
@@ -1441,6 +1440,7 @@ public class Util {
 				+ sd.getOnlyField("lastName").getText());
 		p.setPicture(sd.getOnlyField("picture").getText());
 		p.setWebKey(sd.getId());
+		p.setSchool(sd.getOnlyField("school").getText());
 		Key key = KeyFactory.stringToKey(p.getWebKey());
 		if (u != null && u.getFriendsId() != null
 				&& u.getFriendsId().contains(key)) {
@@ -1605,6 +1605,9 @@ public class Util {
 			case "FriendRequestAcceptedNotification" :
 				nb = new FriendRequestAcceptedNotification(n);
 				break;
+			case "LikeNotification" :
+				nb = new LikeNotification(n);
+				break;
 			}
 			
 			Iterator<NotificationBean> it = list.iterator();
@@ -1765,5 +1768,40 @@ public class Util {
 		//Collections.sort(list);
 		npb.setNotifications(list);
 		return npb;
+	}
+
+	public static List<Key> getSubscribers(String[] classes,
+			String[] departments) {
+		List<Filter> filters = new ArrayList<>();
+		for(String s: classes) {
+			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate("Class", FilterOperator.EQUAL, s.trim()));
+		}
+		for(String s: departments) {
+			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate("AreaOfInterest", FilterOperator.EQUAL, s.trim()));
+		}
+		return GeneralController.getSubscribers(filters);
+	}
+
+	public static void addDiscussionToIndex(Discussion d) {
+		String tags = "";
+		for(String  s : d.getTags()) {
+			tags += s+" ";
+		}
+		tags.trim();
+		Document doc = Document
+				.newBuilder()
+				.setId(KeyFactory.keyToString(d.getId()))
+				.addField(
+						Field.newBuilder().setName("title")
+								.setText(d.getTitle()))
+				.addField(
+						Field.newBuilder().setName("body")
+								.setText(d.getBody().getValue()))
+				.addField(
+						Field.newBuilder().setName("tags")
+								.setText(tags))
+				.build();
+		SearchDocumentIndexService.indexDocument("DISCUSSION", doc);
+		
 	}
 }

@@ -27,16 +27,22 @@
 									<c:out value='${userProfile.grade}' />
 								</h6>
 								<div style="text-align: center;">
-									<label style="color: white; font-size: 9pt">Friends: <c:out
-											value="${userProfile.friends}" /></label> <label
-										style="color: white; font-size: 9pt">Followers: <c:out
-											value="${userProfile.followers}" /></label> <label
-										style="color: white; font-size: 9pt">Following: <c:out
-											value="${userProfile.following}" /></label> <label
-										style="color: white; font-size: 9pt">Collections: <c:out
-											value="${userProfile.collections}" /></label> <label
-										style="color: white; font-size: 9pt">Communities: <c:out
-											value="${userProfile.communities}" /></label>
+									<c:if test="${userProfile.friends > 0}">
+										<label style="color: white; font-size: 9pt">Friends: <c:out
+												value="${userProfile.friends}" /></label>
+									</c:if>
+									<c:if test="${userProfile.followers > 0}">
+										<label style="color: white; font-size: 9pt">Followers:
+											<c:out value="${userProfile.followers}" />
+										</label>
+									</c:if>
+									<c:if test="${userProfile.following > 0}">
+										<label style="color: white; font-size: 9pt">Following:
+											<c:out value="${userProfile.following}" />
+										</label>
+									</c:if>
+									
+									
 								</div>
 							</div>
 						</div>

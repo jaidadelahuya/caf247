@@ -103,10 +103,10 @@ public class EntityConverter {
 		if(e.getProperty("DateOfBirth") instanceof Date) {
 			u.setDateOfBirth((Date) e.getProperty("DateOfBirth"));
 		}
-		u.setEmail((String) e.getProperty("EMail"));
-		u.setFirstName((String) e.getProperty("FirstName"));
-		u.setGender((String) e.getProperty("Gender"));
-		u.setLastName((String) e.getProperty("LastName"));
+		u.setEmail((String) e.getProperty(StringConstants.cEMail));
+		u.setFirstName((String) e.getProperty(StringConstants.cFirstName));
+		u.setGender((String) e.getProperty(StringConstants.cGender));
+		u.setLastName((String) e.getProperty(StringConstants.cLastName));
 		u.setLastPasswordChangeDate((Date) e.getProperty("LastPasswordChangeDate"));
 		u.setLastSeenDate((Date) e.getProperty("LastSeenDate"));
 		u.setLastTestTaken((String) e.getProperty("LastTestTaken"));
@@ -277,6 +277,8 @@ public class EntityConverter {
 		e.setUnindexedProperty("link", d.getLink());
 		e.setUnindexedProperty("likers", d.getLikers());
 		e.setIndexedProperty("parent", d.getParent());
+		e.setIndexedProperty("grade", d.getGrade());
+		e.setIndexedProperty("interest", d.getInterest());
 		return e;
 	}
 	
@@ -298,6 +300,8 @@ public class EntityConverter {
 		d.setLink((String) e.getProperty("link"));
 		d.setLikers((List<Key>) e.getProperty("likers"));
 		d.setParent((Key) e.getProperty("parent"));
+		d.setGrade((List<String>) e.getProperty("grade"));
+		d.setInterest((List<String>) e.getProperty("interest"));
 		return d;
 	}
 	

@@ -13,9 +13,15 @@ import javax.servlet.http.HttpSession;
 import com.jevalab.helper.classes.RegistrationForm;
 import com.jevalab.helper.classes.StringConstants;
 import com.jevalab.helper.classes.Util;
-import com.twilio.sdk.TwilioRestException;
+
 
 public class ResendCodeServlet extends HttpServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6404633083135806312L;
+	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -37,18 +43,9 @@ public class ResendCodeServlet extends HttpServlet {
 				resp.setContentType("text/html");
 
 				if (rf.isUseMobile()) {
-					String accSID = getServletContext().getInitParameter(
-							StringConstants.TWILIO_SID);
-					String authToken = getServletContext().getInitParameter(
-							StringConstants.TWILIO_AUTH_TOKEN);
-					try {
-						Util.sendSMS(accSID, authToken, rf);
-					} catch (TwilioRestException e) {
-						e.printStackTrace();
-						resp.sendError(
-								HttpServletResponse.SC_EXPECTATION_FAILED,
-								"We could not send SMS to your mobile number, try another number or use your email address.");
-					}
+					
+						Util.sendSMS(rf);
+					
 				} else if (rf.isUseEmail()) {
 					String body = StringConstants.CONFIRMATION_EMAIL_BODY
 							+ rf.getConfirmationCode();

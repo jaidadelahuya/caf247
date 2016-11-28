@@ -11,7 +11,7 @@ public class WelcomePageBean implements Serializable {
 	 */
 	private static final long serialVersionUID = -4377293919591287101L;
 	
-	private String firstName, lastName, profileImg, backgroundImg, school, sClass;
+	private String firstName, lastName, profileImg, backgroundImg, school, sClass, cursor;
 	private Integer offset,newNotification, newMessageNotification;
 	private List<DiscussionBean> posts;
 	@Override
@@ -23,6 +23,18 @@ public class WelcomePageBean implements Serializable {
 	}
 	
 	
+
+	public String getCursor() {
+		return cursor;
+	}
+
+
+
+	public void setCursor(String cursor) {
+		this.cursor = cursor;
+	}
+
+
 
 	public Integer getNewMessageNotification() {
 		return newMessageNotification;

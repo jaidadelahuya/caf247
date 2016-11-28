@@ -71,12 +71,6 @@ public class UserJpaController implements Serializable {
 
 	public AzureUser create(AzureUser user, PasswordRecovery pr) {
 
-		return create(user, pr,null);
-		
-	}
-	
-	public AzureUser create(AzureUser user, PasswordRecovery pr, UserPicture up) {
-		
 		Entity e = EntityConverter.userToEntity(user);
 		Entity e1 = null;
 		Entity e2 = null;
@@ -84,9 +78,7 @@ public class UserJpaController implements Serializable {
 			e1 = LoginHelper.createEntityFromPasswordRecovery(pr);
 		}
 		
-		if(up!=null) {
-			e2=LoginHelper.createEntityFromUserPicture(up);
-		}
+		
 		txn = ds.beginTransaction(TransactionOptions.Builder.withXG(true));
 		ds.put(txn, e);
 		if (e1 != null) {
@@ -97,40 +89,12 @@ public class UserJpaController implements Serializable {
 		}
 		txn.commit();
 		return user;
-
+		
 	}
+	
+	
 
-	/*public void edit(AzureUser user) throws NonexistentEntityException,
-			RollbackFailureException, Exception {
-		EntityManager em = null;
-		try {
-			txn = ds.beginTransaction();
-			em = getEntityManager();
-			user = em.merge(user);
-			txn.commit();
-		} catch (Exception ex) {
-			try {
-				txn.rollback();
-			} catch (Exception re) {
-				throw new RollbackFailureException(
-						"An error occurred attempting to roll back the transaction.",
-						re);
-			}
-			String msg = ex.getLocalizedMessage();
-			if (msg == null || msg.length() == 0) {
-				String id = user.getUserID();
-				if (findUser(id) == null) {
-					throw new NonexistentEntityException("The user with key "
-							+ id + " no longer exists.");
-				}
-			}
-			throw ex;
-		} finally {
-			if (em != null) {
-				em.close();
-			}
-		}
-	}*/
+	
 
 	public void destroy(String id) throws NonexistentEntityException,
 			RollbackFailureException, Exception {

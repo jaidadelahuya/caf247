@@ -26,9 +26,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
-<body>
+<body class="blue lighten-5">
+	<%@ include file="/pages/partials/admin-nav.html"%>
 	<div class="container"
-		style="width: 60%; border: 1px solid gray; padding: 3%; margin-top: 4%;">
+		style="width: 60%; border: 1px solid #3b5998; padding: 3%; margin-top: 4%; background-color: white">
 		<h4 style="text-align: center;">Add Community/Collection</h4>
 		<div class="row">
 			<form class="col s12"
@@ -114,5 +115,6 @@
 	<script src="/js/jquery-1.11.2.min.js"></script>
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/materialize-tags.min.js"></script>
+	<script src="/js/admin.js"></script>
 </body>
 </html>

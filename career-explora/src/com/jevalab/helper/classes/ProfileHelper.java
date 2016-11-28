@@ -48,6 +48,7 @@ public class ProfileHelper {
 		profile.setCommunities((user.getCommunities()==null)?0:user.getCommunities().size());
 		profile.setFollowers((user.getFollowers()==null)?0:user.getFollowers().size());
 		profile.setFollowing((user.getFollowing()==null)?0:user.getFollowing().size());
+		profile.setFriends((user.getFriendsId()==null)?0:user.getFriendsId().size());
 		profile.setGrade(user.getsClass());
 		profile.setHobbies((user.getHobbies()==null)?null:user.getHobbies().getValue());
 		List<String> interest = Util.toInterestValues(user.getAreaOfInterest());

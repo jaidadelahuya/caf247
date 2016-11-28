@@ -65,6 +65,17 @@ public class SaveDiscussion extends HttpServlet {
 			String classes[] = req.getParameterValues("class");
 			String subject = req.getParameter("subject");
 			String departments[] = req.getParameterValues("department");
+			
+			if (!Util.notNull(departments)) {
+				synchronized (session) {
+					session.removeAttribute("formSuccess");
+					session.setAttribute("formError",
+							"Select at least one department");
+				}
+				resp.sendRedirect(resp
+						.encodeRedirectURL("/ca/admin/discussion/form/new"));
+				return;
+			}
 
 			if (!Util.notNull(tags)) {
 				synchronized (session) {
@@ -144,15 +155,17 @@ public class SaveDiscussion extends HttpServlet {
 			tagList.add(subject);
 			tagList.addAll(Arrays.asList(tgs));
 			tagList.addAll(Arrays.asList(classes));
-			tagList.addAll(Arrays.asList(departments));
+			tagList.addAll(Util.toInterestValues(Arrays.asList(departments)));
 			d.setTags(tagList);
+			d.setGrade(Arrays.asList(classes));
+			d.setInterest(Arrays.asList(departments));
 			d.setLink(link);
 			d.setBody(new Text(body));
 			d.setFormat(format);
 			d.setImage(blobKey);
 			d.setOwner(KeyFactory.createKey(AzureUser.class.getSimpleName(),
 					user.getUserID()));
-
+			d.setSubscribers(Util.getSubscribers(classes, departments));
 			Key k1 = KeyFactory.stringToKey(group);
 			Object o = Util.getGroupFromCache(k1);
 			Entity e = null;
@@ -205,6 +218,8 @@ public class SaveDiscussion extends HttpServlet {
 					}
 
 					GeneralController.createWithCrossGroup(e, e1);
+					
+					Util.addDiscussionToIndex(d);
 
 					synchronized (session) {
 						session.removeAttribute("formError");

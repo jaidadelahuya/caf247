@@ -37,9 +37,8 @@ public class GetMoreDiscussions extends HttpServlet {
 		if ((o != null) && (o1 != null)) {
 			WelcomePageBean wpb = (WelcomePageBean) o;
 			AzureUser u = (AzureUser) o1;
-			int offset = wpb.getOffset().intValue();
-			Map<String,Object> map = Util.getPreferredPosts(u, offset);
-			wpb.setOffset((Integer) map.get("offset"));
+			Map<String,Object> map = Util.getPreferredPosts(u, wpb.getCursor());
+			wpb.setCursor((String) map.get("cursor"));
 			List<DiscussionBean> list = (List<DiscussionBean>) map.get("post");
 			wpb.getPosts().addAll(list);
 			synchronized (session) {

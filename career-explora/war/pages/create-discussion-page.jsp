@@ -26,9 +26,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
-<body>
+<body class="blue lighten-5">
+<%@ include file="/pages/partials/admin-nav.html"%>
 	<div class="container"
-		style="width: 60%; border: 1px solid gray; padding: 3%; margin-top: 4%;">
+		style="width: 60%; border: 1px solid gray; padding: 3%; margin-top: 4%;background-color: white;">
 		<h4 style="text-align: center;">Add Discussion</h4>
 		<div class="row">
 			<form class="col s12"
@@ -95,9 +96,9 @@
 					<div class="input-field col s6">
 						<select name="department"  multiple>
 							<option value="" disabled selected>Select Department</option>
-							<option>Art</option>
-							<option>Commercial</option>
-							<option>Science</option>
+							<option value="1">Art</option>
+							<option value="2">Commercial</option>
+							<option value="3">Science</option>
 						</select>
 					</div>
 				</div>
@@ -293,5 +294,6 @@
 											});
 						});
 	</script>
+	<script src="/js/admin.js"></script>
 </body>
 </html>

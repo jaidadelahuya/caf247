@@ -2,7 +2,6 @@ package com.jevalab.azure.people;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.text.WordUtils;
 
 public class Person implements Serializable {
 
@@ -11,7 +10,7 @@ public class Person implements Serializable {
 	 */
 	private static final long serialVersionUID = 7338489934689838762L;
 	
-	private String webKey, picture, name, grade, interest;
+	private String webKey, picture, name, grade, interest, school;
 	private boolean friend, following;
 
 	
@@ -23,6 +22,18 @@ public class Person implements Serializable {
 		return "Person [webKey=" + webKey + ", picture=" + picture + ", name="
 				+ name + ", grade=" + grade + ", interest=" + interest
 				+ ", friend=" + friend + ", following=" + following + "]";
+	}
+
+
+
+	public String getSchool() {
+		return school;
+	}
+
+
+
+	public void setSchool(String school) {
+		this.school = school;
 	}
 
 
@@ -72,7 +83,7 @@ public class Person implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = WordUtils.capitalize(name);
+		this.name =name;
 	}
 
 	public String getGrade() {

@@ -16,7 +16,7 @@ import com.jevalab.exceptions.InvalidLoginException;
 import com.jevalab.helper.classes.RegistrationForm;
 import com.jevalab.helper.classes.StringConstants;
 import com.jevalab.helper.classes.Util;
-import com.twilio.sdk.TwilioRestException;
+
 
 public class VerifyPasswordServlet extends HttpServlet {
 
@@ -61,13 +61,8 @@ public class VerifyPasswordServlet extends HttpServlet {
 					} 
 				} else if (Util.isNumeric(id)) {
 					try {
-						String accSID = getServletContext().getInitParameter(
-								StringConstants.TWILIO_SID);
-						String authToken = getServletContext()
-								.getInitParameter(
-										StringConstants.TWILIO_AUTH_TOKEN);
-						Util.sendSMS(accSID,
-								authToken, code);
+						
+						Util.sendSMS(StringConstants.CONFIRMATION_EMAIL_BODY + code, id);
 						synchronized (session) {
 							session.setAttribute(cc, code);
 						}

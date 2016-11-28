@@ -13,9 +13,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
-<body  class="indigo accent-1 " >
-	
-		<div class="row valign-wrapper">
+<body class="blue lighten-5">
+	<%@ include file="/pages/partials/admin-nav.html"%>
+	<div class="container">
+		<div class="row">
 			<div class="col s6 offset-s3">
 				<div class="card-panel">
 					<c:choose>
@@ -73,10 +74,11 @@
 				</div>
 			</div>
 		</div>
-	
 
+	</div>
 
 	<script src="/js/jquery-1.11.2.min.js"></script>
 	<script src="/js/materialize.min.js"></script>
+	<script src="/js/admin.js"></script>
 </body>
 </html>

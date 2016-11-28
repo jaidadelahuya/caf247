@@ -2,6 +2,8 @@
 $(document)
 		.ready(
 				function() {
+					
+					
 					$("input").focus(function() {
 						removeError();
 					});
@@ -20,11 +22,16 @@ $(document)
 					var userid = $("#userid");
 					$("#use-phone").click(function() {
 						userid.val("");
-						userid.prop('placeholder', 'Mobile number');
+						userid.prop("type","tel");
+						userid.prop('placeholder', 'e.g +2347051212230');
 						regInputOk(userid);
+						
+
 					});
 					$("#use-email").click(function() {
+						
 						userid.val("");
+						userid.prop("type","email");
 						userid.prop('placeholder', 'E-Mail');
 						regInputOk(userid);
 					});

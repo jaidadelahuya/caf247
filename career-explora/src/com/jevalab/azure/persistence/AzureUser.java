@@ -179,44 +179,13 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 	
 	
 
-	public List<Key> getNewMessageNotifications() {
-		return newMessageNotifications;
+	
+	public boolean isTakenTalentTest() {
+		return takenTalentTest;
 	}
 
-	public void setNewMessageNotifications(List<Key> newMessageNotifications) {
-		this.newMessageNotifications = newMessageNotifications;
-	}
-
-	public List<Key> getNewNotifications() {
-		return newNotifications;
-	}
-
-	public void setNewNotifications(List<Key> newNotifications) {
-		this.newNotifications = newNotifications;
-	}
-
-	public List<Key> getFollowers() {
-		return followers;
-	}
-
-	public void setFollowers(List<Key> followers) {
-		this.followers = followers;
-	}
-
-	public List<Key> getFollowing() {
-		return following;
-	}
-
-	public void setFollowing(List<Key> following) {
-		this.following = following;
-	}
-
-	public List<Key> getCollections() {
-		return collections;
-	}
-
-	public void setCollections(List<Key> collections) {
-		this.collections = collections;
+	public void setTakenTalentTest(boolean takenTalentTest) {
+		this.takenTalentTest = takenTalentTest;
 	}
 
 	public PropertyChangeSupport getPcs() {
@@ -227,137 +196,108 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 		this.pcs = pcs;
 	}
 
-	public Text getHobbies() {
-		return hobbies;
+	public String getUserID() {
+		return userID;
 	}
 
-	public void setHobbies(Text hobbies) {
-		this.hobbies = hobbies;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 
-	
-
-	public Text getAbout() {
-		return about;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setAbout(Text about) {
-		this.about = about;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getsClass() {
-		return sClass;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setsClass(String sClass) {
-		this.sClass = sClass;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public List<String> getAreaOfInterest() {
-		return areaOfInterest;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public void setAreaOfInterest(List<String> areaOfInterest) {
-		this.areaOfInterest = areaOfInterest;
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
-	public List<Key> getCommunities() {
-		return communities;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setCommunities(List<Key> communities) {
-		this.communities = communities;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
-	public Set<String> getUserPicturesIds() {
-		return UserPicturesIds;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserPicturesIds(Set<String> userPicturesIds) {
-		UserPicturesIds = userPicturesIds;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public List<String> getOldPasswords() {
-		return oldPasswords;
+	public String getState() {
+		return state;
 	}
 
-	public void setOldPasswords(List<String> oldPasswords) {
-		this.oldPasswords = oldPasswords;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public Date getLastPasswordChangeDate() {
-		return lastPasswordChangeDate;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setLastPasswordChangeDate(Date lastPasswordChangeDate) {
-		this.lastPasswordChangeDate = lastPasswordChangeDate;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
-	public Set<String> getPasswordRecoveryIds() {
-		return passwordRecoveryIds;
+	public String getSchool() {
+		return school;
 	}
 
-	public void setPasswordRecoveryIds(Set<String> passwordRecoveryIds) {
-		this.passwordRecoveryIds = passwordRecoveryIds;
+	public void setSchool(String school) {
+		this.school = school;
 	}
 
-	public String getMobile() {
-		return mobile;
+	public String getLastTestTaken() {
+		return lastTestTaken;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setLastTestTaken(String lastTestTaken) {
+		this.lastTestTaken = lastTestTaken;
 	}
 
-	public String getUsername() {
-		return username;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setUsername(String username) {
-		if(username!=null)
-		this.username = username.toLowerCase();
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
-	public boolean isFromAuthorization() {
-		return fromAuthorization;
+	public Date getLastSeenDate() {
+		return lastSeenDate;
 	}
 
-	public void setFromAuthorization(boolean fromAuthorization) {
-		this.fromAuthorization = fromAuthorization;
+	public void setLastSeenDate(Date lastSeenDate) {
+		this.lastSeenDate = lastSeenDate;
 	}
 
-	public boolean isTakenTalentTest() {
-		return takenTalentTest;
+	public boolean isAuthorized() {
+		return authorized;
 	}
 
-	public void setTakenTalentTest(boolean takenTalentTest) {
-		this.takenTalentTest = takenTalentTest;
-	}
-
-
-
-	public boolean isNewUser() {
-		return newUser;
-	}
-
-	public void setNewUser(boolean newUser) {
-		this.newUser = newUser;
-	}
-
-	public String getCover() {
-		return cover;
-	}
-
-	public void setCover(String cover) {
-		this.cover = cover;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
+	public void setAuthorized(boolean authorized) {
+		this.authorized = authorized;
 	}
 
 	public Date getSubscriptionDate() {
@@ -376,152 +316,36 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 		this.validity = validity;
 	}
 
-
-	public boolean isAuthorized() {
-		return authorized;
+	public String getPicture() {
+		return picture;
 	}
 
-	public void setAuthorized(boolean authorized) {
-		this.authorized = authorized;
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
-	public Date getDateOfBirth() {
-		return dateOfBirth;
+	public String getCover() {
+		return cover;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
-		Date oldDateOfBirth = this.dateOfBirth;
-		this.dateOfBirth = dateOfBirth;
-		pcs.firePropertyChange("dateOfBirth", oldDateOfBirth, dateOfBirth);
+	public void setCover(String cover) {
+		this.cover = cover;
 	}
 
-	public String getLastTestTaken() {
-		return lastTestTaken;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLastTestTaken(String lastTestTaken) {
-		String oldLastTestTaken = this.lastTestTaken;
-		this.lastTestTaken = lastTestTaken;
-		pcs.firePropertyChange("lastTestTaken", oldLastTestTaken, lastTestTaken);
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public Date getLastSeenDate() {
-		return lastSeenDate;
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setLastSeenDate(Date lastSeenDate) {
-		this.lastSeenDate = lastSeenDate;
-	}
-
-
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		String oldState = this.state;
-		if (state != null) {
-			this.state = state.toUpperCase();
-			pcs.firePropertyChange("state", oldState, state);
-		}
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		String oldCountry = this.country;
-		if (country != null) {
-			this.country = country.toUpperCase();
-			pcs.firePropertyChange("country", oldCountry, country);
-		}
-	}
-
-	public String getSchool() {
-		return school;
-	}
-
-	public void setSchool(String school) {
-		String oldSchool = this.school;
-		if (school != null) {
-			this.school = school.toUpperCase();
-			pcs.firePropertyChange("school", oldSchool, school);
-		}
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		String oldEmail = this.email;
-		this.email = email.toLowerCase();
-		pcs.firePropertyChange("email", oldEmail, email);
-	}
-
-	public AzureUser() {
-		this.userID = LoginHelper.getNextId();
-	}
-	
-	public AzureUser(Key key) {
-		this.userID = key.getName();
-	}
-
-	public String getUserID() {
-		return userID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public void setMiddleName(String middleName) {
-		String oldMiddleName = this.middleName;
-		if (middleName != null) {
-			this.middleName = middleName.toUpperCase();
-			pcs.firePropertyChange("middleName", oldMiddleName, middleName);
-		}
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		String oldGender = this.gender;
-		this.gender = gender;
-		pcs.firePropertyChange("gender", oldGender, gender);
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		String oldFirstName = this.firstName;
-		if (country != null) {
-			this.firstName = firstName.toUpperCase();
-			pcs.firePropertyChange("firstName", oldFirstName, firstName);
-		}
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		String oldLastName = this.lastName;
-		if (country != null) {
-			this.lastName = lastName.toUpperCase();
-			pcs.firePropertyChange("lastName", oldLastName, lastName);
-		}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	public String getPassword() {
@@ -531,8 +355,145 @@ public class AzureUser implements Serializable, PropertyChangeListener {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public List<String> getOldPasswords() {
+		return oldPasswords;
+	}
+
+	public void setOldPasswords(List<String> oldPasswords) {
+		this.oldPasswords = oldPasswords;
+	}
+
+	public List<Key> getCommunities() {
+		return communities;
+	}
+
+	public void setCommunities(List<Key> communities) {
+		this.communities = communities;
+	}
+
+	public List<String> getAreaOfInterest() {
+		return areaOfInterest;
+	}
+
+	public void setAreaOfInterest(List<String> areaOfInterest) {
+		this.areaOfInterest = areaOfInterest;
+	}
+
+	public Date getLastPasswordChangeDate() {
+		return lastPasswordChangeDate;
+	}
+
+	public void setLastPasswordChangeDate(Date lastPasswordChangeDate) {
+		this.lastPasswordChangeDate = lastPasswordChangeDate;
+	}
+
+	public Set<String> getPasswordRecoveryIds() {
+		return passwordRecoveryIds;
+	}
+
+	public void setPasswordRecoveryIds(Set<String> passwordRecoveryIds) {
+		this.passwordRecoveryIds = passwordRecoveryIds;
+	}
+
+	public Set<String> getUserPicturesIds() {
+		return UserPicturesIds;
+	}
+
+	public void setUserPicturesIds(Set<String> userPicturesIds) {
+		UserPicturesIds = userPicturesIds;
+	}
+
+	public List<Key> getNewNotifications() {
+		return newNotifications;
+	}
+
+	public void setNewNotifications(List<Key> newNotifications) {
+		this.newNotifications = newNotifications;
+	}
+
+	public List<Key> getNewMessageNotifications() {
+		return newMessageNotifications;
+	}
+
+	public void setNewMessageNotifications(List<Key> newMessageNotifications) {
+		this.newMessageNotifications = newMessageNotifications;
+	}
+
+	public String getsClass() {
+		return sClass;
+	}
+
+	public void setsClass(String sClass) {
+		this.sClass = sClass;
+	}
+
+	public boolean isNewUser() {
+		return newUser;
+	}
+
+	public void setNewUser(boolean newUser) {
+		this.newUser = newUser;
+	}
+
+	public boolean isFromAuthorization() {
+		return fromAuthorization;
+	}
+
+	public void setFromAuthorization(boolean fromAuthorization) {
+		this.fromAuthorization = fromAuthorization;
+	}
+
+	public Text getAbout() {
+		return about;
+	}
+
+	public void setAbout(Text about) {
+		this.about = about;
+	}
+
+	public Text getHobbies() {
+		return hobbies;
+	}
+
+	public void setHobbies(Text hobbies) {
+		this.hobbies = hobbies;
+	}
+
+	public List<Key> getCollections() {
+		return collections;
+	}
+
+	public void setCollections(List<Key> collections) {
+		this.collections = collections;
+	}
+
+	public List<Key> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<Key> followers) {
+		this.followers = followers;
+	}
+
+	public List<Key> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<Key> following) {
+		this.following = following;
+	}
+
+	public AzureUser() {
+		this.userID = LoginHelper.getNextId();
+	}
 	
-	
+	public AzureUser(Key key) {
+		this.userID = key.getName();
+		
+	}
+
+		
 
 	public Key getKey() {
 		return KeyFactory.createKey(AzureUser.class.getSimpleName(), this.userID);

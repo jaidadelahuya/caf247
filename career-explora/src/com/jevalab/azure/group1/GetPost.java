@@ -2,6 +2,7 @@
 package com.jevalab.azure.group1;
 
 import com.google.appengine.api.datastore.KeyFactory;
+import com.jevalab.azure.notifications.NotificationPageBean;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.GeneralController;
 import com.jevalab.helper.classes.DiscussionBean;
@@ -9,8 +10,10 @@ import com.jevalab.helper.classes.EntityConverter;
 import com.jevalab.helper.classes.MainNav;
 import com.jevalab.helper.classes.Util;
 import com.jevalab.helper.classes.WelcomePageBean;
+
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +37,8 @@ public class GetPost extends HttpServlet {
 				o2 = session.getAttribute("mainNav");
 				if (bean.equalsIgnoreCase("welcome")) {
 					o = session.getAttribute("welcomePage");
+				}else if(bean.equalsIgnoreCase("notification")) {
+					o = session.getAttribute("notificationPage");
 				}
 
 			}
@@ -43,18 +48,24 @@ public class GetPost extends HttpServlet {
 				mn.setNone();
 				AzureUser u = (AzureUser) o1;
 				List<DiscussionBean> list = null;
+				DiscussionBean d = null;
 				if (o instanceof WelcomePageBean) {
 					WelcomePageBean wpb = (WelcomePageBean) o;
 					list = wpb.getPosts();
-				}
-				DiscussionBean d = null;
-				for (DiscussionBean db : list) {
-					if (db.getWebkey().equals(webkey)) {
-						db = d;
-						break;
+					
+					for (DiscussionBean db : list) {
+						if (db.getWebkey().equals(webkey)) {
+							db = d;
+							break;
+						}
+					}
+				} else if(o instanceof NotificationPageBean) {
+					String nkey = req.getParameter("notification-key");
+					if(Util.notNull(nkey)) {
+						GeneralController.delete(KeyFactory.stringToKey(nkey));
 					}
 				}
-
+				
 				if (d == null) {
 					d = Util.toDiscussionBean(
 							EntityConverter

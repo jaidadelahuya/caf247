@@ -13,10 +13,11 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
-<body class="indigo accent-1 valign-wrapper">
+<body class="valign-wrapper" style="background-color: #3b5998">
 	<div class="container">
+		<h3 style="color: white; text-align: center;">Kareer Plus Admin</h3>
 		<div class="row">
-			<div class="col s4 offset-s4">
+			<div class="col s6 offset-s3">
 				<div class="card-panel">
 					<c:choose>
 						<c:when test="${ not empty formError}">
@@ -32,7 +33,7 @@
 					</c:choose>
 					<div class="row">
 						<form class="col s12" method="post"
-							action="<c:url value='/ca/admin/user/login' />">
+							action="<c:url value='/kp-admin/user/login' />">
 							
 							<div class="row">
 								<div class="input-field col s12">

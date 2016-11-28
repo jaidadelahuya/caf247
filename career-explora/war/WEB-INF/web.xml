@@ -439,6 +439,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 	
+	<filter>
+		<filter-name>AdminFilter</filter-name>
+		<filter-class>com.jevalab.azure.admin.AdminFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AdminFilter</filter-name>
+		<url-pattern>/ca/admin/*</url-pattern>
+	</filter-mapping>
+	
+	
+	
 	<servlet>
 		<servlet-name>_ah_sessioncleanup</servlet-name>
 		<servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
@@ -457,7 +468,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AdminAuthServlet</servlet-name>
-		<url-pattern>/ca/admin/user/login</url-pattern>
+		<url-pattern>/kp-admin/user/login</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminLogout</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminLogout</servlet-name>
+		<url-pattern>/kp-admin/logout</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -475,7 +495,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AdminAuth</servlet-name>
-		<url-pattern>/ca/admin/login</url-pattern>
+		<url-pattern>/kp-admin</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
@@ -512,6 +532,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CreateDiscussionPage</servlet-name>
 		<url-pattern>/ca/admin/discussion/form/new</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitCreateDiscussionPage</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitAddDiscussion</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitCreateDiscussionPage</servlet-name>
+		<url-pattern>/ca/admin/discussion/i/form/new</url-pattern>
+	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>CreateUnitPage</servlet-name>
 		<jsp-file>/pages/add-unit.jsp</jsp-file>
@@ -527,6 +557,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>AddCommunityPage</servlet-name>
 		<url-pattern>/ca/admin/community/form/new</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitAddCommunityPage</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitAddCommunity</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitAddCommunityPage</servlet-name>
+		<url-pattern>/ca/admin/community/i/form/new</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -989,14 +1028,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	
 
-	<servlet>
-		<servlet-name>InsertSequenceServlet</servlet-name>
-		<servlet-class>com.jevalab.azure.InsertSequenceServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>InsertSequenceServlet</servlet-name>
-		<url-pattern>/insertsequence</url-pattern>
-	</servlet-mapping>
+	
 
 	<servlet>
 		<servlet-name>LoginHandlerServlet</servlet-name>
@@ -1231,6 +1263,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<context-param>
 		<param-name>TwilioAuthToken</param-name>
 		<param-value>b34db573c97811749a7a53617ea94950</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>TwilioNumber</param-name>
+		<param-value>+17542278049</param-value>
 	</context-param>
 
 	<listener>

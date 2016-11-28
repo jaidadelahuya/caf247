@@ -7,6 +7,7 @@
 <title>Career Explora</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
+
 <link rel="stylesheet" href="/style/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/style/waitMe.css">
 <link rel="stylesheet" type="text/css" href="/style/dashboard.css">
@@ -79,7 +80,8 @@
 						<tr>
 							<td class="login-text"><input type="checkbox" /> Keep me
 								logged in</td>
-							<td class="login-text"><a style="color: white; text-decoration: none;"
+							<td class="login-text"><a
+								style="color: white; text-decoration: none;"
 								href="<c:url value='/password-recovery'/>">Forgot your
 									password?</a></td>
 							<td></td>
@@ -107,20 +109,20 @@
 										id="last-name" placeholder="Last Name" name="last-name" />
 								</div>
 							</div>
-							
-								<div class="form-group col-sm-6">
-									<input type="radio" name="username-mode" value="phone"
-										id="use-phone" /> Use mobile number
-								</div>
-								<div class="form-group col-sm-6">
-									<input type="radio" name="username-mode" value="email"
-										id="use-email" /> Use email
-								</div> 
+
+							<div class="form-group col-sm-6">
+								<input type="radio" name="username-mode" value="phone"
+									id="use-phone" /> Use mobile number
+							</div>
+							<div class="form-group col-sm-6">
+								<input type="radio" name="username-mode" value="email"
+									id="use-email" /> Use email
+							</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-sm-12">
-							<input class="form-control sign-up-input" id="userid"
-								name="userid" placeholder="Mobile Number" style="width: 100%;" />
+							<input class="form-control sign-up-input" id="userid"  
+								name="userid" placeholder="e.g +2347051212230" style="width: 100%;" />
 						</div>
 					</div>
 					<div class="row">
@@ -250,18 +252,18 @@
 					<div class="row">
 
 						<div class="form-group col-sm-6">
-									<input type="radio" name="username-mode" value="phone"
-										id="use-phone" checked="checked" /> Use mobile number
-								</div>
-								<div class="form-group col-sm-6">
-									<input type="radio" name="username-mode" value="email"
-										id="use-email" /> Use email
-								</div>  
+							<input type="radio" name="username-mode" value="phone"
+								id="use-phone" checked="checked" /> Use mobile number
+						</div>
+						<div class="form-group col-sm-6">
+							<input type="radio" name="username-mode" value="email"
+								id="use-email" /> Use email
+						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-sm-12">
-							<input class="form-control sign-up-input" id="userid"
-								name="userid" placeholder="Mobile Number" style="width: 100%;" />
+							<input class="form-control sign-up-input" id="userid" type="tel" placeholder="e.g +2347051212230"
+								name="userid" style="width: 100%;" />
 						</div>
 					</div>
 					<div class="row">
@@ -331,32 +333,42 @@
 						<c:choose>
 							<c:when test="${usingMobile}">
 								<div class="form-group col-sm-6">
-											<input type="radio" name="username-mode" value="phone"
-												id="use-phone" checked="checked" /> Use mobile number
-										</div>
-										<div class="form-group col-sm-6">
-											<input type="radio" name="username-mode" value="email"
-												id="use-email" /> Use email
-										</div>  
+									<input type="radio" name="username-mode" value="phone"
+										id="use-phone" checked="checked" /> Use mobile number
+								</div>
+								<div class="form-group col-sm-6">
+									<input type="radio" name="username-mode" value="email"
+										id="use-email" /> Use email
+								</div>
 							</c:when>
 							<c:when test="${usingEmail}">
 								<div class="form-group col-sm-6">
-											<input type="radio" name="username-mode" value="phone"
-												id="use-phone" /> Use mobile number
-										</div>
-										<div class="form-group col-sm-6">
-											<input type="radio" name="username-mode" value="email"
-												id="use-email" checked="checked" /> Use email
-										</div> 
+									<input type="radio" name="username-mode" value="phone"
+										id="use-phone" /> Use mobile number
+								</div>
+								<div class="form-group col-sm-6">
+									<input type="radio" name="username-mode" value="email"
+										id="use-email" checked="checked" /> Use email
+								</div>
 							</c:when>
 						</c:choose>
 
 					</div>
 					<div class="row">
 						<div class="form-group col-sm-12">
-							<input class="form-control sign-up-input" id="userid"
-								name="userid" placeholder="Mobile Number" style="width: 100%;"
-								value="${registrationForm.username}" />
+							<c:choose>
+								<c:when test="${usingMobile}">
+									<input class="form-control sign-up-input" id="userid" type="tel"
+										name="userid" placeholder="" style="width: 100%;"
+										value="${registrationForm.username}" />
+								</c:when>
+								<c:otherwise>
+									<input class="form-control sign-up-input" id="userid" type="email"
+										name="userid" placeholder="Email" style="width: 100%;"
+										value="${registrationForm.username}" />
+								</c:otherwise>
+							</c:choose>
+
 						</div>
 					</div>
 					<script type="text/javascript">
@@ -421,6 +433,7 @@
 	<script type="text/javascript" src="/js/validators.js"></script>
 	<script type="text/javascript" src="/js/index.js"></script>
 	<script type="text/javascript" src="/js/waitMe.js"></script>
+	
 
 
 </body>

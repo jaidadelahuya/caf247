@@ -1,10 +1,23 @@
-/*** Eclipse Class Decompiler plugin, copyright (c) 2016 Chen Chao (cnfree2000@hotmail.com) ***/
 package com.jevalab.azure.group1;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Text;
 import com.google.gson.Gson;
+import com.jevalab.azure.notifications.LikeNotification;
+import com.jevalab.azure.notifications.Notification;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.Discussion;
 import com.jevalab.azure.persistence.GeneralController;
@@ -12,14 +25,6 @@ import com.jevalab.helper.classes.DiscussionBean;
 import com.jevalab.helper.classes.EntityConverter;
 import com.jevalab.helper.classes.Util;
 import com.jevalab.helper.classes.WelcomePageBean;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class AddLike extends HttpServlet {
 	private static final long serialVersionUID = -5985685432127198226L;
@@ -47,8 +52,7 @@ public class AddLike extends HttpServlet {
 				if (likers == null) {
 					likers = new ArrayList<>();
 				}
-				Key userKey = KeyFactory.createKey(
-						AzureUser.class.getSimpleName(), u.getUserID());
+				Key userKey = u.getKey();
 
 				if (likers.contains(userKey))
 					likers.remove(userKey);
@@ -57,8 +61,6 @@ public class AddLike extends HttpServlet {
 				}
 
 				d.setLikers(likers);
-				GeneralController.create(new Entity[] { EntityConverter
-						.discussionToEntity(d) });
 
 				WelcomePageBean wpb = (WelcomePageBean) o1;
 				List<DiscussionBean> ds = wpb.getPosts();
@@ -81,6 +83,27 @@ public class AddLike extends HttpServlet {
 				synchronized (session) {
 					session.setAttribute("welcomePage", wpb);
 				}
+
+				Notification not = new Notification();
+				not.setDate(new Date());
+				not.setMessage(new Text(KeyFactory.keyToString(d.getId())));
+				not.setRecipient(d.getOwner());
+				not.setSender(u.getKey());
+				not.setType(LikeNotification.class.getSimpleName());
+
+				AzureUser au = EntityConverter.entityToUser(GeneralController
+						.findByKey(d.getOwner()));
+				List<Key> keys = au.getNewNotifications();
+				if (keys == null) {
+					keys = new ArrayList<>();
+				}
+				keys.add(not.getId());
+				au.setNewNotifications(keys);
+
+				GeneralController.createWithCrossGroup(new Entity[] {
+						EntityConverter.discussionToEntity(d),
+						EntityConverter.userToEntity(au),
+						EntityConverter.notificationToEntity(not) });
 
 				resp.setContentType("application/json");
 				resp.getWriter().write(new Gson().toJson(Long.valueOf(likes)));

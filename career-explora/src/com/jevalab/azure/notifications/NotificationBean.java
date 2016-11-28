@@ -115,6 +115,7 @@ public abstract class NotificationBean implements Serializable, Comparable<Notif
 		this.notifications = new ArrayList<>();
 		this.notifications.add(firstNotification);
 		this.notificationKey = KeyFactory.keyToString(firstNotification.getId());
+		this.messageId = (firstNotification.getMessage()==null)?"":firstNotification.getMessage().getValue();
 		
 				
 	}

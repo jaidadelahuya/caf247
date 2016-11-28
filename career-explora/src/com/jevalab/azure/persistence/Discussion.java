@@ -29,14 +29,45 @@ public class Discussion implements Serializable {
 	private Key unit;
 	private Key collection;
 	private Key parent;
+	private List<String> grade;
+	private List<String> interest;
+	private boolean $private;
 
+	
+	public boolean is$private() {
+		return $private;
+	}
+
+	public void set$private(boolean $private) {
+		this.$private = $private;
+	}
+
+	public List<String> getGrade() {
+		return grade;
+	}
+
+	public void setGrade(List<String> grade) {
+		this.grade = grade;
+	}
+
+	public List<String> getInterest() {
+		return interest;
+	}
+
+	public void setInterest(List<String> interest) {
+		this.interest = interest;
+	}
+
+	@Override
 	public String toString() {
-		return "Discussion [id=" + this.id + ", owner=" + this.owner
-				+ ", title=" + this.title + ", body=" + this.body + ", format="
-				+ this.format + ", subscribers=" + this.subscribers
-				+ ", dateCreated=" + this.dateCreated + ", tags=" + this.tags
-				+ ", image=" + this.image + ", likes=" + this.likes
-				+ ", shares=" + this.shares + "]";
+		return "Discussion [id=" + id + ", owner=" + owner + ", title=" + title
+				+ ", link=" + link + ", body=" + body + ", format=" + format
+				+ ", subscribers=" + subscribers + ", likers=" + likers
+				+ ", dateCreated=" + dateCreated + ", tags=" + tags
+				+ ", image=" + image + ", likes=" + likes + ", comments="
+				+ comments + ", shares=" + shares + ", unit=" + unit
+				+ ", collection=" + collection + ", parent=" + parent
+				+ ", grade=" + grade + ", interest=" + interest + "]";
 	}
 
 	public long getComments() {

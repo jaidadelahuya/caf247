@@ -69,6 +69,12 @@ public class AcceptFriendRequest extends HttpServlet {
 							.entityToUser(GeneralController
 									.findByKey(KeyFactory.stringToKey(nb
 											.getSender().getWebKey())));
+					List<Key> f2 = uu.getFriendsId();
+					if(f2==null) {
+						f2 = new ArrayList<>();
+					}
+					f2.add(u.getKey());
+					uu.setFriendsId(f2);
 					List<Key> nots = uu.getNewNotifications();
 					if(nots == null) {
 						nots = new ArrayList<>();

@@ -31,7 +31,7 @@ public class Login extends HttpServlet {
 				session.removeAttribute("formSuccess");
 				session.setAttribute("formError", "Invalid Login");
 			}
-			resp.sendRedirect("/ca/admin/form/login");
+			resp.sendRedirect("/kp-admin");
 		}else {
 			AzureUser u = GeneralController.findUserByLogin(email,password);
 			if(u == null) {
@@ -39,7 +39,7 @@ public class Login extends HttpServlet {
 					session.removeAttribute("formSuccess");
 					session.setAttribute("formError", "Invalid Login");
 				}
-				resp.sendRedirect("/ca/admin/login");
+				resp.sendRedirect("/kp-admin");
 			}else {
 				synchronized (session) {
 					session.setAttribute(StringConstants.AZURE_USER, u);

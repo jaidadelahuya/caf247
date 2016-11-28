@@ -14,9 +14,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
-<body>
+<body class="blue lighten-5">
+<%@ include file="/pages/partials/admin-nav.html"%>
 	<div class="container"
-		style="width: 60%; border: 1px solid gray; padding: 3%; margin-top: 4%;">
+		style="width: 60%; border: 1px solid gray; padding: 3%; margin-top: 4%; background-color: white;">
 		<h4 style="text-align: center;">Add Unit</h4>
 		<div class="row">
 			<form action="<c:url value='/admin/save-unit' />" method="post">
@@ -70,5 +71,6 @@
 			$('select').material_select();
 		});
 	</script>
+	<script src="/js/admin.js"></script>
 </body>
 </html>

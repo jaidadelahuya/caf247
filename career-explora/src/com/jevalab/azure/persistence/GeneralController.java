@@ -164,10 +164,29 @@ public class GeneralController {
 	}
 
 	public static Map<String, Object> getPreferredPosts(AzureUser user,
-			int offset) {
+			String cursor) {
 		Query q = new Query(Discussion.class.getSimpleName());
+		Filter f = new Query.FilterPredicate("subscribers", FilterOperator.EQUAL, user.getKey());
+		q.setFilter(f);
+		q.addSort("dateCreated", SortDirection.DESCENDING);
+		PreparedQuery pq = ds.prepare(q);
+		FetchOptions options = FetchOptions.Builder.withLimit(10);
+		if(cursor != null) {
+			options.startCursor(Cursor.fromWebSafeString(cursor));
+		}
+		List<Discussion> articles = new ArrayList<>();
+		QueryResultList<Entity> rs = pq.asQueryResultList(options);
+		Iterator<Entity> ents = rs.iterator();
+		Cursor c = rs.getCursor();
+		
+		while (ents.hasNext()) {
+			articles.add(EntityConverter.entityToDiscussion(ents.next()));
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("post", articles);
+		map.put("cursor", c.toWebSafeString());
 
-		String clss = user.getsClass();
+		/*String clss = user.getsClass();
 		List<String> ints = user.getAreaOfInterest();
 		List<String> interest = Util.toInterestValues(ints);
 		Filter f0 = new FilterPredicate("subscriber", FilterOperator.EQUAL,
@@ -207,7 +226,7 @@ public class GeneralController {
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("post", articles);
-		map.put("offset", offset);
+		map.put("offset", offset);*/
 		return map;
 	}
 
@@ -325,6 +344,29 @@ public class GeneralController {
 
 		QueryResultList<Entity> r = pq.asQueryResultList(options);
 		return r;
+	}
+
+	public static List<Key> getSubscribers(List<Filter> filters) {
+		Query q = new Query(AzureUser.class.getSimpleName());
+		q.setKeysOnly();
+		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.OR, filters);
+		q.setFilter(f2);
+		
+		List<Key> keys = new ArrayList<>();
+		PreparedQuery pq = ds.prepare(q);
+		List<Entity> list = null;
+		int i = 0;
+		do {
+			list = pq.asList(FetchOptions.Builder.withLimit(1000).offset(i));
+			for(Entity e : list) {
+				keys.add(e.getKey());
+			}
+			i++;
+		} while (list != null && list.size() == 1000);
+		
+		
+		
+		return keys;
 	}
 
 }
