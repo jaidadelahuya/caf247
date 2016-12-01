@@ -78,5 +78,12 @@ $(document).ready(function() {
 		});
 	});
 	
+	$(".reply-message").click(function(e) {
+		e.preventDefault();
+		var par = $(this).closest("li");
+		var key = par.find(".sender-key").val();
+		window.location.assign("/azure/notifications/messages?web-key="+key);
+	});
+	
 	
 });

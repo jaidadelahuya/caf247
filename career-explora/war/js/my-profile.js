@@ -13,8 +13,10 @@ $(document)
 					$(".follow").click(
 							function(e) {
 								e.preventDefault();
-								var webKey = $(this).closest(".fixed-action-btn")
+								var par = $(this).closest(".fixed-action-btn");
+								var webKey = par
 										.find(".person-webkey").val();
+								var x = par.find(".person-name").val();
 								var me = $(this);
 								$.ajax({
 									url : "/azure/people/follow/add",
@@ -23,6 +25,7 @@ $(document)
 									},
 									success : function(data) {
 										me.fadeOut();
+										 Materialize.toast('You are now following '+x, 4000)
 									}
 								});
 							});
@@ -40,12 +43,25 @@ $(document)
 							},
 							success : function(data) {
 								me.fadeOut();
+								 Materialize.toast('Your friend request has been sent!', 4000);
 							}
 						});
 					});
 
 					$(".message").click(function() {
-						alert("click");
+						var par = $(this).closest(".fixed-action-btn");
+						var img = par.find(".person-image").val();
+						var name = par.find(".person-name").val();
+						var webKey = par.find(".person-webkey").val();
+						$("#send-message").text("Send Message");
+						$("#send-message").css("color", "black");
+
+						$("#message-area").val("");
+						$("#message-area").next().removeClass("active");
+						$("#recipient-key").val(webKey);
+						$("#recipient-image").prop("src", img);
+						$("#recipient-name").text(name);
+						$("#message-modal").openModal();
 					});
 
 					$("#show-career-cluster-report")

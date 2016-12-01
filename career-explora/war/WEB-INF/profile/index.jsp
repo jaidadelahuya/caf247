@@ -32,27 +32,64 @@
 
 	<%@ include file="/WEB-INF/main-nav.html"%>
 	<%@ include file="/WEB-INF/profile/home.html"%>
+	<%@ include file="/pages/partials/send-message-modal.html"%>
 	<c:choose>
 		<c:when test="${userProfile.currentUser}">
-			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+			
+				<input type="hidden" value="" class="person-image">
+				<input type="hidden" value="" class="person-name">
+				<input type="hidden" value="" class="person-webkey">
 				<a href="<c:url value="/azure/profile?edit=true" />"
-					class="btn-floating btn-large red"> <i
+					class="btn-floating btn-large red message"> <i
 					class="large material-icons">mode_edit</i>
 				</a>
 			</div>
 		</c:when>
 		<c:otherwise>
 			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-				<input type="hidden" class="person-webkey" value="${userProfile.webKey}">
-				<c:if test="${not userProfile.friend}"><a class="btn-floating btn-large red"> <i class="material-icons">&#xE5D4;</i>
-				</a></c:if>
-				<ul>
-					<c:if test="${not userProfile.follow}"><li><a class="btn-floating purple darken-1 follow"><i
-							class="material-icons">directions_walk</i></c:if></a><c:if test="${not userProfile.friend}"></li>
-					<li><a class="btn-floating green friend-request"><i
-							class="material-icons">add</i></c:if></a></li>
-					<li><a class="btn-floating blue message"><i class="material-icons">message</i></a></li>
-				</ul>
+				<input type="hidden" class="person-image"
+					value="${userProfile.picture}">
+				<input type="hidden" class="person-webkey"
+					value="${userProfile.webKey}">
+				<input type="hidden" class="person-name"
+					value="${userProfile.firstName} ${userProfile.lastName}">
+
+				<c:choose>
+					<c:when test='${userProfile.friend}'>
+						<a class="btn-floating btn-large blue message"> <i
+							class="material-icons">message</i>
+						</a>
+					</c:when>
+					<c:when test='${userProfile.follow}'>
+						<a class="btn-floating btn-large red"> <i
+							class="material-icons">&#xE5D4;</i>
+						</a>
+
+						<ul>
+
+							<li><a class="btn-floating green friend-request"><i
+									class="material-icons">add</i></a></li>
+							<li><a class="btn-floating blue message"><i
+									class="material-icons">message</i></a></li>
+						</ul>
+					</c:when>
+					<c:otherwise>
+						<a class="btn-floating btn-large red"> <i
+							class="material-icons">&#xE5D4;</i>
+						</a>
+
+						<ul>
+							<li><a class="btn-floating purple darken-1 follow"><i
+									class="material-icons">directions_walk</i></a></li>
+							<li><a class="btn-floating green friend-request"><i
+									class="material-icons">add</i></a></li>
+							<li><a class="btn-floating blue message"><i
+									class="material-icons">message</i></a></li>
+						</ul>
+					</c:otherwise>
+				</c:choose>
+
+
 			</div>
 		</c:otherwise>
 	</c:choose>
@@ -62,6 +99,7 @@
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/jquery.webui-popover.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/send-message.js"></script>
 	<script type="text/javascript" src="/js/my-profile.js"></script>
 
 </body>

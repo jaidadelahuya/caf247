@@ -45,8 +45,8 @@
     		
     		<div class="col s2">
     			<div class="card indigo-text text-darken-2" style="text-align: center;">
-    				<div><a href="<c:url value='/ca/admin/i/question/new' />"><i class="medium material-icons">help_outline</i></a></div>
-    				<a href="<c:url value='/ca/admin/i/question/new' />">New Question</a>
+    				<div><a href="<c:url value='/ca/admin/cbt' />"><i class="medium material-icons">computer</i></a></div>
+    				<a href="<c:url value='/ca/admin/cbt' />">CBT</a>
     			</div>
     		</div>
     		

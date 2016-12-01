@@ -69,12 +69,12 @@ public class GetProfile extends HttpServlet {
 			
 			up = ProfileHelper.getProfileData(u, up);
 			if(currentUser!=null) {
-				List<Key> l = u.getFollowing();
-				if(l!=null && l.contains(currentUser.getKey())) {
+				List<Key> l = currentUser.getFollowing();
+				if(l!=null && l.contains(u.getKey())) {
 					up.setFollow(true);
 				}
-				l = u.getFriendsId();
-				if(l!=null && l.contains(currentUser.getKey())) {
+				l = currentUser.getFriendsId();
+				if(l!=null && l.contains(u.getKey())) {
 					up.setFriend(true);
 				}
 			}

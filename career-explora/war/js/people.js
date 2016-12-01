@@ -10,35 +10,7 @@ $(document).ready(
 						}
 					});*/
 
-			$("#send-message").click(function(e) {
-				e.preventDefault();
-				var me = $(this);
-				var form = me.closest("form");
-				$.ajax({
-					url : form.prop("action"),
-					data : form.serialize(),
-					method : "POST",
-					beforeSend : function() {
-						me.prop("disabled", true);
-						me.css("color", "orange");
-						me.text("Sending...");
-					},
-					success : function() {
-						me.text("Message Sent");
-						me.css("color", "green");
-						setTimeout(function() {
-							me.prop("disabled", false);
-							$("#message-modal").closeModal();
-						}, 3000);
-
-					},
-					error : function(xhr) {
-						$("#send-msg-error").text(xhr.statusText);
-						me.text("Send Message");
-						me.css("color", "black");
-					}
-				});
-			});
+			
 
 			$(".message").click(function() {
 				var par = $(this).closest(".card");
@@ -46,7 +18,7 @@ $(document).ready(
 				var name = par.find(".person-name").text();
 				var webKey = par.find(".person-webkey").val();
 				$("#send-message").text("Send Message");
-				$("#send-message").css("color", "black")
+				$("#send-message").css("color", "black");
 
 				$("#message-area").val("");
 				$("#message-area").next().removeClass("active");
@@ -72,6 +44,8 @@ $(document).ready(
 						e.preventDefault();
 						var webKey = $(this).closest(".card-action").find(
 								".person-webkey").val();
+						var x = $(this).closest(".card").find(
+						".person-name").text();
 						var me = $(this);
 						$.ajax({
 							url : "/azure/people/follow/add",
@@ -80,6 +54,7 @@ $(document).ready(
 							},
 							success : function(data) {
 								me.fadeOut();
+								Materialize.toast('You are now following '+x, 4000);
 							}
 						});
 					});
@@ -98,6 +73,7 @@ $(document).ready(
 							},
 							success : function(data) {
 								me.fadeOut();
+								Materialize.toast('Your friend request has been sent!', 4000);
 							}
 						});
 

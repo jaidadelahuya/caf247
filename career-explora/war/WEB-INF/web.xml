@@ -4,7 +4,34 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
+
+	<servlet>
+		<servlet-name>CbtModules</servlet-name>
+		<jsp-file>/WEB-INF/admin/cbt-modules.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CbtModules</servlet-name>
+		<url-pattern>/ca/admin/cbt</url-pattern>
+	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>InitNewSubject</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitNewSubject</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitNewSubject</servlet-name>
+		<url-pattern>/ca/admin/cbt/i/subject/new</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>InitSubject</servlet-name>
+		<jsp-file>/WEB-INF/admin/new-subject.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitSubject</servlet-name>
+		<url-pattern>/ca/admin/cbt/p/subject/new</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>InitMessages</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.messages.InitMessages</servlet-class>
@@ -13,7 +40,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitMessages</servlet-name>
 		<url-pattern>/azure/messages</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ProfileGetMessages</servlet-name>
 		<servlet-class>com.jevalab.azure.profile.GetMessages</servlet-class>
@@ -22,7 +49,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ProfileGetMessages</servlet-name>
 		<url-pattern>/azure/profile/messages</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminInitAddQuestion</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitAddQuestion</servlet-class>
@@ -39,7 +66,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminNewQuestion</servlet-name>
 		<url-pattern>/ca/admin/question/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetMessages</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.GetMessages</servlet-class>
@@ -48,7 +75,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetMessages</servlet-name>
 		<url-pattern>/azure/notifications/messages</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>MessagesPage</servlet-name>
 		<jsp-file>/WEB-INF/notifications/messages.jsp</jsp-file>
@@ -57,7 +84,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>MessagesPage</servlet-name>
 		<url-pattern>/azure/notifications/p/messages</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>DeleteNotification</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.DeleteNotification</servlet-class>
@@ -66,7 +93,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>DeleteNotification</servlet-name>
 		<url-pattern>/azure/notifications/delete</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AcceptFriendRequest</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.AcceptFriendRequest</servlet-class>
@@ -75,7 +102,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AcceptFriendRequest</servlet-name>
 		<url-pattern>/azure/notifications/friend/request/accept</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>SendMessage</servlet-name>
 		<servlet-class>com.jevalab.azure.notifications.SendMessage</servlet-class>
@@ -92,7 +119,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>SendFriendRequest</servlet-name>
 		<url-pattern>/azure/notifications/friend/request</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetPeople</servlet-name>
 		<servlet-class>com.jevalab.azure.people.GetPeople</servlet-class>
@@ -101,7 +128,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetPeople</servlet-name>
 		<url-pattern>/azure/people/get</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddFollowing</servlet-name>
 		<servlet-class>com.jevalab.azure.people.AddFollowing</servlet-class>
@@ -110,7 +137,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddFollowing</servlet-name>
 		<url-pattern>/azure/people/follow/add</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>UpdateProfile</servlet-name>
 		<servlet-class>com.jevalab.azure.profile.UpdateProfile</servlet-class>
@@ -119,7 +146,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>UpdateProfile</servlet-name>
 		<url-pattern>/azure/profile/update</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>EditProfile</servlet-name>
 		<jsp-file>/WEB-INF/profile/edit-profile.jsp</jsp-file>
@@ -128,7 +155,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>EditProfile</servlet-name>
 		<url-pattern>/azure/profile/edit</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetProfileServlet</servlet-name>
 		<servlet-class>com.jevalab.azure.profile.GetProfile</servlet-class>
@@ -193,7 +220,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitPeople</servlet-name>
 		<url-pattern>/azure/people</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCommunities</servlet-name>
 		<servlet-class>com.jevalab.azure.community.InitCommunities</servlet-class>
@@ -241,7 +268,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>SinglePostPage</servlet-name>
 		<url-pattern>/azure/post</url-pattern>
-		</servlet-mapping>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>CareerClustersPage</servlet-name>
 		<jsp-file>/WEB-INF/careerplus/career-cluster.jsp</jsp-file>
@@ -274,7 +301,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>TalentPage</servlet-name>
 		<url-pattern>/azure/careerplus/talent/test</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCareerPlus</servlet-name>
 		<servlet-class>com.jevalab.azure.careerplus.InitCareerPlus</servlet-class>
@@ -283,7 +310,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitCareerPlus</servlet-name>
 		<url-pattern>/azure/careerplus</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CBTPage</servlet-name>
 		<jsp-file>/WEB-INF/cbt/cbt.jsp</jsp-file>
@@ -292,7 +319,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CBTPage</servlet-name>
 		<url-pattern>/azure/cbt/page</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCBT</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitCBT</servlet-class>
@@ -301,7 +328,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitCBT</servlet-name>
 		<url-pattern>/azure/cbt</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetMoreDiscussions</servlet-name>
 		<servlet-class>com.jevalab.azure.group1.GetMoreDiscussions</servlet-class>
@@ -318,7 +345,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>NoSession</servlet-name>
 		<url-pattern>/session/invalid</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetComments</servlet-name>
 		<servlet-class>com.jevalab.azure.group1.GetComments</servlet-class>
@@ -327,7 +354,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetComments</servlet-name>
 		<url-pattern>/azure/post/comments/get</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddComment</servlet-name>
 		<servlet-class>com.jevalab.azure.group1.AddComment</servlet-class>
@@ -336,7 +363,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddComment</servlet-name>
 		<url-pattern>/azure/post/comment</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddLike</servlet-name>
 		<servlet-class>com.jevalab.azure.group1.AddLike</servlet-class>
@@ -345,7 +372,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddLike</servlet-name>
 		<url-pattern>/azure/post/like</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>SavePost</servlet-name>
 		<servlet-class>com.jevalab.azure.group1.SavePost</servlet-class>
@@ -354,7 +381,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>SavePost</servlet-name>
 		<url-pattern>/azure/post/save</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ServeNewImageServlet</servlet-name>
 		<servlet-class>com.jevalab.azure.ServeNewImageServlet</servlet-class>
@@ -363,7 +390,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ServeNewImageServlet</servlet-name>
 		<url-pattern>/azure/post/image/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>ProfilePicturesUploader</servlet-name>
 		<servlet-class>com.jevalab.azure.ProfilePicturesUploader</servlet-class>
@@ -372,7 +399,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>ProfilePicturesUploader</servlet-name>
 		<url-pattern>/azure/interest/profile/picture/upload</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddDefaultPicture</servlet-name>
 		<servlet-class>com.jevalab.azure.AddDefaultPicture</servlet-class>
@@ -381,7 +408,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddDefaultPicture</servlet-name>
 		<url-pattern>/azure/interest/profile/picture/default/add</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddMajorInterest</servlet-name>
 		<servlet-class>com.jevalab.azure.AddMajorInterest</servlet-class>
@@ -390,7 +417,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddMajorInterest</servlet-name>
 		<url-pattern>/azure/interest/add</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>SelectInterest</servlet-name>
 		<jsp-file>/WEB-INF/select-interest.jsp</jsp-file>
@@ -421,7 +448,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<location>/WEB-INF/general-error.jsp</location>
 	</error-page>
 
-	
+
 
 	<error-page>
 		<!-- for invalid username and password -->
@@ -438,7 +465,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/welcome</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>AdminFilter</filter-name>
 		<filter-class>com.jevalab.azure.admin.AdminFilter</filter-class>
@@ -447,9 +474,9 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<filter-name>AdminFilter</filter-name>
 		<url-pattern>/ca/admin/*</url-pattern>
 	</filter-mapping>
-	
-	
-	
+
+
+
 	<servlet>
 		<servlet-name>_ah_sessioncleanup</servlet-name>
 		<servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
@@ -459,9 +486,9 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>_ah_sessioncleanup</servlet-name>
 		<url-pattern>/_ah/sessioncleanup</url-pattern>
 	</servlet-mapping>
-	
-	
-	
+
+
+
 	<servlet>
 		<servlet-name>AdminAuthServlet</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.Login</servlet-class>
@@ -470,7 +497,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminAuthServlet</servlet-name>
 		<url-pattern>/kp-admin/user/login</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminLogout</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.Logout</servlet-class>
@@ -479,7 +506,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminLogout</servlet-name>
 		<url-pattern>/kp-admin/logout</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminDashBoard</servlet-name>
 		<jsp-file>/WEB-INF/admin-dashboard.jsp</jsp-file>
@@ -488,7 +515,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminDashBoard</servlet-name>
 		<url-pattern>/ca/admin/dashboard</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminAuth</servlet-name>
 		<jsp-file>/pages/admin-login.jsp</jsp-file>
@@ -497,7 +524,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminAuth</servlet-name>
 		<url-pattern>/kp-admin</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>MobileSignUp</servlet-name>
 		<jsp-file>/WEB-INF/mobile-sign-up.jsp</jsp-file>
@@ -532,7 +559,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CreateDiscussionPage</servlet-name>
 		<url-pattern>/ca/admin/discussion/form/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCreateDiscussionPage</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitAddDiscussion</servlet-class>
@@ -541,7 +568,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitCreateDiscussionPage</servlet-name>
 		<url-pattern>/ca/admin/discussion/i/form/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CreateUnitPage</servlet-name>
 		<jsp-file>/pages/add-unit.jsp</jsp-file>
@@ -558,7 +585,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddCommunityPage</servlet-name>
 		<url-pattern>/ca/admin/community/form/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitAddCommunityPage</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitAddCommunity</servlet-class>
@@ -622,7 +649,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/adminlogin</url-pattern>
 	</servlet-mapping>
 
-	
+
 
 	<servlet>
 		<servlet-name>ConfirmationCodePage</servlet-name>
@@ -677,7 +704,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>PaymentPending</servlet-name>
 		<url-pattern>/payment-pending</url-pattern>
 	</servlet-mapping>
-	
+
 	<filter>
 		<filter-name>SecurityFliter</filter-name>
 		<filter-class>com.jevalab.azure.SecurityFilter</filter-class>
@@ -828,7 +855,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/azure/savecareerclusterrecord</url-pattern>
 	</servlet-mapping>
 
-	
+
 
 	<servlet>
 		<servlet-name>GetMultipleIntelligenceType</servlet-name>
@@ -947,7 +974,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/blobupload</url-pattern>
 	</servlet-mapping>
 
-	
+
 
 
 	<servlet>
@@ -959,7 +986,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/adduserkey</url-pattern>
 	</servlet-mapping>
 
-	
+
 
 	<servlet>
 		<servlet-name>AddEnglishCategory</servlet-name>
@@ -997,7 +1024,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/resendcode</url-pattern>
 	</servlet-mapping>
 
-	
+
 	<servlet>
 		<servlet-name>TagServlet</servlet-name>
 		<servlet-class>com.jevalab.azure.TagServlet</servlet-class>
@@ -1026,9 +1053,9 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/confirmcode</url-pattern>
 	</servlet-mapping>
 
-	
 
-	
+
+
 
 	<servlet>
 		<servlet-name>LoginHandlerServlet</servlet-name>
@@ -1191,7 +1218,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CreateCommunity</servlet-name>
 		<url-pattern>/ca/admin/community/create</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetCACommunities</servlet-name>
 		<servlet-class>com.jevalab.azure.GetCACommunities</servlet-class>
@@ -1200,7 +1227,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetCACommunities</servlet-name>
 		<url-pattern>/ca/admin/communities/get</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetCACommunityAjax</servlet-name>
 		<servlet-class>com.jevalab.azure.GetCACommunityAjax</servlet-class>
@@ -1209,7 +1236,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetCACommunityAjax</servlet-name>
 		<url-pattern>/admin/get-ca-communities-ajax</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetUnitAjax</servlet-name>
 		<servlet-class>com.jevalab.azure.GetUnitAjax</servlet-class>
@@ -1218,7 +1245,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetUnitAjax</servlet-name>
 		<url-pattern>/admin/get-unit-ajax</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AddCAUnitServlet</servlet-name>
 		<servlet-class>com.jevalab.azure.AddCAUnitServlet</servlet-class>
@@ -1227,7 +1254,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddCAUnitServlet</servlet-name>
 		<url-pattern>/admin/save-unit</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>SaveDiscussion</servlet-name>
 		<servlet-class>com.jevalab.azure.SaveDiscussion</servlet-class>
@@ -1264,7 +1291,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<param-name>TwilioAuthToken</param-name>
 		<param-value>b34db573c97811749a7a53617ea94950</param-value>
 	</context-param>
-	
+
 	<context-param>
 		<param-name>TwilioNumber</param-name>
 		<param-value>+17542278049</param-value>
@@ -1287,7 +1314,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		</user-data-constraint>
 	</security-constraint>
 
-	
+
 
 
 </web-app>

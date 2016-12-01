@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Career Explora</title>
+<title>Kareer Plus</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Latest compiled and minified CSS -->
 
@@ -23,7 +23,7 @@
 			</c:when>
 			<c:otherwise>
 				<div class="row hidden-sm hidden-md hidden-lg front-page-header">
-					<div class="mobile-logo">Career Explora</div>
+					<div class="mobile-logo">Kareer Plus</div>
 				</div>
 				<div class="row hidden-sm hidden-md hidden-lg">
 					<div class="login-div">
@@ -59,7 +59,7 @@
 		</c:choose>
 		<div class="row hidden-xs front-page-header">
 			<div class="col-sm-4 col-md-5 col-md-offset-1">
-				<div class="front-page-logo">Career Explora</div>
+				<div class="front-page-logo">Kareer Plus</div>
 			</div>
 			<div class="col-sm-8 col-md-6" style="padding-top: 10px;">
 				<form id="auth-form" method="post">

@@ -1578,7 +1578,7 @@ public class Util {
 
 		while (it.hasNext()) {
 			Person p = it.next();
-			if (p.isFriend()
+			if (p.isFollowing() | p.isFriend()
 					| p.getWebKey().equals(KeyFactory.keyToString(u.getKey()))) {
 				it.remove();
 			}
