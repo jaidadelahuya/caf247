@@ -69,6 +69,8 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
+import com.jevalab.azure.cbt.CBT;
+import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
 import com.jevalab.azure.notifications.FriendRequestNotification;
 import com.jevalab.azure.notifications.LikeNotification;
@@ -89,6 +91,7 @@ import com.jevalab.azure.persistence.GeneralController;
 import com.jevalab.azure.persistence.MultipleIntelligenceTestQuestion;
 import com.jevalab.azure.persistence.MultipleIntelligenceTestQuestionJpaController;
 import com.jevalab.azure.persistence.PasswordRecoveryJpaController;
+import com.jevalab.azure.persistence.Question;
 import com.jevalab.azure.persistence.Record;
 import com.jevalab.azure.persistence.RecordJpaController;
 import com.jevalab.azure.persistence.SkillCategory;
@@ -103,16 +106,17 @@ import com.jevalab.exceptions.RollbackFailureException;
 import com.twilio.Twilio;
 import com.twilio.type.PhoneNumber;
 
-
 public class Util {
-	
+
 	public static final String ACCOUNT_SID = "AC4a2eab44a45e7810609af9afe967e701";
-    public static final String AUTH_TOKEN = "b34db573c97811749a7a53617ea94950";
-    public static final String TWILIO_NUMBER = "+17542278049";
+	public static final String AUTH_TOKEN = "b34db573c97811749a7a53617ea94950";
+	public static final String TWILIO_NUMBER = "+17542278049";
 
 	private final static Logger LOGGER = Logger.getLogger(Util.class.getName());
 	private static final MemcacheService GROUPS = MemcacheServiceFactory
 			.getMemcacheService("groups");
+	public static final MemcacheService QUESTIONS = MemcacheServiceFactory
+			.getMemcacheService("questions");
 	static {
 		LOGGER.setLevel(Level.FINEST);
 	}
@@ -393,7 +397,8 @@ public class Util {
 	}
 
 	public static void sendSMS(RegistrationForm rf) {
-		String msg ="Hello "+rf.getFirstName()+", Your verification code is "+rf.getConfirmationCode();
+		String msg = "Hello " + rf.getFirstName()
+				+ ", Your verification code is " + rf.getConfirmationCode();
 		sendSMS(msg, rf.getUsername());
 	}
 
@@ -701,8 +706,7 @@ public class Util {
 					e.printStackTrace();
 				}
 			} else if (dpr.isMobile()) {
-			
-				
+
 			}
 
 			return true;
@@ -815,33 +819,32 @@ public class Util {
 	}
 
 	public static void sendSMS(String msg, String toNumber) {
-		
-		  Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-		  
-		 com.twilio.rest.api.v2010.account.Message
-	                .creator(new PhoneNumber(toNumber),  // to
-	                         new PhoneNumber(TWILIO_NUMBER),  // from
-	                         msg)
-	                .create();
-		  
-	    
-		
-		/*TwilioRestClient client = new TwilioRestClient(twilioSid,
-				twilioAuthToken);
+		Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("Body",
-				StringConstants.CONFIRMATION_EMAIL_BODY + code));
-		params.add(new BasicNameValuePair("To", "+2347051212230"));
-		params.add(new BasicNameValuePair("From", "+13098224750"));
+		com.twilio.rest.api.v2010.account.Message.creator(
+				new PhoneNumber(toNumber), // to
+				new PhoneNumber(TWILIO_NUMBER), // from
+				msg).create();
 
-		MessageFactory messageFactory = client.getAccount().getMessageFactory();
-		com.twilio.sdk.resource.instance.Message message = null;
-
-		message = messageFactory.create(params);
-
-		System.out.println(message.getSid());*/
+		/*
+		 * TwilioRestClient client = new TwilioRestClient(twilioSid,
+		 * twilioAuthToken);
+		 * 
+		 * List<NameValuePair> params = new ArrayList<NameValuePair>();
+		 * params.add(new BasicNameValuePair("Body",
+		 * StringConstants.CONFIRMATION_EMAIL_BODY + code)); params.add(new
+		 * BasicNameValuePair("To", "+2347051212230")); params.add(new
+		 * BasicNameValuePair("From", "+13098224750"));
+		 * 
+		 * MessageFactory messageFactory =
+		 * client.getAccount().getMessageFactory();
+		 * com.twilio.sdk.resource.instance.Message message = null;
+		 * 
+		 * message = messageFactory.create(params);
+		 * 
+		 * System.out.println(message.getSid());
+		 */
 
 	}
 
@@ -1141,11 +1144,10 @@ public class Util {
 				}
 
 				if (a.getLikers() != null) {
-					if(a.getLikers().contains(
-							currentUser.getKey())) {
+					if (a.getLikers().contains(currentUser.getKey())) {
 						d.setLiked(true);
 					}
-					
+
 					d.setLikes(a.getLikers().size());
 				}
 			} else {
@@ -1598,43 +1600,41 @@ public class Util {
 		for (Entity e : r) {
 			Notification n = EntityConverter.entityToNotification(e);
 			NotificationBean nb = null;
-			switch(n.getType()) {
-			case "FriendRequestNotification" :
+			switch (n.getType()) {
+			case "FriendRequestNotification":
 				nb = new FriendRequestNotification(n);
 				break;
-			case "FriendRequestAcceptedNotification" :
+			case "FriendRequestAcceptedNotification":
 				nb = new FriendRequestAcceptedNotification(n);
 				break;
-			case "LikeNotification" :
+			case "LikeNotification":
 				nb = new LikeNotification(n);
 				break;
 			}
-			
+
 			Iterator<NotificationBean> it = list.iterator();
 			NotificationBean existingBean = null;
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				NotificationBean nn = it.next();
-				if(nn.equals(nb)) {
+				if (nn.equals(nb)) {
 					existingBean = nn;
 					it.remove();
 					break;
 				}
 			}
-			
-			if(existingBean == null) {
+
+			if (existingBean == null) {
 				list.add(nb);
-			}else {
+			} else {
 				existingBean.addNotification(n);
 				list.add(existingBean);
-			}	
-			
+			}
+
 		}
-		//Collections.sort(list);
+		// Collections.sort(list);
 		npb.setNotifications(list);
 		return npb;
 	}
-
-	
 
 	public static Person getPersonFromIndex(Key sender, AzureUser u) {
 		Document d = SearchDocumentIndexService.retrieveDocument("PEOPLE",
@@ -1723,18 +1723,19 @@ public class Util {
 	public static void updateMessageNotifications(MessageNotification bean) {
 		Entity[] ents = new Entity[bean.getNotifications().size()];
 		int i = 0;
-		for(MessageN n : bean.getNotifications()) {
+		for (MessageN n : bean.getNotifications()) {
 			n.setViewed(true);
-			ents[i]=(EntityConverter.MessageNToEntity(n));
+			ents[i] = (EntityConverter.MessageNToEntity(n));
 			i++;
 		}
-		
+
 		GeneralController.createWithCrossGroup(ents);
-		
+
 	}
 
 	public static MPageBean initMessagePageBean(AzureUser u) {
-		QueryResultList<Entity> r = GeneralController.getMessageNotifications(u, null);
+		QueryResultList<Entity> r = GeneralController.getMessageNotifications(
+				u, null);
 
 		MPageBean npb = new MPageBean();
 		if (r.getCursor() != null) {
@@ -1745,27 +1746,27 @@ public class Util {
 		for (Entity e : r) {
 			MessageN n = EntityConverter.entityToMessageN(e);
 			MessageNotification nb = new MessageNotification(n);
-			
+
 			Iterator<MessageNotification> it = list.iterator();
 			MessageNotification existingBean = null;
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				MessageNotification nn = it.next();
-				if(nn.getId().equals(nb.getId())) {
+				if (nn.getId().equals(nb.getId())) {
 					existingBean = nn;
 					it.remove();
 					break;
 				}
 			}
-			
-			if(existingBean == null) {
+
+			if (existingBean == null) {
 				list.add(nb);
-			}else {
+			} else {
 				existingBean.addNotification(n);
 				list.add(existingBean);
 			}
-			
+
 		}
-		//Collections.sort(list);
+		// Collections.sort(list);
 		npb.setNotifications(list);
 		return npb;
 	}
@@ -1773,19 +1774,21 @@ public class Util {
 	public static List<Key> getSubscribers(String[] classes,
 			String[] departments) {
 		List<Filter> filters = new ArrayList<>();
-		for(String s: classes) {
-			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate("Class", FilterOperator.EQUAL, s.trim()));
+		for (String s : classes) {
+			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate(
+					"Class", FilterOperator.EQUAL, s.trim()));
 		}
-		for(String s: departments) {
-			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate("AreaOfInterest", FilterOperator.EQUAL, s.trim()));
+		for (String s : departments) {
+			filters.add(new com.google.appengine.api.datastore.Query.FilterPredicate(
+					"AreaOfInterest", FilterOperator.EQUAL, s.trim()));
 		}
 		return GeneralController.getSubscribers(filters);
 	}
 
 	public static void addDiscussionToIndex(Discussion d) {
 		String tags = "";
-		for(String  s : d.getTags()) {
-			tags += s+" ";
+		for (String s : d.getTags()) {
+			tags += s + " ";
 		}
 		tags.trim();
 		Document doc = Document
@@ -1797,11 +1800,88 @@ public class Util {
 				.addField(
 						Field.newBuilder().setName("body")
 								.setText(d.getBody().getValue()))
-				.addField(
-						Field.newBuilder().setName("tags")
-								.setText(tags))
+				.addField(Field.newBuilder().setName("tags").setText(tags))
 				.build();
 		SearchDocumentIndexService.indexDocument("DISCUSSION", doc);
-		
+
+	}
+
+	public static CBT setCbtQuestions(CBT cbt, String[] topics) {
+		QueryResultList<Entity> qrl = null;
+		if (cbt.getTitle().equals("Standard UTME Examination")) {
+			qrl = GeneralController.getUTMESubject(cbt);
+		} else if (cbt.getTitle().equals("Standard UTME Subject Test")) {
+			qrl = GeneralController.getStandardUTME(cbt);
+		} else if (cbt.getTitle().equals("Custom UTME Subject Test I")) {
+			qrl = GeneralController.getCustomUTME(cbt);
+		} else if (cbt.getTitle().equals("Custom UTME Subject Test II")) {
+			qrl = GeneralController.getCustomUTME(cbt, topics);
+		}
+		List<Question> qs = toQuestionList(qrl);
+		cbt = groupQuestions(cbt, qs);
+		return cbt;
+	}
+
+	private static List<Question> toQuestionList(QueryResultList<Entity> qrl) {
+		List<Key> keys = new ArrayList<>();
+		for (Entity e : qrl) {
+			keys.add(e.getKey());
+		}
+
+		Map<Key, Object> map = Util.QUESTIONS.getAll(keys);
+
+		Map<Key, Question> m = new HashMap<>();
+		for (Key k : map.keySet()) {
+			m.put(k, (Question) map.get(k));
+		}
+
+		if (map.size() < keys.size()) {
+			List<Key> kk = new ArrayList<>();
+			for (Key k : keys) {
+				if (!map.keySet().contains(k)) {
+					kk.add(k);
+				}
+			}
+			Map<Key, Entity> ents = GeneralController.getEntities(kk);
+			Map<Key, Question> nm = new HashMap<>();
+			for (Key k : ents.keySet()) {
+				nm.put(k, new Question(ents.get(k)));
+
+			}
+			Util.QUESTIONS.putAll(nm);
+			m.putAll(nm);
+		}
+
+		List<Question> qs = new ArrayList<>();
+		for (Key k : m.keySet()) {
+			qs.add(m.get(k));
+		}
+
+		return qs;
+	}
+
+	private static CBT groupQuestions(CBT cbt, List<Question> qrl) {
+		for (String s : cbt.getQuestionMap().keySet()) {
+			for (Question q : qrl) {
+				if (q.getSubjectName().equalsIgnoreCase(s)) {
+					cbt.getQuestionMap().get(s).add(toCBTQuestion(q));
+				}
+			}
+		}
+		return cbt;
+	}
+
+	private static com.jevalab.azure.cbt.Question toCBTQuestion(Question q) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static List<Topic> getSubjectTopics(Key key) {
+		QueryResultList<Entity> ents = GeneralController.getTopics(key);
+		List<Topic> topics = new ArrayList<>();
+		for(Entity e : ents) {
+			topics.add(new Topic(e));
+		}
+		return topics;
 	}
 }

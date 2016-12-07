@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 import org.datanucleus.api.jpa.annotations.Extension;
 
 import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.datastore.Key;
 
 
 
@@ -27,6 +28,30 @@ public class Question implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	public Question(com.google.appengine.api.datastore.Entity e) {
+		id = e.getKey().getId();
+		subjectName = (String) e.getProperty("subjectName");
+		vendor = (String)e.getProperty("vendor");
+		year = (String)e.getProperty("year");
+		difficulty = (String)e.getProperty("difficulty");
+		categoryName = (String)e.getProperty("categoryName");
+		body = (String)e.getProperty("body");
+		explanation = (String)e.getProperty("explanation");
+		correctAlternative = (String)e.getProperty("correctAlternative");
+		imageKey = (BlobKey)e.getProperty("imageKey");
+		alternatives = (List<String>)e.getProperty("alternatives");
+		topics = (List<Key>)e.getProperty("topics");
+		passage = (Key)e.getProperty("passage");
+	}
+	
+	
+
+	public Question() {
+		super();
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -38,28 +63,28 @@ public class Question implements Serializable {
 	private String subjectName,vendor,year,difficulty,categoryName;
 	
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String body,explanation,pictureUrl,correctAlternative;
+	private String body,explanation,correctAlternative;
 	private BlobKey imageKey;
 	
 	
 	@Basic
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private List<String> alternatives,topics;
+	private List<String> alternatives;
+	private List<Key> topics;
 	
 	@Transient
 	private boolean isCorrect;
 	
-	@Basic
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	EnglishPassage passage;
+	
+	Key passage;
 	
 	
 	
-	public EnglishPassage getPassage() {
+	public Key getPassage() {
 		return passage;
 	}
 
-	public void setPassage(EnglishPassage passage) {
+	public void setPassage(Key passage) {
 		this.passage = passage;
 	}
 
@@ -108,22 +133,17 @@ public class Question implements Serializable {
 	public void setYear(String year) {
 		this.year = year;
 	}
-	public String getPictureUrl() {
-		return pictureUrl;
-	}
-	public void setPictureUrl(String extraText) {
-		this.pictureUrl = extraText;
-	}
+	
 	public List<String> getAlternatives() {
 		return alternatives;
 	}
 	public void setAlternatives(List<String> alternatives) {
 		this.alternatives = alternatives;
 	}
-	public List<String> getTopics() {
+	public List<Key> getTopics() {
 		return topics;
 	}
-	public void setTopics(List<String> topics) {
+	public void setTopics(List<Key> topics) {
 		this.topics = topics;
 	}
 	public String getCorrectAlternative() {
@@ -147,21 +167,17 @@ public class Question implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Question [id=").append(id).append(", subjectName=")
-				.append(subjectName).append(", vendor=").append(vendor)
-				.append(", year=").append(year).append(", difficulty=")
-				.append(difficulty).append(", categoryName=")
-				.append(categoryName).append(", body=").append(body)
-				.append(", explanation=").append(explanation)
-				.append(", imageKey=").append(imageKey).append(", pictureUrl=")
-				.append(pictureUrl).append(", correctAlternative=")
-				.append(correctAlternative).append(", alternatives=")
-				.append(alternatives).append(", topics=").append(topics)
-				.append(", isCorrect=").append(isCorrect).append(", passage=")
-				.append(passage).append("]");
-		return builder.toString();
+		return "Question [id=" + id + ", subjectName=" + subjectName
+				+ ", vendor=" + vendor + ", year=" + year + ", difficulty="
+				+ difficulty + ", categoryName=" + categoryName + ", body="
+				+ body + ", explanation=" + explanation
+				+ ", correctAlternative=" + correctAlternative + ", imageKey="
+				+ imageKey + ", alternatives=" + alternatives + ", topics="
+				+ topics + ", isCorrect=" + isCorrect + ", passage=" + passage
+				+ "]";
 	}
+
+
 	
 	
 	

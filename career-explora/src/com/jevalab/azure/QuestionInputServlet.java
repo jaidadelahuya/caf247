@@ -11,14 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.appengine.api.blobstore.BlobInfo;
-import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.jevalab.azure.persistence.Question;
 import com.jevalab.azure.persistence.QuestionJpaController;
 import com.jevalab.exceptions.RollbackFailureException;
@@ -127,6 +124,15 @@ public class QuestionInputServlet extends HttpServlet {
 		q.setImageKey(blobKey);
 
 		q.setCategoryName(req.getParameter("category-name"));
+		
+		String[] topics = req.getParameterValues("topics");
+		List<Key> tKeys = new ArrayList<>();
+		if(Util.notNull(topics)) {
+			for(String s: topics) {
+				tKeys.add(KeyFactory.stringToKey(s));
+			}
+			q.setTopics(tKeys);
+		}
 
 		QuestionJpaController cont = new QuestionJpaController();
 		try {

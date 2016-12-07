@@ -35,18 +35,18 @@
 	<%@ include file="/pages/partials/send-message-modal.html"%>
 	<c:choose>
 		<c:when test="${userProfile.currentUser}">
-			
+			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
 				<input type="hidden" value="" class="person-image">
 				<input type="hidden" value="" class="person-name">
 				<input type="hidden" value="" class="person-webkey">
 				<a href="<c:url value="/azure/profile?edit=true" />"
-					class="btn-floating btn-large red message"> <i
+					class="btn-floating btn-large red"> <i
 					class="large material-icons">mode_edit</i>
 				</a>
 			</div>
 		</c:when>
 		<c:otherwise>
-			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+			<div class="fixed-action-btn fab" style="bottom: 45px; right: 24px;">
 				<input type="hidden" class="person-image"
 					value="${userProfile.picture}">
 				<input type="hidden" class="person-webkey"

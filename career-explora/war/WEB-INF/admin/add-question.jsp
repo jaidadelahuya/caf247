@@ -1,4 +1,5 @@
-<%@page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
+<%@page
+	import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
 <%@page import="com.google.appengine.api.blobstore.BlobstoreService"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -18,7 +19,10 @@
 
 </head>
 <body>
-	<% BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService(); %>
+	<%
+		BlobstoreService blobstoreService = BlobstoreServiceFactory
+				.getBlobstoreService();
+	%>
 	<div class="container">
 
 		<div class="row">
@@ -37,28 +41,47 @@
 						</div>
 					</c:when>
 				</c:choose>
-				<form action="<%=blobstoreService.createUploadUrl("/ca/admin/question/save")%>"
+				
+				<form
+					action="<%=blobstoreService
+					.createUploadUrl("/ca/admin/question/save")%>"
 					method="post" enctype="multipart/form-data">
 					<div class="form-group complex-form-section">
 						<div class="row">
 							<div class="col-sm-4">
 								<label for="subject">Subject:</label> <select
 									name="subject-name" id="subject" class="form-control">
-									<option selected="selected">ACCOUNT</option>
-									<option>AGRICULTURAL SCIENCE</option>
-									<option>BIOLOGY</option>
-									<option>CHEMISTRY</option>
-									<option>COMMERCE</option>
-									<option>C.R.K</option>
-									<option>ECONOMICS</option>
-									<option>ENGLISH</option>
-									<option>FINE ART</option>
-									<option>GEOGRAPHY</option>
-									<option>GOVERNMENT</option>
-									<option>HISTORY</option>
-									<option>LITERATURE</option>
-									<option>MATHEMATICS</option>
-									<option>PHYSICS</option>
+									<option
+										<c:if test='${subjectName eq "ACCOUNT"}'>selected</c:if>>ACCOUNT</option>
+									<option
+										<c:if test='${subjectName eq "AGRICULTURAL SCIENCE"}'>selected</c:if>>AGRICULTURAL
+										SCIENCE</option>
+									<option
+										<c:if test='${subjectName eq "BIOLOGY"}'>selected</c:if>>BIOLOGY</option>
+									<option
+										<c:if test='${subjectName eq "CHEMISTRY"}'>selected</c:if>>CHEMISTRY</option>
+									<option
+										<c:if test='${subjectName eq "COMMERCE"}'>selected</c:if>>COMMERCE</option>
+									<option <c:if test='${subjectName eq "C.R.K"}'>selected</c:if>>C.R.K</option>
+									<option
+										<c:if test='${subjectName eq "ECONOMICS"}'>selected</c:if>>ECONOMICS</option>
+									<option
+										<c:if test='${subjectName eq "ENGLISH"}'>selected</c:if>>ENGLISH</option>
+									<option
+										<c:if test='${subjectName eq "FINE ART"}'>selected</c:if>>FINE
+										ART</option>
+									<option
+										<c:if test='${subjectName eq "GEOGRAPHY"}'>selected</c:if>>GEOGRAPHY</option>
+									<option
+										<c:if test='${subjectName eq "GOVERNMENT"}'>selected</c:if>>GOVERNMENT</option>
+									<option
+										<c:if test='${subjectName eq "HISTORY"}'>selected</c:if>>HISTORY</option>
+									<option
+										<c:if test='${subjectName eq "LITERATURE"}'>selected</c:if>>LITERATURE</option>
+									<option
+										<c:if test='${subjectName eq "MATHEMATICS"}'>selected</c:if>>MATHEMATICS</option>
+									<option
+										<c:if test='${subjectName eq "PHYSICS"}'>selected</c:if>>PHYSICS</option>
 								</select>
 							</div>
 							<div class="col-sm-4">
@@ -187,6 +210,17 @@
 										<option>FILL IN THE GAPS</option>
 										<option>SAME STRESS PATTERN AS GIVEN WORD</option>
 										<option>APPROPRIATE STRESS PATTERN</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="row form-group">
+								<div class="col-sm-12">
+									<label for="Topics">Topics (Hold down the Ctrl button to select multiple options.)</label> <select multiple id="topics" class="form-control"
+										name="topics">
+										<c:forEach var="item" items="${topics}">
+											<option value="${item.webKey}">${item.name}</option>
+										</c:forEach>
 									</select>
 								</div>
 							</div>

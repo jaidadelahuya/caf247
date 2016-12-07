@@ -3,6 +3,7 @@ package com.jevalab.azure.persistence;
 //third commit
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +16,6 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
@@ -26,11 +26,12 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
+import com.jevalab.azure.cbt.CBT;
+import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.Notification;
 import com.jevalab.azure.notifications.messages.MessageN;
 import com.jevalab.helper.classes.EntityConverter;
-import com.jevalab.helper.classes.Util;
 
 public class GeneralController {
 
@@ -367,6 +368,118 @@ public class GeneralController {
 		
 		
 		return keys;
+	}
+
+	public static QueryResultList<Entity> getStandardUTME(CBT cbt) {
+		Query q = new Query(Question.class.getSimpleName());
+		q.setKeysOnly();
+		List<Filter> subjects = new ArrayList<>();
+		for(String s : cbt.getQuestionMap().keySet()) {
+			subjects.add(new Query.FilterPredicate("subjectName",
+					Query.FilterOperator.EQUAL, s));
+		}
+		
+		Query.Filter f1 = new Query.CompositeFilter(CompositeFilterOperator.OR, subjects);
+		Query.Filter f2 = new Query.FilterPredicate("year",
+				Query.FilterOperator.EQUAL, cbt.getYear());
+		Query.Filter f3 = new Query.FilterPredicate("vendor",
+				Query.FilterOperator.EQUAL, cbt.getVendorName());
+		List<Filter> filters = new ArrayList<>();
+		filters.add(f1); filters.add(f2); filters.add(f3);
+		
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		
+		q.setFilter(f);
+		
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(250));
+		
+		return qrl;
+		
+	}
+
+	public static QueryResultList<Entity> getUTMESubject(CBT cbt) {
+		Query q = new Query(Question.class.getSimpleName());
+		q.setKeysOnly();
+		Query.Filter f1 = null;
+		FetchOptions options = null;
+		for(String s : cbt.getQuestionMap().keySet()) {
+			f1 = new Query.FilterPredicate("subjectName",
+					Query.FilterOperator.EQUAL, s);
+			if(s.equalsIgnoreCase("english")) {
+				options = FetchOptions.Builder.withLimit(100);
+			}else {
+				options = FetchOptions.Builder.withLimit(50);
+			}
+		}
+		Query.Filter f2 = new Query.FilterPredicate("year",
+				Query.FilterOperator.EQUAL, cbt.getYear());
+		Query.Filter f3 = new Query.FilterPredicate("vendor",
+				Query.FilterOperator.EQUAL, cbt.getVendorName());
+		List<Filter> filters = new ArrayList<>();
+		filters.add(f1); filters.add(f2); filters.add(f3);
+		
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		
+		q.setFilter(f);
+		
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(options);
+		
+		return qrl;
+		
+	}
+
+	public static QueryResultList<Entity> getCustomUTME(CBT cbt) {
+		Query q = new Query(Question.class.getSimpleName());
+		q.setKeysOnly();
+		Query.Filter f1 = null;
+
+		for(String s : cbt.getQuestionMap().keySet()) {
+			f1 = new Query.FilterPredicate("subjectName",
+					Query.FilterOperator.EQUAL, s);
+			
+		}
+		
+		Query.Filter f3 = new Query.FilterPredicate("vendor",
+				Query.FilterOperator.EQUAL, cbt.getVendorName());
+		List<Filter> filters = new ArrayList<>();
+		filters.add(f1); filters.add(f3);
+		
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
+		
+		q.setFilter(f);
+		
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(1600));
+		
+		Collections.shuffle(qrl);
+		
+		List<Entity> list = new ArrayList<>(qrl);
+		
+		qrl.removeAll(list);
+		
+		for(int i = 0; i < cbt.getNoQ(); i++) {
+			qrl.add(list.get(i));
+		}
+		
+		return qrl;
+	}
+
+	public static QueryResultList<Entity> getCustomUTME(CBT cbt, String[] topics) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static QueryResultList<Entity> getTopics(Key key) {
+		Query q = new Query(Topic.class.getSimpleName());
+		Query.Filter f3 = new Query.FilterPredicate("subject",
+				Query.FilterOperator.EQUAL, key);
+		q.setFilter(f3);
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(1000));
+		
+		return qrl;
 	}
 
 }

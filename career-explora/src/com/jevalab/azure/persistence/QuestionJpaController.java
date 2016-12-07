@@ -165,6 +165,7 @@ public class QuestionJpaController implements Serializable {
     public List<Question> findQuestionEntities(String subjectName) {
     	subjectName = subjectName.toUpperCase();
 		EntityManager em = getEntityManager();
+		
     	Query q = em.createQuery("SELECT q FROM  question q where subjectName = :subject");
     	q.setParameter("subject", subjectName);
     	List list = q.getResultList();
@@ -178,6 +179,12 @@ public class QuestionJpaController implements Serializable {
     	q.setParameter("subject", subjectName);
     	List list = q.getResultList();
 		return list;
+	}
+
+
+	public void findQuestionsByKey() {
+		// TODO Auto-generated method stub
+		
 	}
     
 }

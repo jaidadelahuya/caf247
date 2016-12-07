@@ -27,6 +27,6 @@ public class InitCBT extends HttpServlet {
 
 		}
 
-		req.getRequestDispatcher("/WEB-INF/cbt/index.jsp").include(req, resp);
+		resp.sendRedirect(resp.encodeRedirectURL("/azure/p/cbt"));
 	}
 }

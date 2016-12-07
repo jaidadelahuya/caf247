@@ -10,17 +10,11 @@ import com.jevalab.azure.persistence.Question;
 
 public class JsonQuestion  {
 
-	private CbtRecord rec;
+
 	private Collection<Question> questions;
 	private List<JsonEnglishCategory> englishQuestions;
 
-	public CbtRecord getRec() {
-		return rec;
-	}
-
-	public void setRec(CbtRecord rec) {
-		this.rec = rec;
-	}
+	
 
 	public Collection<Question> getQuestions() {
 		return questions;
@@ -43,14 +37,13 @@ public class JsonQuestion  {
 
 	public JsonQuestion(CbtRecord rec, Collection<Question> questions) {
 		super();
-		this.rec = rec;
+	
 		this.questions = questions;
 	}
 
 	public JsonQuestion(CbtRecord rec,
 			List<JsonEnglishCategory> englishQuestions) {
 		super();
-		this.rec = rec;
 		this.englishQuestions = englishQuestions;
 	}
 	

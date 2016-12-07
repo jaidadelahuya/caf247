@@ -4,7 +4,149 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
+	
+	<servlet>
+		<servlet-name>GetSubjectTopics</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.GetSubjectTopic</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetSubjectTopics</servlet-name>
+		<url-pattern>/ca/admin/cbt/topic</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminSubjectsPage</servlet-name>
+		<jsp-file>/WEB-INF/admin/subjects.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminSubjectsPage</servlet-name>
+		<url-pattern>/ca/admin/p/subjects</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CustomUTME2Page</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomUTME2Page</servlet-name>
+		<url-pattern>/azure/cbt/utme/p/custom/2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CustomUTME1Page</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/custom-subject-1.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomUTME1Page</servlet-name>
+		<url-pattern>/azure/cbt/utme/p/custom/1</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>StandardUTMESubjectPage</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/standard-subject.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StandardUTMESubjectPage</servlet-name>
+		<url-pattern>/azure/cbt/utme/p/standard/subject</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>StandardUTMEPage</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/standard-utme.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>StandardUTMEPage</servlet-name>
+		<url-pattern>/azure/cbt/utme/p/standard/default</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>UTMEModules</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/modules.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UTMEModules</servlet-name>
+		<url-pattern>/azure/cbt/p/utme/modules</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetCBT</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.GetCBT</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetCBT</servlet-name>
+		<url-pattern>/azure/cbt/get</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitCustomUTME2</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.InitCustomUTME2</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitCustomUTME2</servlet-name>
+		<url-pattern>/azure/cbt/utme/i/custom/2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitCustomUTME1</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.InitCustomUTME1</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitCustomUTME1</servlet-name>
+		<url-pattern>/azure/cbt/utme/i/custom/1</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitStandardUTMESubject</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.InitStandardUTMESubject</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitStandardUTMESubject</servlet-name>
+		<url-pattern>/azure/cbt/utme/i/standard/subject</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitStandardUTME</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.InitStandardUTME</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitStandardUTME</servlet-name>
+		<url-pattern>/azure/cbt/utme/i/standard/default</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>UTMEModeSelect</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.UTMEModeSelect</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UTMEModeSelect</servlet-name>
+		<url-pattern>/azure/cbt/utme/mode/select</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitUTMEModules</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.InitUTMEModules</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitUTMEModules</servlet-name>
+		<url-pattern>/azure/cbt/i/utme/modules</url-pattern>
+	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>CBTSeries</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.CBTSeries</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CBTSeries</servlet-name>
+		<url-pattern>/azure/cbt/select</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>SaveSubject</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.SaveSubject</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SaveSubject</servlet-name>
+		<url-pattern>/ca/admin/cbt/subject/save</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>CbtModules</servlet-name>
 		<jsp-file>/WEB-INF/admin/cbt-modules.jsp</jsp-file>
@@ -13,7 +155,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CbtModules</servlet-name>
 		<url-pattern>/ca/admin/cbt</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitNewSubject</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitNewSubject</servlet-class>
@@ -318,6 +460,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>CBTPage</servlet-name>
 		<url-pattern>/azure/cbt/page</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CBTIndexpage</servlet-name>
+		<jsp-file>/WEB-INF/cbt/index.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CBTIndexpage</servlet-name>
+		<url-pattern>/azure/p/cbt</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
