@@ -6,6 +6,124 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>InitEditQuestions</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitEditQuestions</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitEditQuestions</servlet-name>
+		<url-pattern>/ca/admin/cbt/i/questions/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EditQuestion1</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.EditQuestion1</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EditQuestion1</servlet-name>
+		<url-pattern>/ca/admin/cbt/s/questions/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminGetPassages</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.AdminGetPassages</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminGetPassages</servlet-name>
+		<url-pattern>/ca/admin/cbt/english/passage/get</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CreateEnglishPassage</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.CreateEnglishPassage</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CreateEnglishPassage</servlet-name>
+		<url-pattern>/ca/admin/cbt/english/passage/create</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>InitNewEnglishPassage</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.InitNewEnglishPassage</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitNewEnglishPassage</servlet-name>
+		<url-pattern>/ca/admin/cbt/i/english/passage/new</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>NewEnglishPassage1</servlet-name>
+		<jsp-file>/WEB-INF/admin/new-english-passage-1.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewEnglishPassage1</servlet-name>
+		<url-pattern>/ca/admin/cbt/p1/english/passage/new</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EditQuestionPage2</servlet-name>
+		<jsp-file>/WEB-INF/admin/edit-question2.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EditQuestionPage2</servlet-name>
+		<url-pattern>/ca/admin/cbt/p2/questions/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>EditQuestionPage1</servlet-name>
+		<jsp-file>/WEB-INF/admin/edit-question1.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EditQuestionPage1</servlet-name>
+		<url-pattern>/ca/admin/cbt/p1/questions/edit</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>NewEnglishPassage1</servlet-name>
+		<jsp-file>/WEB-INF/admin/new-english-passage-1.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>NewEnglishPassage1</servlet-name>
+		<url-pattern>/ca/admin/cbt/p1/english/passage/new</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CustomUTME2PageStep3</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2-p3.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomUTME2PageStep3</servlet-name>
+		<url-pattern>/azure/cbt/utme/p3/custom/2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>CustomUTME2PageStep2</servlet-name>
+		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2-p2.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomUTME2PageStep2</servlet-name>
+		<url-pattern>/azure/cbt/utme/p2/custom/2</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetTopics</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.GetTopics</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetTopics</servlet-name>
+		<url-pattern>/azure/cbt/utme/custom/2/topics</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetQuestionsTotal</servlet-name>
+		<servlet-class>com.jevalab.azure.cbt.GetQuestionsTotal</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetQuestionsTotal</servlet-name>
+		<url-pattern>/azure/cbt/utme/custom/2/questions/total</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>GetSubjectTopics</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.GetSubjectTopic</servlet-class>
 	</servlet>

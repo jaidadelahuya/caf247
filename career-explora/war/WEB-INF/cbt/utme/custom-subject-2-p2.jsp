@@ -40,16 +40,23 @@
 
 						<div class="card-content">
 							<span class="card-title">Custom UTME Subject Test II</span><br>
-							<small>Complete the form to take a test. All fields are
-								required.</small>
+							<small>Select the topics you want included in the test.</small>
 
-							<form action="<c:url value='/azure/cbt/utme/custom/2/topics' />">
-								
+							<form
+								action="<c:url value='/azure/cbt/utme/custom/2/questions/total' />">
+
 								<div class="row">
-									<div class="input-field col s12 m6">
-										<%@ include file="/pages/partials/subjects.html"%>
-									</div>
+									<div class="input-field col s12">
+										<ul class="collection">
+											<c:forEach var="item" items="${ct2.topics}">
+												<li class="collection-item"><input type="checkbox"
+													name="topic" id="${item.webKey}" value="${item.webKey}" />
+													<label for="${item.webKey}"><c:out
+															value='${item.name}' /></label></li>
+											</c:forEach>
 
+										</ul>
+									</div>
 								</div>
 
 

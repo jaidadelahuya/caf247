@@ -37,47 +37,44 @@
 			<div class="row">
 				<div class="col s12 m12">
 					<div class="card">
-						<div class="card-content">
-							<span class="card-title">Custom UTME Subject Test I</span><br>
-							<small>Complete the form to take a test. All fields are
-								required.</small>
 
-							<form action="<c:url value='/azure/cbt/get' />">
-								<input type="hidden" name="title" value="Custom UTME Subject Test I" />
-								<input type="hidden" name="vendor" value="UTME" />
+						<div class="card-content">
+							<span class="card-title">Custom UTME Subject Test II</span><br>
+							<small><c:out value="${ct2.noQ}" /> questions were
+								found.<br>Complete both fields and click continue.</small>
+
+							<form
+								action="<c:url value='/azure/cbt/get' />">
+								<input type="hidden" name="title"
+									value="Custom UTME Subject Test II" /> <input type="hidden"
+									name="vendor" value="UTME" /> <input type="hidden"
+									name="subject" value="${ct2.subject}" />
 								<div class="row">
-									<div class="input-field col s6">
-										<%@ include file="/pages/partials/subjects.html"%>
+									<div class="input-field col s12 m6">
+										<input id="noq" min="1" max="${ct2.noQ}" name="question"
+											type="number" class="validate"> <label for="noq"
+											data-error="Your test will have only ${ct2.noQ} questions" data-success="right">Number of
+											questions (Max = <c:out value="${ct2.noQ}" />)
+										</label>
 									</div>
-									<div class="input-field col s6">
+									<div class="input-field col s12 m6">
 										<input id="time" name="time" type="number" class="validate"
 											required="required"> <label
 											data-error="Time should be in minutes" data-success="right"
 											for="time">How long should this test take (mins)?</label>
 									</div>
 								</div>
-
-
-								<div class="row">
-									<div class="input-field col s6">
-										<input name="question" id="questions" type="number" min="10"
-											max="100" required="required" class="validate"> <label
-											for="questions"
-											data-error="Min. number = 10 and Max. number = 100"
-											data-success="right">How many questions do you want
-											to attempt?</label>
-									</div>
-								</div>
-
 								<div class="row">
 
 									<div class="input-field col s12">
-										<button type="submit" 
+										<button type="submit"
 											class="ca-btn-primary ca-btn-lg launchCBT">Continue</button>
 									</div>
 								</div>
 							</form>
 						</div>
+
+
 					</div>
 
 
@@ -86,11 +83,11 @@
 			</div>
 		</div>
 
-
-		<script src="/js/jquery-1.11.2.min.js"></script>
-		<script src="/js/materialize.min.js"></script>
-		<script src="/js/jquery.webui-popover.js"></script>
-		<script type="text/javascript" src="/js/main.js"></script>
-		<script type="text/javascript" src="/js/cbt1.js"></script>
+	</div>
+	<script src="/js/jquery-1.11.2.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="/js/jquery.webui-popover.js"></script>
+	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/cbt1.js"></script>
 </body>
 </html>

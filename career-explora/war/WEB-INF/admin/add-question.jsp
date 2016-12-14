@@ -41,7 +41,7 @@
 						</div>
 					</c:when>
 				</c:choose>
-				
+
 				<form
 					action="<%=blobstoreService
 					.createUploadUrl("/ca/admin/question/save")%>"
@@ -213,11 +213,19 @@
 									</select>
 								</div>
 							</div>
+							<div class="row form-group">
+								<div class="col-sm-12" >
+									<ul id="passage-list" style="border: 1px solid gray; padding: 1%; display: none">
+										<strong>Select a passage</strong><br/>
+									</ul>
+								</div>
+							</div>
 
 							<div class="row form-group">
 								<div class="col-sm-12">
-									<label for="Topics">Topics (Hold down the Ctrl button to select multiple options.)</label> <select multiple id="topics" class="form-control"
-										name="topics">
+									<label for="Topics">Topics (Hold down the Ctrl button
+										to select multiple options.)</label> <select multiple id="topics"
+										class="form-control" name="topics">
 										<c:forEach var="item" items="${topics}">
 											<option value="${item.webKey}">${item.name}</option>
 										</c:forEach>
@@ -244,9 +252,51 @@
 	<script src="/js/waitMe.js"></script>
 	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 	<script type="text/javascript">
+		tinymce
+				.init({
+					selector : 'textarea',
+					theme : 'modern',
+					plugins : [
+							'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+							'searchreplace wordcount visualblocks visualchars code fullscreen',
+							'insertdatetime media nonbreaking save table contextmenu directionality',
+							'emoticons template paste textcolor colorpicker textpattern imagetools codesample toc' ],
+					toolbar1 : 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+					toolbar2 : 'print preview media | forecolor backcolor emoticons | codesample',
+					image_advtab : true
+
+				});
+	</script>
+	<script type="text/javascript">
 		$(document).ready(function() {
-			tinymce.init({
-				selector : '.tiny'
+
+			$("#category-name").on("change", function() {
+				var x = $(this).val();
+				if (x == "COMPREHENSION") {
+					var y = $("#year").val();
+					var z = $("#vendor").val();
+					if (y) {
+						$.ajax({
+							url : "/ca/admin/cbt/english/passage/get",
+							data : {
+								"year" : y,
+								"vendor" : z
+							},
+							dataType : "json",
+							success : function(data) {
+								for(i=0;i<data.length;i++) {
+									$("#passage-list").append("<li class='radio' style='list-style: none; margin-bottom: 5px'><label><input type='radio' name='passage-key' value='"+data[i].key+"' >"+data[i].snippet+"</label></li>");
+								}
+								$("#passage-list").slideDown();
+							},
+							error : function(xhr) {
+								alert(xhr.statusText);
+							}
+						});
+					} else {
+						alert("You need to select a year!");
+					}
+				}
 			});
 
 		});

@@ -9,13 +9,56 @@ public class Question implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 4228495498192673667L;
-	protected String webKey, body,image,userAns,extraInfo;
+	protected String webKey, body,image,userAns,extraInfo,category,passageKey,subject;
 	protected List<String> alts;
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((webKey == null) ? 0 : webKey.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Question other = (Question) obj;
+		if (webKey == null) {
+			if (other.webKey != null)
+				return false;
+		} else if (!webKey.equals(other.webKey))
+			return false;
+		return true;
+	}
 	@Override
 	public String toString() {
 		return "Question [webKey=" + webKey + ", body=" + body + ", image="
 				+ image + ", userAns=" + userAns + ", extraInfo=" + extraInfo
-				+ ", alts=" + alts + "]";
+				+ ", category=" + category + ", passageKey=" + passageKey
+				+ ", subject=" + subject + ", alts=" + alts + "]";
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getPassageKey() {
+		return passageKey;
+	}
+	public void setPassageKey(String passageKey) {
+		this.passageKey = passageKey;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 	public String getWebKey() {
 		return webKey;

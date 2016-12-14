@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.helper.classes.StringConstants;
 import com.jevalab.helper.classes.Util;
@@ -31,20 +32,36 @@ public class GetCBT extends HttpServlet {
 		String year = req.getParameter("year");
 		String[] subjects = req.getParameterValues("subject");
 		String time = req.getParameter("time");
-		String noQ = req.getParameter("noQ");
-		String[] topics = req.getParameterValues("topic");
+		String noQ = req.getParameter("question");
+		
 
 		HttpSession session = req.getSession();
 		resp.setContentType("application/json");
-		if (!Util.notNull(year)) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"You have to select a year.");
-			return;
+		if(Util.notNull(title) && title.contains("Standard") ) {
+			if (!Util.notNull(year)) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"You have to select a year.");
+				return;
+			}
 		}
+		
 		if (!Util.notNull(subjects)) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"You have to select a subject.");
-			return;
+			if(title.equalsIgnoreCase("Standard UTME Examination")) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"You have to select three subjects.");
+				return;
+			}else {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"You have to select a subject.");
+				return;
+			}
+			
+		}else {
+			if(title.equalsIgnoreCase("Standard UTME Examination") && subjects.length != 3) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"You have to select three subjects.");
+				return;
+			}
 		}
 
 		Object o = null;
@@ -86,6 +103,7 @@ public class GetCBT extends HttpServlet {
 				} else if (title.equalsIgnoreCase("Standard UTME Examination")) {
 					cbt.setTime(270);
 					cbt.setNoQ(250);
+					cbt.getQuestionMap().put("English", new ArrayList<Question>());
 				} else if (title.contains("Custom")) {
 					if(!Util.notNull(time)) {
 						cbt.setTime(60);
@@ -100,19 +118,27 @@ public class GetCBT extends HttpServlet {
 					}
 					
 					if(!Util.notNull(noQ)) {
-						cbt.setNoQ(50);
+						resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Enter number of questions");
+						return;
 					}else {
 						try {
 						cbt.setNoQ(Integer.parseInt(noQ));
 						
 						}catch(NumberFormatException nfe) {
-							resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Enter a number of questions");
+							resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Enter a valid number of questions");
 							return;
 						}
 					}
 				}
 				
-				cbt = Util.setCbtQuestions(cbt,topics);
+				CustomTest2 ct2 = null;
+				synchronized (session) {
+					ct2 = (CustomTest2) session.getAttribute("ct2");
+				}
+				
+				cbt = Util.setCbtQuestions(cbt, ct2);
+				String json = new Gson().toJson(cbt);
+				resp.getWriter().write(json);
 			}
 		}
 

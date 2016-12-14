@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.DatastoreService;
@@ -16,6 +18,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
@@ -27,6 +30,8 @@ import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
 import com.jevalab.azure.cbt.CBT;
+import com.jevalab.azure.cbt.CustomTest2;
+import com.jevalab.azure.cbt.EnglishPassage;
 import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.Notification;
@@ -38,8 +43,6 @@ public class GeneralController {
 	public static final DatastoreService ds = DatastoreServiceFactory
 			.getDatastoreService();
 	private static Transaction txn = null;
-	
-	
 
 	public static List<Article> getLatestArticles(String categoryName, int i) {
 
@@ -167,19 +170,20 @@ public class GeneralController {
 	public static Map<String, Object> getPreferredPosts(AzureUser user,
 			String cursor) {
 		Query q = new Query(Discussion.class.getSimpleName());
-		Filter f = new Query.FilterPredicate("subscribers", FilterOperator.EQUAL, user.getKey());
+		Filter f = new Query.FilterPredicate("subscribers",
+				FilterOperator.EQUAL, user.getKey());
 		q.setFilter(f);
 		q.addSort("dateCreated", SortDirection.DESCENDING);
 		PreparedQuery pq = ds.prepare(q);
 		FetchOptions options = FetchOptions.Builder.withLimit(10);
-		if(cursor != null) {
+		if (cursor != null) {
 			options.startCursor(Cursor.fromWebSafeString(cursor));
 		}
 		List<Discussion> articles = new ArrayList<>();
 		QueryResultList<Entity> rs = pq.asQueryResultList(options);
 		Iterator<Entity> ents = rs.iterator();
 		Cursor c = rs.getCursor();
-		
+
 		while (ents.hasNext()) {
 			articles.add(EntityConverter.entityToDiscussion(ents.next()));
 		}
@@ -187,47 +191,34 @@ public class GeneralController {
 		map.put("post", articles);
 		map.put("cursor", c.toWebSafeString());
 
-		/*String clss = user.getsClass();
-		List<String> ints = user.getAreaOfInterest();
-		List<String> interest = Util.toInterestValues(ints);
-		Filter f0 = new FilterPredicate("subscriber", FilterOperator.EQUAL,
-				KeyFactory.createKey(AzureUser.class.getSimpleName(),
-						user.getUserID()));
-		Filter f4 = new FilterPredicate("owner", FilterOperator.EQUAL,
-				KeyFactory.createKey(AzureUser.class.getSimpleName(),
-						user.getUserID()));
-		List<Filter> fs = new ArrayList<>();
-		fs.add(f0);
-		fs.add(f4);
-		for (String s : interest) {
-			fs.add(new FilterPredicate("tags", FilterOperator.EQUAL, s));
-		}
-		Filter f1 = new FilterPredicate("tags", FilterOperator.EQUAL, clss);
-		Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.OR, fs);
-		List<Filter> fs1 = new ArrayList<>();
-		fs1.add(f1);
-		fs1.add(f2);
-		Filter f3 = new Query.CompositeFilter(CompositeFilterOperator.AND, fs1);
-		q.setFilter(f3);
-		q.addSort("dateCreated", SortDirection.DESCENDING);
-		PreparedQuery pq = ds.prepare(q);
-		FetchOptions options = FetchOptions.Builder.withLimit(10);
-		options.offset(offset * 10);
-		List<Discussion> articles = new ArrayList<>();
-		QueryResultList<Entity> rs = pq.asQueryResultList(options);
-
-		Iterator<Entity> ents = rs.iterator();
-		if (rs.size() < 10) {
-			offset = 0;
-		} else {
-			offset++;
-		}
-		while (ents.hasNext()) {
-			articles.add(EntityConverter.entityToDiscussion(ents.next()));
-		}
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("post", articles);
-		map.put("offset", offset);*/
+		/*
+		 * String clss = user.getsClass(); List<String> ints =
+		 * user.getAreaOfInterest(); List<String> interest =
+		 * Util.toInterestValues(ints); Filter f0 = new
+		 * FilterPredicate("subscriber", FilterOperator.EQUAL,
+		 * KeyFactory.createKey(AzureUser.class.getSimpleName(),
+		 * user.getUserID())); Filter f4 = new FilterPredicate("owner",
+		 * FilterOperator.EQUAL,
+		 * KeyFactory.createKey(AzureUser.class.getSimpleName(),
+		 * user.getUserID())); List<Filter> fs = new ArrayList<>(); fs.add(f0);
+		 * fs.add(f4); for (String s : interest) { fs.add(new
+		 * FilterPredicate("tags", FilterOperator.EQUAL, s)); } Filter f1 = new
+		 * FilterPredicate("tags", FilterOperator.EQUAL, clss); Filter f2 = new
+		 * Query.CompositeFilter(CompositeFilterOperator.OR, fs); List<Filter>
+		 * fs1 = new ArrayList<>(); fs1.add(f1); fs1.add(f2); Filter f3 = new
+		 * Query.CompositeFilter(CompositeFilterOperator.AND, fs1);
+		 * q.setFilter(f3); q.addSort("dateCreated", SortDirection.DESCENDING);
+		 * PreparedQuery pq = ds.prepare(q); FetchOptions options =
+		 * FetchOptions.Builder.withLimit(10); options.offset(offset * 10);
+		 * List<Discussion> articles = new ArrayList<>();
+		 * QueryResultList<Entity> rs = pq.asQueryResultList(options);
+		 * 
+		 * Iterator<Entity> ents = rs.iterator(); if (rs.size() < 10) { offset =
+		 * 0; } else { offset++; } while (ents.hasNext()) {
+		 * articles.add(EntityConverter.entityToDiscussion(ents.next())); }
+		 * Map<String, Object> map = new HashMap<String, Object>();
+		 * map.put("post", articles); map.put("offset", offset);
+		 */
 		return map;
 	}
 
@@ -258,8 +249,10 @@ public class GeneralController {
 		Query.Filter f1 = new Query.FilterPredicate("viewed",
 				Query.FilterOperator.EQUAL, false);
 		List<Filter> list = new ArrayList<>();
-		list.add(f1); list.add(f);
-		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.AND, list);
+		list.add(f1);
+		list.add(f);
+		Query.Filter f2 = new Query.CompositeFilter(
+				CompositeFilterOperator.AND, list);
 		q.setFilter(f2);
 		FetchOptions options = null;
 		Cursor s = null;
@@ -304,9 +297,11 @@ public class GeneralController {
 		Query.Filter fz = new Query.CompositeFilter(CompositeFilterOperator.OR,
 				third);
 		Query.Filter f5 = new Query.FilterPredicate("type",
-				Query.FilterOperator.EQUAL, MessageNotification.class.getSimpleName());
+				Query.FilterOperator.EQUAL,
+				MessageNotification.class.getSimpleName());
 		List<Filter> fourth = new ArrayList<>();
-		fourth.add(f5); fourth.add(fz);
+		fourth.add(f5);
+		fourth.add(fz);
 		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
 				fourth);
 		q.setFilter(f);
@@ -316,7 +311,7 @@ public class GeneralController {
 		QueryResultList<Entity> r = pq.asQueryResultList(options);
 		return r;
 	}
-	
+
 	public static Map<Key, Entity> getEntities(List<Key> keys) {
 		return ds.get(keys);
 	}
@@ -327,10 +322,13 @@ public class GeneralController {
 		Query.Filter f = new Query.FilterPredicate("recipient",
 				Query.FilterOperator.EQUAL, u.getKey());
 		Query.Filter f1 = new Query.FilterPredicate("type",
-				Query.FilterOperator.EQUAL, MessageNotification.class.getSimpleName());
+				Query.FilterOperator.EQUAL,
+				MessageNotification.class.getSimpleName());
 		List<Filter> list = new ArrayList<>();
-		list.add(f1); list.add(f);
-		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.AND, list);
+		list.add(f1);
+		list.add(f);
+		Query.Filter f2 = new Query.CompositeFilter(
+				CompositeFilterOperator.AND, list);
 		q.setFilter(f2);
 		FetchOptions options = null;
 		Cursor s = null;
@@ -350,23 +348,22 @@ public class GeneralController {
 	public static List<Key> getSubscribers(List<Filter> filters) {
 		Query q = new Query(AzureUser.class.getSimpleName());
 		q.setKeysOnly();
-		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.OR, filters);
+		Query.Filter f2 = new Query.CompositeFilter(CompositeFilterOperator.OR,
+				filters);
 		q.setFilter(f2);
-		
+
 		List<Key> keys = new ArrayList<>();
 		PreparedQuery pq = ds.prepare(q);
 		List<Entity> list = null;
 		int i = 0;
 		do {
 			list = pq.asList(FetchOptions.Builder.withLimit(1000).offset(i));
-			for(Entity e : list) {
+			for (Entity e : list) {
 				keys.add(e.getKey());
 			}
 			i++;
 		} while (list != null && list.size() == 1000);
-		
-		
-		
+
 		return keys;
 	}
 
@@ -374,28 +371,33 @@ public class GeneralController {
 		Query q = new Query(Question.class.getSimpleName());
 		q.setKeysOnly();
 		List<Filter> subjects = new ArrayList<>();
-		for(String s : cbt.getQuestionMap().keySet()) {
+		for (String s : cbt.getQuestionMap().keySet()) {
 			subjects.add(new Query.FilterPredicate("subjectName",
-					Query.FilterOperator.EQUAL, s));
+					Query.FilterOperator.EQUAL, s.toUpperCase()));
 		}
-		
-		Query.Filter f1 = new Query.CompositeFilter(CompositeFilterOperator.OR, subjects);
+
+		Query.Filter f1 = new Query.CompositeFilter(CompositeFilterOperator.OR,
+				subjects);
 		Query.Filter f2 = new Query.FilterPredicate("year",
 				Query.FilterOperator.EQUAL, cbt.getYear());
 		Query.Filter f3 = new Query.FilterPredicate("vendor",
 				Query.FilterOperator.EQUAL, cbt.getVendorName());
 		List<Filter> filters = new ArrayList<>();
-		filters.add(f1); filters.add(f2); filters.add(f3);
-		
-		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
-		
+		filters.add(f1);
+		filters.add(f2);
+		filters.add(f3);
+
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				filters);
+
 		q.setFilter(f);
-		
+
 		PreparedQuery pq = ds.prepare(q);
-		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(250));
-		
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(250));
+
 		return qrl;
-		
+
 	}
 
 	public static QueryResultList<Entity> getUTMESubject(CBT cbt) {
@@ -403,12 +405,12 @@ public class GeneralController {
 		q.setKeysOnly();
 		Query.Filter f1 = null;
 		FetchOptions options = null;
-		for(String s : cbt.getQuestionMap().keySet()) {
+		for (String s : cbt.getQuestionMap().keySet()) {
 			f1 = new Query.FilterPredicate("subjectName",
-					Query.FilterOperator.EQUAL, s);
-			if(s.equalsIgnoreCase("english")) {
+					Query.FilterOperator.EQUAL, s.toUpperCase());
+			if (s.equalsIgnoreCase("english")) {
 				options = FetchOptions.Builder.withLimit(100);
-			}else {
+			} else {
 				options = FetchOptions.Builder.withLimit(50);
 			}
 		}
@@ -417,17 +419,20 @@ public class GeneralController {
 		Query.Filter f3 = new Query.FilterPredicate("vendor",
 				Query.FilterOperator.EQUAL, cbt.getVendorName());
 		List<Filter> filters = new ArrayList<>();
-		filters.add(f1); filters.add(f2); filters.add(f3);
-		
-		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
-		
+		filters.add(f1);
+		filters.add(f2);
+		filters.add(f3);
+
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				filters);
+
 		q.setFilter(f);
-		
+
 		PreparedQuery pq = ds.prepare(q);
 		QueryResultList<Entity> qrl = pq.asQueryResultList(options);
-		
+
 		return qrl;
-		
+
 	}
 
 	public static QueryResultList<Entity> getCustomUTME(CBT cbt) {
@@ -435,40 +440,41 @@ public class GeneralController {
 		q.setKeysOnly();
 		Query.Filter f1 = null;
 
-		for(String s : cbt.getQuestionMap().keySet()) {
+		for (String s : cbt.getQuestionMap().keySet()) {
 			f1 = new Query.FilterPredicate("subjectName",
-					Query.FilterOperator.EQUAL, s);
-			
+					Query.FilterOperator.EQUAL, s.toUpperCase());
+
 		}
-		
+
 		Query.Filter f3 = new Query.FilterPredicate("vendor",
 				Query.FilterOperator.EQUAL, cbt.getVendorName());
 		List<Filter> filters = new ArrayList<>();
-		filters.add(f1); filters.add(f3);
-		
-		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND, filters);
-		
-		q.setFilter(f);
-		
-		PreparedQuery pq = ds.prepare(q);
-		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(1600));
-		
-		Collections.shuffle(qrl);
-		
-		List<Entity> list = new ArrayList<>(qrl);
-		
-		qrl.removeAll(list);
-		
-		for(int i = 0; i < cbt.getNoQ(); i++) {
-			qrl.add(list.get(i));
-		}
-		
-		return qrl;
-	}
+		filters.add(f1);
+		filters.add(f3);
 
-	public static QueryResultList<Entity> getCustomUTME(CBT cbt, String[] topics) {
-		// TODO Auto-generated method stub
-		return null;
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				filters);
+
+		q.setFilter(f);
+
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(1600));
+
+		Collections.shuffle(qrl);
+
+		List<Entity> list = new ArrayList<>(qrl);
+
+		qrl.removeAll(list);
+
+		for (int i = 0; i < cbt.getNoQ(); i++) {
+			if (i < list.size()) {
+				qrl.add(list.get(i));
+			}
+
+		}
+
+		return qrl;
 	}
 
 	public static QueryResultList<Entity> getTopics(Key key) {
@@ -477,8 +483,106 @@ public class GeneralController {
 				Query.FilterOperator.EQUAL, key);
 		q.setFilter(f3);
 		PreparedQuery pq = ds.prepare(q);
-		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder.withLimit(1000));
-		
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(2000));
+
+		return qrl;
+	}
+
+	public static QueryResultList<Entity> getQuestionsByTopics(String[] topics,
+			boolean keysOnly) {
+
+		QueryResultList<Entity> qrl = getQuestionsByTopics(topics, keysOnly,
+				2000);
+		return qrl;
+	}
+
+	public static QueryResultList<Entity> getQuestionsByTopics(String[] topics,
+			boolean keysOnly, int noQ) {
+		Query q = new Query(Question.class.getSimpleName());
+
+		if (topics.length > 1) {
+			List<Filter> list = new ArrayList<>();
+			for (String s : topics) {
+				list.add(new Query.FilterPredicate("topics",
+						FilterOperator.EQUAL, KeyFactory.stringToKey(s)));
+			}
+			Query.Filter f = new Query.CompositeFilter(
+					CompositeFilterOperator.OR, list);
+			q.setFilter(f);
+		} else {
+			Query.Filter f = new Query.FilterPredicate("topics",
+					FilterOperator.EQUAL, KeyFactory.stringToKey(topics[0]));
+			q.setFilter(f);
+		}
+
+		if (keysOnly) {
+			q.setKeysOnly();
+		}
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(noQ));
+		return qrl;
+	}
+
+	public static Map<Key, Entity> getCustomUTME(CBT cbt, CustomTest2 ct2) {
+		List<Entity> l = ct2.getqEnts();
+		Collections.shuffle(l);
+		Set<Key> keys = new HashSet<>();
+		for (Entity e : l) {
+			if (keys.size() < cbt.getNoQ()) {
+				keys.add(e.getKey());
+			} else {
+				break;
+			}
+		}
+		List<Key> li = new ArrayList<>();
+		li.addAll(keys);
+		Map<Key, Entity> map = GeneralController.findByKeys(li);
+		return map;
+	}
+
+	public static QueryResultList<Entity> getEnglishPassages(String year,
+			String vendor) {
+		Query q = new Query(EnglishPassage.class.getSimpleName());
+
+		Query.Filter f1 = new Query.FilterPredicate("year",
+				FilterOperator.EQUAL, year);
+		Query.Filter f2 = new Query.FilterPredicate("vendor",
+				FilterOperator.EQUAL, vendor);
+		List<Filter> list = new ArrayList<>();
+		list.add(f1);
+		list.add(f2);
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				list);
+		q.setFilter(f);
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withDefaults());
+		return qrl;
+
+	}
+
+	public static QueryResultList<Entity> getQuestions(String vendor,
+			String year, String subject) {
+		Query q = new Query(Question.class.getSimpleName());
+
+		Query.Filter f1 = new Query.FilterPredicate("year",
+				FilterOperator.EQUAL, year);
+		Query.Filter f2 = new Query.FilterPredicate("vendor",
+				FilterOperator.EQUAL, vendor);
+		Query.Filter f3 = new Query.FilterPredicate("subjectName",
+				FilterOperator.EQUAL, subject.toUpperCase());
+		List<Filter> list = new ArrayList<>();
+		list.add(f1);
+		list.add(f2);
+		list.add(f3);
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				list);
+		q.setFilter(f);
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(100));
 		return qrl;
 	}
 

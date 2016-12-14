@@ -50,7 +50,7 @@
 										<%@ include file="/pages/partials/year.html"%>
 									</div>
 									<div class="input-field col s6">
-										<select multiple>
+										<select multiple name="subject">
 											<option value="" disabled selected>Select three subjects</option>
 											<option value="account">Account</option>
 											<option value="Biology">Biology</option>
@@ -69,8 +69,8 @@
 									<div class="row">
 
 										<div class="input-field col s12">
-											<button type="submit" id="start-cbt"
-												class="ca-btn-primary ca-btn-lg">Continue</button>
+											<button type="submit" 
+												class="ca-btn-primary ca-btn-lg launchCBT">Continue</button>
 										</div>
 									</div>
 								</div>
@@ -87,5 +87,6 @@
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/jquery.webui-popover.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript" src="/js/cbt1.js"></script>
 </body>
 </html>

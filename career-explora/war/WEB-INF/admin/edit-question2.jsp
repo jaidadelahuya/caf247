@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>CBT Modules</title>
+<title>Edit Question</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="/style/materialize.min.css">
@@ -18,17 +18,13 @@
 	<%@ include file="/pages/partials/admin-nav.html"%>
 	<div class="container">
 		<div class="row">
-			<div class="col s12">
-				<div class="collection">
-					<a href="<c:url value='/ca/admin/p/subjects' />"
-						class="collection-item">New Question</a> <a href="/ca/admin/cbt/i/questions/edit"
-						class="collection-item">Edit Question</a> <a
-						href="/ca/admin/cbt/i/subject/new" class="collection-item">New
-						Subject</a> <a href="#!" class="collection-item">Edit Subject</a><a
-						href="#!" class="collection-item">Edit Topic</a> <a href="/ca/admin/cbt/i/english/passage/new"
-						class="collection-item">New English Passage</a>
-				</div>
-			</div>
+			<ul class="collection with-header">
+				<li class="collection-header"><h5>${fn:length(editQuestions)} questions found</h5></li>
+				
+				<c:forEach var="item" items = "${editQuestions}">
+					 <li class="collection-item"><div><span style="font-size: 10pt">${item.body}</span><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a><a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a></div></li>
+				</c:forEach>
+			</ul>
 		</div>
 	</div>
 

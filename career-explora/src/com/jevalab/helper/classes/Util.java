@@ -69,7 +69,10 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
+import com.jevalab.azure.admin.EnglishSnippet;
 import com.jevalab.azure.cbt.CBT;
+import com.jevalab.azure.cbt.CustomTest2;
+import com.jevalab.azure.cbt.Subject;
 import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
 import com.jevalab.azure.notifications.FriendRequestNotification;
@@ -1806,23 +1809,36 @@ public class Util {
 
 	}
 
-	public static CBT setCbtQuestions(CBT cbt, String[] topics) {
+	public static CBT setCbtQuestions(CBT cbt, CustomTest2 ct2) {
 		QueryResultList<Entity> qrl = null;
+		List<Question> qs = null;
 		if (cbt.getTitle().equals("Standard UTME Examination")) {
-			qrl = GeneralController.getUTMESubject(cbt);
-		} else if (cbt.getTitle().equals("Standard UTME Subject Test")) {
 			qrl = GeneralController.getStandardUTME(cbt);
+			qs = toQuestionList(qrl);
+		} else if (cbt.getTitle().equals("Standard UTME Subject Test")) {
+			qrl = GeneralController.getUTMESubject(cbt);
+			qs = toQuestionList(qrl);
 		} else if (cbt.getTitle().equals("Custom UTME Subject Test I")) {
 			qrl = GeneralController.getCustomUTME(cbt);
+			qs = toQuestionList(qrl);
 		} else if (cbt.getTitle().equals("Custom UTME Subject Test II")) {
-			qrl = GeneralController.getCustomUTME(cbt, topics);
+			Map<Key,Entity>	map = GeneralController.getCustomUTME(cbt,ct2);
+			qs = toQuestionList(map);
 		}
-		List<Question> qs = toQuestionList(qrl);
+		
 		cbt = groupQuestions(cbt, qs);
 		return cbt;
 	}
 
-	private static List<Question> toQuestionList(QueryResultList<Entity> qrl) {
+	private static List<Question> toQuestionList(Map<Key, Entity> map) {
+		List<Entity> l = new ArrayList<>();
+		for(Key k: map.keySet()) {
+			l.add(map.get(k));
+		}
+		return toQuestionList(l);
+	}
+
+	private static List<Question> toQuestionList(List<Entity> qrl) {
 		List<Key> keys = new ArrayList<>();
 		for (Entity e : qrl) {
 			keys.add(e.getKey());
@@ -1872,16 +1888,64 @@ public class Util {
 	}
 
 	private static com.jevalab.azure.cbt.Question toCBTQuestion(Question q) {
-		// TODO Auto-generated method stub
-		return null;
+		com.jevalab.azure.cbt.Question r = new com.jevalab.azure.cbt.Question();
+		r.setAlts(q.getAlternatives());
+		r.setBody(q.getBody());
+		r.setCategory(q.getCategoryName());
+		if (q.getImageKey() != null) {
+			ImagesService is = ImagesServiceFactory.getImagesService();
+			r.setImage(is.getServingUrl(ServingUrlOptions.Builder.withBlobKey(q
+					.getImageKey())));
+		}
+		if (q.getPassage() != null) {
+			r.setPassageKey(KeyFactory.keyToString(q.getPassage()));
+		}
+		r.setSubject(q.getSubjectName());
+		r.setWebKey(KeyFactory.createKeyString(Question.class.getSimpleName(),
+				q.getId()));
+		return r;
 	}
 
 	public static List<Topic> getSubjectTopics(Key key) {
 		QueryResultList<Entity> ents = GeneralController.getTopics(key);
 		List<Topic> topics = new ArrayList<>();
-		for(Entity e : ents) {
+		for (Entity e : ents) {
 			topics.add(new Topic(e));
 		}
 		return topics;
 	}
+
+	public static QueryResultList<Entity> getQuestionsTotal(String[] topics,
+			boolean keysOnly) {
+		QueryResultList<Entity> qrl = GeneralController.getQuestionsByTopics(topics, keysOnly);
+		return qrl;
+	}
+
+	public static List<EnglishSnippet> getPassageSnippet(String year,
+			String vendor) {
+		QueryResultList<Entity> qrl = GeneralController.getEnglishPassages(year,vendor);
+		
+		List<EnglishSnippet> l = new ArrayList<>();
+		for(Entity e: qrl) {
+			EnglishSnippet es = new EnglishSnippet();
+			String s = ((Text)e.getProperty("passage")).getValue();
+			s = (s.length()>75?s.substring(0,75):s);
+			es.setKey(KeyFactory.keyToString(e.getKey()));
+			es.setSnippet(s);
+			
+			l.add(es);
+		}
+		return l;
+	}
+
+	public static List<com.jevalab.azure.cbt.Question> getQuestions(
+			String vendor, String year, String subject) {
+		QueryResultList<Entity> qrl = GeneralController.getQuestions(vendor,year,subject);
+		List<com.jevalab.azure.cbt.Question> li = new ArrayList<>();
+		for(Entity e: qrl) {
+			li.add(toCBTQuestion(new Question(e)));
+		}
+		return li;
+	}
+
 }

@@ -121,7 +121,16 @@ public class QuestionInputServlet extends HttpServlet {
 			return;
 		}
 		
-		q.setImageKey(blobKey);
+		if(blobKey!=null) {
+			q.setImageKey(blobKey);
+		}
+		
+		String pKey = req.getParameter("passage-key");
+		
+		if(Util.notNull(pKey) && subjectName.equalsIgnoreCase("english")) {
+			q.setPassage(KeyFactory.stringToKey(pKey));
+		}
+		
 
 		q.setCategoryName(req.getParameter("category-name"));
 		
