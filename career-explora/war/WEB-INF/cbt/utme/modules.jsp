@@ -38,21 +38,13 @@
 				<div class="col s12 m12">
 					<div class="card">
 						<div class="card-content">
-							<span class="card-title">UTME Exam modes</span><br> <small>Select
+							<span class="card-title">UTME Exam modes</span><br> <small style="color: #983b59">Select
 								an examination mode</small>
 
 							<form action="<c:url value='/azure/cbt/utme/mode/select' />">
+								
 								<p style="margin: 2%;">
-									<input name="mode" type="radio" id="test1" value="standard-utme" checked="checked" /> <label
-										style="height: auto" for="test1"><strong
-										style="color: black; font-weight: bold">Standard UTME
-											Examination</strong><br /> This mode simulates atypical UTME
-										examination. English is compulsory and you have to select
-										three other subjects and a year. The duration for the
-										examination is 4hrs 30 minutes.</label>
-								</p>
-								<p style="margin: 2%;">
-									<input name="mode" type="radio" id="test2" value="standard-subject" /> <label
+									<input checked="checked" name="mode" type="radio" id="test2" value="standard-subject" /> <label
 										style="height: auto" for="test2"><strong
 										style="color: black; font-weight: bold">Standard UTME
 											subject test.</strong> <br>This mode simulates a UTME subject
@@ -76,8 +68,17 @@
 										you will like to complete the test.</label>
 								</p>
 								<p style="margin: 2%;">
-									<a href="/azure/cbt" class="waves-effect waves-light btn">Back</a> <button type="submit"
-										class="waves-effect waves-light btn">Next</button>
+									<input name="mode" type="radio" id="test1" value="standard-utme"  disabled="disabled" /> <label
+										style="height: auto" for="test1"><strong
+										style="color: black; font-weight: bold">Standard UTME
+											Examination</strong><br /> This mode simulates atypical UTME
+										examination. English is compulsory and you have to select
+										three other subjects and a year. The duration for the
+										examination is 4hrs 30 minutes.</label>
+								</p>
+								<p style="margin: 2%;">
+									<button id="cbt-back-1" class="ca-btn-primary ca-btn-lg">Back</button> <button type="submit"
+										class="ca-btn-primary ca-btn-lg">Next</button>
 								</p>
 
 							</form>
@@ -92,5 +93,14 @@
 	<script src="/js/materialize.min.js"></script>
 	<script src="/js/jquery.webui-popover.js"></script>
 	<script type="text/javascript" src="/js/main.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(e) {
+			
+			$("#cbt-back-1").click(function(e) {
+				e.preventDefault();
+				window.location.assign("/azure/p/cbt");
+			});
+		});
+	</script>
 </body>
 </html>

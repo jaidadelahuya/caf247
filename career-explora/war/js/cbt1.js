@@ -7,11 +7,19 @@ $(document).ready(function () {
 			url : x,
 			dataType : "json",
 			data : form.serialize(),
+			beforeSend : function() {
+				Materialize.toast('If you do not have pop up enabled, the test page will load shortly', 7000);
+			},
 			success : function (data) {
-				console.log(data);
-				sessionStorage.setItem("cbt", data);
-				var wind = window.open("/pages/cbt.html", data.title,
+				
+				var wind = window.open("/azure/cbt/test/board", data.title,
 				"toolbar=yes, scrollbars=yes, fullscreen=1");
+				if(wind) {
+					wind.data = data;
+				}else {
+					alert("You have to disable pop up blocker to open the test page.");
+				}
+				
 			}, 
 			error : function(xhr) {
 				alert(xhr.statusText);

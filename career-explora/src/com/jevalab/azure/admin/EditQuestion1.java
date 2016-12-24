@@ -27,9 +27,10 @@ public class EditQuestion1 extends HttpServlet {
 		
 		HttpSession session = req.getSession();
 		if(Util.notNull(vendor,year,subject)) {
-			List<Question> q = Util.getQuestions(vendor,year,subject);
+			EditQuestionsPage q = Util.getQuestions(vendor,year,subject);
 			synchronized (session) {
-				session.setAttribute("editQuestions", q);
+				
+				session.setAttribute("editQuestionsPage", q);
 			}
 			resp.sendRedirect(resp.encodeRedirectURL("/ca/admin/cbt/p2/questions/edit"));
 		}else{

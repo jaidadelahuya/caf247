@@ -3,7 +3,7 @@ package com.jevalab.azure.cbt;
 import java.io.Serializable;
 import java.util.List;
 
-public class Question implements Serializable {
+public class Question implements Serializable, Comparable<Question> {
 
 	/**
 	 * 
@@ -11,6 +11,7 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 4228495498192673667L;
 	protected String webKey, body,image,userAns,extraInfo,category,passageKey,subject;
 	protected List<String> alts;
+	private int noTopics;
 	
 	@Override
 	public int hashCode() {
@@ -95,6 +96,17 @@ public class Question implements Serializable {
 	}
 	public void setAlts(List<String> alts) {
 		this.alts = alts;
+	}
+	@Override
+	public int compareTo(Question o) {
+		
+		return this.body.compareToIgnoreCase(o.getBody());
+	}
+	public int getNoTopics() {
+		return noTopics;
+	}
+	public void setNoTopics(int noTopics) {
+		this.noTopics = noTopics;
 	}
 	
 	

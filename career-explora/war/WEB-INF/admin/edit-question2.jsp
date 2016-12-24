@@ -18,13 +18,42 @@
 	<%@ include file="/pages/partials/admin-nav.html"%>
 	<div class="container">
 		<div class="row">
-			<ul class="collection with-header">
-				<li class="collection-header"><h5>${fn:length(editQuestions)} questions found</h5></li>
-				
-				<c:forEach var="item" items = "${editQuestions}">
-					 <li class="collection-item"><div><span style="font-size: 10pt">${item.body}</span><a href="#!" class="secondary-content"><i class="material-icons">delete</i></a><a href="#!" class="secondary-content"><i class="material-icons">mode_edit</i></a></div></li>
-				</c:forEach>
-			</ul>
+			<div class="card-panel">
+				<h6 style="font-weight: bold">${fn:length(editQuestionsPage.questions)}
+						questions found</h6> <br /> <span><strong>Subject: </strong> <c:out
+							value="${editQuestionsPage.subject}" /><strong
+						style="margin-left: 2%">Year: </strong> <c:out
+							value="${editQuestionsPage.year}" /><strong
+						style="margin-left: 2%">Vendor: </strong> <c:out
+							value="${editQuestionsPage.vendor}" /></span>
+
+				<table class="bordered striped responsive-table">
+					<thead>
+						<tr>
+							<th data-field="id">Question Body</th>
+							<th data-field="name">No. Topics</th>
+							<th data-field="price"></th>
+							<th data-field="pric"></th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<c:forEach var="item" items="${editQuestionsPage.questions}">
+							<tr>
+								<td>${item.body}</td>
+								
+								<td>${item.noTopics}</td>
+								<td><a
+									href="<c:url value='/ca/admin/cbt/questions/delete?web-key=${item.webKey}' />">Delete</a></td>
+								<td><a
+									href="<c:url value='/ca/admin/cbt/questions/get?web-key=${item.webKey}' />">Edit</a></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+
+
+			</div>
 		</div>
 	</div>
 

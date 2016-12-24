@@ -32,6 +32,7 @@ import com.google.appengine.api.datastore.TransactionOptions;
 import com.jevalab.azure.cbt.CBT;
 import com.jevalab.azure.cbt.CustomTest2;
 import com.jevalab.azure.cbt.EnglishPassage;
+import com.jevalab.azure.cbt.Test;
 import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.MessageNotification;
 import com.jevalab.azure.notifications.Notification;
@@ -371,7 +372,8 @@ public class GeneralController {
 		Query q = new Query(Question.class.getSimpleName());
 		q.setKeysOnly();
 		List<Filter> subjects = new ArrayList<>();
-		for (String s : cbt.getQuestionMap().keySet()) {
+		for (Test t : cbt.getTests()) {
+			String s = t.getSubject();
 			subjects.add(new Query.FilterPredicate("subjectName",
 					Query.FilterOperator.EQUAL, s.toUpperCase()));
 		}
@@ -405,7 +407,8 @@ public class GeneralController {
 		q.setKeysOnly();
 		Query.Filter f1 = null;
 		FetchOptions options = null;
-		for (String s : cbt.getQuestionMap().keySet()) {
+		for (Test t:cbt.getTests()) {
+			String s = t.getSubject();
 			f1 = new Query.FilterPredicate("subjectName",
 					Query.FilterOperator.EQUAL, s.toUpperCase());
 			if (s.equalsIgnoreCase("english")) {
@@ -440,7 +443,8 @@ public class GeneralController {
 		q.setKeysOnly();
 		Query.Filter f1 = null;
 
-		for (String s : cbt.getQuestionMap().keySet()) {
+		for (Test t: cbt.getTests()) {
+			String s = t.getSubject();
 			f1 = new Query.FilterPredicate("subjectName",
 					Query.FilterOperator.EQUAL, s.toUpperCase());
 
@@ -584,6 +588,26 @@ public class GeneralController {
 		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
 				.withLimit(100));
 		return qrl;
+	}
+
+	public static QueryResultList<Entity> getQuestions(String subject, String vendor) {
+		Query q = new Query(Question.class.getSimpleName());
+		Query.Filter f3 = new Query.FilterPredicate("subjectName",
+				FilterOperator.EQUAL, subject.toUpperCase());
+		Query.Filter f2 = new Query.FilterPredicate("vendor",
+				FilterOperator.EQUAL, vendor);
+		List<Filter> list = new ArrayList<>();
+		list.add(f2);
+		list.add(f3);
+		
+		Query.Filter f = new Query.CompositeFilter(CompositeFilterOperator.AND,
+				list);
+		q.setFilter(f);
+		PreparedQuery pq = ds.prepare(q);
+		QueryResultList<Entity> qrl = pq.asQueryResultList(FetchOptions.Builder
+				.withLimit(5000));
+		return qrl;
+	
 	}
 
 }

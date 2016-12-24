@@ -6,61 +6,48 @@ var info = null;
 var questions = [];
 var history = null;
 
-
-function getQuestions(subject,time,question,pass) {
+function getQuestions(data) {
+	var pass = 50;
+	var subject = "";
+	var history = null;
+	var time = data.time;
+	var tests = data.tests;
+	$(".test-time").text(getTime(time));
 	
-	
-	$.ajax({
-		url : "/azure/questions/get",
-		type : "GET",
-		data : {
-			"subject" : subject,
-			"question" : question,
-			"time" : time,
-			"pass-mark" : pass
-		},
-		dataType : "Json",
-		success : function(data) {
+	if(tests.length>1) {
+		
+	}else {
+		var test = tests[0];
+		if(test.subject=="English") {
+			info = test.questions;
+			questions = initEnglishQuestionArray(info);
+			subject = "English"
+		}else {
+			info = test.questions;
 			
-			$(".test-time").text(getTime(time));
-
-			if (!data.questions) {
-				info = data.englishQuestions;
-				questions = initEnglishQuestionArray(info);
-			} else {
-				info = data.questions;
-				info = shuffle(info);
-				questions = initQuestionArray(info);
-
-			}
-			
-
-			$('#instructions-dialog').modal({
-				keyboard : false,
-				backdrop : 'static'
-			});
-			$('.start-test').on(
-					'click',
-					function() {
-						startCBT(subject, questions, history, time, pass);
-					});
-
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert(errorThrown);
-		},
-		complete : function() {
+			questions = initQuestionArray(info);
+			subject = test.subject;
 		}
+	}
+
+	$('#instructions-dialog').modal({
+		keyboard : false,
+		backdrop : 'static'
 	});
+	$('.start-test').on('click', function() {
+		startCBT(subject, questions, history, time, pass);
+	});
+
 }
 
 $(document).ready(function() {
-	var subject=sessionStorage.getItem("subject");
-	var time=sessionStorage.getItem("time");
-	var question=sessionStorage.getItem("question");
-	var pass=sessionStorage.getItem("pass");
-	
-	getQuestions(subject,time,question,pass);
+	// var subject=sessionStorage.getItem("subject");
+	// var time=sessionStorage.getItem("time");
+	var cbt = sessionStorage.getItem("cbt");
+	console.log(window.data);
+	// var pass=sessionStorage.getItem("pass");
+
+	getQuestions(window.data);
 
 });
 
@@ -200,12 +187,13 @@ function getTime(time) {
 }
 
 function startCBT(subject, data, history, time, passMark) {
-
+	console.log(data);
 	time = time * 60;
 	$('#instructions-dialog').modal('hide');
 	$('.heading').text(subject);
-	$('#extra-info').html(data[0].extraText);
+	$('#extra-info').html(data[0].extraInfo);
 	$('#div-q').html(questionNumber + ". " + data[0].body);
+	console.log(data[0]);
 	var alts = data[0].alts;
 	$('#opt-a').html(alts[0]);
 	$('#opt-b').html(alts[1]);
@@ -260,7 +248,7 @@ function startCBT(subject, data, history, time, passMark) {
 		on_exhausted : function(timer) {
 			timer.target.text('Time Up!!!');
 
-			timeUp(data, history, passMark,time);
+			timeUp(data, history, passMark, time);
 		},
 
 		// Handle tick events
@@ -275,7 +263,7 @@ function startCBT(subject, data, history, time, passMark) {
 
 }
 
-function timeUp(data, history, passMark,time) {
+function timeUp(data, history, passMark, time) {
 	$('#time-dialog').modal({
 		keyboard : false,
 		backdrop : 'static'
@@ -283,7 +271,7 @@ function timeUp(data, history, passMark,time) {
 
 	$('.time-up-button').click(function() {
 		$('#time-dialog').modal('hide');
-		finishClick(data, history, passMark,time);
+		finishClick(data, history, passMark, time);
 	});
 
 }
@@ -310,7 +298,8 @@ function finishClick(data, history, passMark, time) {
 					'/pages/partials/cbt.html',
 					function() {
 						$('.test-board-header').addClass('hidden-xs');
-						$("#profile-image").attr('src', $(".profile-img").prop("src"));
+						$("#profile-image").attr('src',
+								$(".profile-img").prop("src"));
 						initGeneralTab(data, username);
 						initTestInfo(data, time);
 						initReportAnalysis(data, passMark);
@@ -716,11 +705,10 @@ function initQuestionArray(data) {
 	var quest = null;
 	for (i = 0; i < data.length; i++) {
 		quest = {
-			subjectName : data[i].subjectName,
+			subjectName : data[i].subject,
 			body : data[i].body,
-			extraText : data[i].extraText,
-			correctAlt : data[i].correctAlternative,
-			alts : data[i].alternatives,
+			extraText : data[i].extraInfo,
+			alts : data[i].alts,
 			isCorrect : data[i].isCorrect,
 			choice : ""
 		};

@@ -13,7 +13,7 @@ public class CBT implements Serializable {
 	private static final long serialVersionUID = 5998555358321781827L;
 	private String vendorName, vendorLogo, year, username,title;
 	private int noQ, time;
-	private Map<String, List<Question>> questionMap;
+	private List<Test> tests;
 	public String getVendorName() {
 		return vendorName;
 	}
@@ -56,19 +56,20 @@ public class CBT implements Serializable {
 	public void setTime(int time) {
 		this.time = time;
 	}
-	public Map<String, List<Question>> getQuestionMap() {
-		return questionMap;
+	public List<Test> getTests() {
+		return tests;
 	}
-	public void setQuestionMap(Map<String, List<Question>> questionMap) {
-		this.questionMap = questionMap;
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
 	}
 	@Override
 	public String toString() {
 		return "CBT [vendorName=" + vendorName + ", vendorLogo=" + vendorLogo
 				+ ", year=" + year + ", username=" + username + ", title="
-				+ title + ", noQ=" + noQ + ", time=" + time + ", questionMap="
-				+ questionMap + "]";
+				+ title + ", noQ=" + noQ + ", time=" + time + ", tests="
+				+ tests + "]";
 	}
+	
 	
 	
 

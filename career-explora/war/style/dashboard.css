@@ -555,10 +555,10 @@ html,body {
 }
 
 .test-board-header {
-	height: 4.5em;
-	background-color: #3b5998;
-	color: white;
+	
+	color: #3b5998;
 	text-align: center;
+	border-bottom: 1px solid #fafafa
 }
 
 .test-board-question {
@@ -574,7 +574,7 @@ html,body {
 	font-size: 12pt;
 	font-style: italic;
 	color: gray;
-	padding: 2em;
+	
 	padding-bottom: 0px;
 }
 
@@ -584,7 +584,7 @@ html,body {
 }
 
 .heading-div {
-	height: 4.5em;
+	
 }
 
 .uptopic {

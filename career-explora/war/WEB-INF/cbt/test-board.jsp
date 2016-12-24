@@ -1,5 +1,7 @@
-
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <html style="height: 100%;">
 <head>
 <meta charset="ISO-8859-1">
@@ -19,7 +21,8 @@
 	top: 22%;
 }
 
-
+p {
+display: inline;}
 </style>
 </head>
 <body id="body" style="padding-top: 0px; height: 100%;">
@@ -28,20 +31,21 @@
 	<div class="container-fluid" id="div-1">
 		<div class="row">
 			<div class="test-board-header">
-				<div class="hidden-xs col-sm-2" style="height: 4.5em">
-					<img class="img-circle img-responsive profile-img to-pointer" />
+				<div class="col-xs-12 col-sm-4">
+					<p style="display: block;"><c:out value='${cbt.username}' /></p>
+					<p style="display: block;"><strong>Year: </strong><c:out value='${cbt.year}' /></p>
 				</div>
-
-				<div class="hidden-xs col-sm-8 heading-div" style="height: 4.5em">
-					<h2 class="heading"></h2>
+				<div class="hidden-xs col-sm-4 heading-div">
+					<img alt="" src="${cbt.vendorLogo}"><br>
+					<c:out value='${cbt.title}' />
 				</div>
-				<div class="col-xs-12 col-sm-2 col-md-2" id="save-div">
+				<div class="col-xs-12 col-sm-4" id="save-div">
 					<span id="demo" class="timer"></span>
 				</div>
 			</div>
 		</div>
 		<div id="cc-div-content" class="row">
-			<div class="row" >
+			<div class="row">
 				<div class="col-sm-12 test-board-extra-text" id="extra-info"></div>
 			</div>
 			<div class="row" id="diagram-passage">
@@ -190,18 +194,22 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel" style="color: white;">Result Saved</h4>
+					<h4 class="modal-title" id="myModalLabel" style="color: white;">Result
+						Saved</h4>
 				</div>
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-sm-12">
 							<h3 style="color: red; font-family: tahoma">Save Sucessful</h3>
-							<p><small>Click close window to go back to welcome page</small></p>
+							<p>
+								<small>Click close window to go back to welcome page</small>
+							</p>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer" style="background-color: orange;">
-					<button class="btn btn-primary btn-sm close-window">Close window</button>
+					<button class="btn btn-primary btn-sm close-window">Close
+						window</button>
 					<button type="button" class="btn btn-default btn-sm"
 						data-dismiss="modal">Cancel</button>
 

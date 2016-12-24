@@ -27,6 +27,8 @@
 						Subject</a> <a href="#!" class="collection-item">Edit Subject</a><a
 						href="#!" class="collection-item">Edit Topic</a> <a href="/ca/admin/cbt/i/english/passage/new"
 						class="collection-item">New English Passage</a>
+						<a href="/ca/admin/cbt/1/question/stats"
+						class="collection-item">Question Stats</a>
 				</div>
 			</div>
 		</div>

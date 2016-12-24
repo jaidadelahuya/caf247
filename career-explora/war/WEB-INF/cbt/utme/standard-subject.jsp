@@ -39,12 +39,13 @@
 					<div class="card">
 						<div class="card-content">
 							<span class="card-title">Standard UTME Subject Test</span><br>
-							<small>Complete the form to take a test. Both fields are
+							<small style="color: #983b59">Complete the form to take a test. Both fields are
 								required</small>
 							<div class="row">
 								<form action="<c:url value='/azure/cbt/get' />">
-								<input type="hidden" name="title" value="Standard UTME Subject Test" />
-								<input type="hidden" name="vendor" value="UTME" />
+									<input type="hidden" name="title"
+										value="Standard UTME Subject Test" /> <input type="hidden"
+										name="vendor" value="UTME" />
 									<div class="input-field col s6">
 										<%@ include file="/pages/partials/subjects.html"%>
 									</div>
@@ -52,9 +53,15 @@
 										<%@ include file="/pages/partials/year.html"%>
 									</div>
 									<div class="input-field col s12">
-										<button type="button" class="ca-btn-primary ca-btn-lg launchCBT">Continue</button>
+									<p style="font-size: 10pt; color: #59983b"> <b>FYI:</b>
+												The test page will open in a new window you may have to
+												disable pop up blocker for kareerplus.com</p></div>
+									<div class="input-field col s12">
+										<button type="button"
+											class="ca-btn-primary ca-btn-lg launchCBT">Continue</button>
+										
 									</div>
-
+									
 								</form>
 							</div>
 						</div>

@@ -6,6 +6,65 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	
 	<servlet>
+		<servlet-name>QuestionStatsServlet</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.QuestionStatsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QuestionStatsServlet</servlet-name>
+		<url-pattern>/ca/admin/cbt/question/stats/get</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>QuestionStatsPage2</servlet-name>
+		<jsp-file>/WEB-INF/admin/question-stats-2.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QuestionStatsPage2</servlet-name>
+		<url-pattern>/ca/admin/cbt/2/question/stats</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>QuestionStatsPage1</servlet-name>
+		<jsp-file>/WEB-INF/admin/question-stats.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>QuestionStatsPage1</servlet-name>
+		<url-pattern>/ca/admin/cbt/1/question/stats</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TestBoard</servlet-name>
+		<jsp-file>/WEB-INF/cbt/test-board.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TestBoard</servlet-name>
+		<url-pattern>/azure/cbt/test/board</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UpdateQuestionServlet</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.UpdateQuestionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpdateQuestionServlet</servlet-name>
+		<url-pattern>/ca/admin/cbt/questions/update</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetQuestion</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.GetQuestion</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetQuestion</servlet-name>
+		<url-pattern>/ca/admin/cbt/questions/get</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DeleteQuestion</servlet-name>
+		<servlet-class>com.jevalab.azure.admin.DeleteQuestion</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteQuestion</servlet-name>
+		<url-pattern>/ca/admin/cbt/questions/delete</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>InitEditQuestions</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitEditQuestions</servlet-class>
 	</servlet>
@@ -13,7 +72,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitEditQuestions</servlet-name>
 		<url-pattern>/ca/admin/cbt/i/questions/edit</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>EditQuestion1</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.EditQuestion1</servlet-class>
@@ -22,7 +81,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>EditQuestion1</servlet-name>
 		<url-pattern>/ca/admin/cbt/s/questions/edit</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminGetPassages</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.AdminGetPassages</servlet-class>
@@ -31,7 +90,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminGetPassages</servlet-name>
 		<url-pattern>/ca/admin/cbt/english/passage/get</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CreateEnglishPassage</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.CreateEnglishPassage</servlet-class>
@@ -40,7 +99,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CreateEnglishPassage</servlet-name>
 		<url-pattern>/ca/admin/cbt/english/passage/create</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitNewEnglishPassage</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.InitNewEnglishPassage</servlet-class>
@@ -49,7 +108,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitNewEnglishPassage</servlet-name>
 		<url-pattern>/ca/admin/cbt/i/english/passage/new</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>UpdateQuestion</servlet-name>
+		<jsp-file>/WEB-INF/admin/update-question.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpdateQuestion</servlet-name>
+		<url-pattern>/ca/admin/cbt/p/question/update</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>NewEnglishPassage1</servlet-name>
 		<jsp-file>/WEB-INF/admin/new-english-passage-1.jsp</jsp-file>
@@ -58,7 +126,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>NewEnglishPassage1</servlet-name>
 		<url-pattern>/ca/admin/cbt/p1/english/passage/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>EditQuestionPage2</servlet-name>
 		<jsp-file>/WEB-INF/admin/edit-question2.jsp</jsp-file>
@@ -67,7 +135,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>EditQuestionPage2</servlet-name>
 		<url-pattern>/ca/admin/cbt/p2/questions/edit</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>EditQuestionPage1</servlet-name>
 		<jsp-file>/WEB-INF/admin/edit-question1.jsp</jsp-file>
@@ -76,8 +144,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>EditQuestionPage1</servlet-name>
 		<url-pattern>/ca/admin/cbt/p1/questions/edit</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<servlet>
 		<servlet-name>NewEnglishPassage1</servlet-name>
 		<jsp-file>/WEB-INF/admin/new-english-passage-1.jsp</jsp-file>
@@ -86,7 +154,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>NewEnglishPassage1</servlet-name>
 		<url-pattern>/ca/admin/cbt/p1/english/passage/new</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CustomUTME2PageStep3</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2-p3.jsp</jsp-file>
@@ -95,7 +163,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CustomUTME2PageStep3</servlet-name>
 		<url-pattern>/azure/cbt/utme/p3/custom/2</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CustomUTME2PageStep2</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2-p2.jsp</jsp-file>
@@ -104,7 +172,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CustomUTME2PageStep2</servlet-name>
 		<url-pattern>/azure/cbt/utme/p2/custom/2</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetTopics</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.GetTopics</servlet-class>
@@ -113,7 +181,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetTopics</servlet-name>
 		<url-pattern>/azure/cbt/utme/custom/2/topics</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetQuestionsTotal</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.GetQuestionsTotal</servlet-class>
@@ -122,7 +190,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetQuestionsTotal</servlet-name>
 		<url-pattern>/azure/cbt/utme/custom/2/questions/total</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetSubjectTopics</servlet-name>
 		<servlet-class>com.jevalab.azure.admin.GetSubjectTopic</servlet-class>
@@ -131,7 +199,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetSubjectTopics</servlet-name>
 		<url-pattern>/ca/admin/cbt/topic</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>AdminSubjectsPage</servlet-name>
 		<jsp-file>/WEB-INF/admin/subjects.jsp</jsp-file>
@@ -140,7 +208,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AdminSubjectsPage</servlet-name>
 		<url-pattern>/ca/admin/p/subjects</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CustomUTME2Page</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/custom-subject-2.jsp</jsp-file>
@@ -149,7 +217,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CustomUTME2Page</servlet-name>
 		<url-pattern>/azure/cbt/utme/p/custom/2</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CustomUTME1Page</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/custom-subject-1.jsp</jsp-file>
@@ -158,7 +226,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CustomUTME1Page</servlet-name>
 		<url-pattern>/azure/cbt/utme/p/custom/1</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>StandardUTMESubjectPage</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/standard-subject.jsp</jsp-file>
@@ -167,7 +235,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>StandardUTMESubjectPage</servlet-name>
 		<url-pattern>/azure/cbt/utme/p/standard/subject</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>StandardUTMEPage</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/standard-utme.jsp</jsp-file>
@@ -176,7 +244,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>StandardUTMEPage</servlet-name>
 		<url-pattern>/azure/cbt/utme/p/standard/default</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>UTMEModules</servlet-name>
 		<jsp-file>/WEB-INF/cbt/utme/modules.jsp</jsp-file>
@@ -185,7 +253,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>UTMEModules</servlet-name>
 		<url-pattern>/azure/cbt/p/utme/modules</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>GetCBT</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.GetCBT</servlet-class>
@@ -194,7 +262,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetCBT</servlet-name>
 		<url-pattern>/azure/cbt/get</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCustomUTME2</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitCustomUTME2</servlet-class>
@@ -203,7 +271,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitCustomUTME2</servlet-name>
 		<url-pattern>/azure/cbt/utme/i/custom/2</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitCustomUTME1</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitCustomUTME1</servlet-class>
@@ -212,7 +280,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitCustomUTME1</servlet-name>
 		<url-pattern>/azure/cbt/utme/i/custom/1</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitStandardUTMESubject</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitStandardUTMESubject</servlet-class>
@@ -221,7 +289,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitStandardUTMESubject</servlet-name>
 		<url-pattern>/azure/cbt/utme/i/standard/subject</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitStandardUTME</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitStandardUTME</servlet-class>
@@ -230,7 +298,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>InitStandardUTME</servlet-name>
 		<url-pattern>/azure/cbt/utme/i/standard/default</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>UTMEModeSelect</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.UTMEModeSelect</servlet-class>
@@ -239,7 +307,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>UTMEModeSelect</servlet-name>
 		<url-pattern>/azure/cbt/utme/mode/select</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>InitUTMEModules</servlet-name>
 		<servlet-class>com.jevalab.azure.cbt.InitUTMEModules</servlet-class>
@@ -579,7 +647,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>CBTPage</servlet-name>
 		<url-pattern>/azure/cbt/page</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>CBTIndexpage</servlet-name>
 		<jsp-file>/WEB-INF/cbt/index.jsp</jsp-file>
@@ -1583,6 +1651,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		</user-data-constraint>
 	</security-constraint>
 
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/WEB-INF/tld/customTagLibrary</taglib-uri>
+			<taglib-location>/WEB-INF/tld/customTagLibrary.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 
 
 

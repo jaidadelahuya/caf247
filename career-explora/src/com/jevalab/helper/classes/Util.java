@@ -36,8 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -69,10 +67,12 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.gson.Gson;
+import com.jevalab.azure.admin.EditQuestionsPage;
 import com.jevalab.azure.admin.EnglishSnippet;
+import com.jevalab.azure.admin.QuestionStats;
 import com.jevalab.azure.cbt.CBT;
 import com.jevalab.azure.cbt.CustomTest2;
-import com.jevalab.azure.cbt.Subject;
+import com.jevalab.azure.cbt.Test;
 import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
 import com.jevalab.azure.notifications.FriendRequestNotification;
@@ -1877,10 +1877,12 @@ public class Util {
 	}
 
 	private static CBT groupQuestions(CBT cbt, List<Question> qrl) {
-		for (String s : cbt.getQuestionMap().keySet()) {
+		for (Test t : cbt.getTests()) {
+			String s = t.getSubject();
 			for (Question q : qrl) {
 				if (q.getSubjectName().equalsIgnoreCase(s)) {
-					cbt.getQuestionMap().get(s).add(toCBTQuestion(q));
+					t.getQuestions().add(toCBTQuestion(q));
+					
 				}
 			}
 		}
@@ -1894,8 +1896,18 @@ public class Util {
 		r.setCategory(q.getCategoryName());
 		if (q.getImageKey() != null) {
 			ImagesService is = ImagesServiceFactory.getImagesService();
-			r.setImage(is.getServingUrl(ServingUrlOptions.Builder.withBlobKey(q
-					.getImageKey())));
+			try {
+				r.setImage(is.getServingUrl(ServingUrlOptions.Builder.withBlobKey(q
+						.getImageKey())));
+			}catch(Exception e) {
+				//do nothing..some images r empty
+			}
+			
+		}
+		if(q.getTopics() != null) {
+			r.setNoTopics(q.getTopics().size());
+		}else {
+			r.setNoTopics(0);
 		}
 		if (q.getPassage() != null) {
 			r.setPassageKey(KeyFactory.keyToString(q.getPassage()));
@@ -1938,14 +1950,49 @@ public class Util {
 		return l;
 	}
 
-	public static List<com.jevalab.azure.cbt.Question> getQuestions(
+	public static EditQuestionsPage getQuestions(
 			String vendor, String year, String subject) {
 		QueryResultList<Entity> qrl = GeneralController.getQuestions(vendor,year,subject);
 		List<com.jevalab.azure.cbt.Question> li = new ArrayList<>();
+		List<Question> qs = new ArrayList<>();
+		EditQuestionsPage eqp = new EditQuestionsPage();
+		eqp.setSubject(subject);
+		eqp.setVendor(vendor);
+		eqp.setYear(year);
 		for(Entity e: qrl) {
-			li.add(toCBTQuestion(new Question(e)));
+			Question q = new Question(e);
+			qs.add(q);
+			li.add(toCBTQuestion(q));
 		}
-		return li;
+		Collections.sort(li);
+		eqp.setQuestions(li);
+		eqp.setoQ(qs);
+		return eqp;
+	}
+
+	public static List<QuestionStats> getQuestionStats(String subject) {
+		QueryResultList<Entity> ents = GeneralController.getQuestions(subject, "UTME");
+		List<QuestionStats> qs = new ArrayList<>();
+		for(Entity e : ents) {
+			QuestionStats nqs = null;
+			for(QuestionStats q : qs) {
+				if(q.getYear().equals((String)e.getProperty("year"))) {
+					nqs=q;
+					nqs.setNoQ(nqs.getNoQ()+1);
+					break;
+				}
+			}
+			if(nqs==null) {
+				nqs = new QuestionStats();
+				nqs.setNoQ(1);
+				nqs.setSubject((String) e.getProperty("subjectName"));
+				nqs.setVendor((String) e.getProperty("vendor"));
+				nqs.setYear((String) e.getProperty("year"));
+				qs.add(nqs);
+			}
+			
+		}
+		return qs;
 	}
 
 }

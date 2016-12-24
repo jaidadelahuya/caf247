@@ -75,11 +75,14 @@ public class GetCBT extends HttpServlet {
 			AzureUser u = (AzureUser) o;
 			cbt.setTitle(title);
 
-			Map<String, List<Question>> map = new HashMap<>();
+			List<Test> tests = new  ArrayList<>();
 			for (String s : subjects) {
-				map.put(s, new ArrayList<Question>());
+				Test t = new Test();
+				t.setSubject(s);
+				t.setQuestions(new ArrayList<Question>());
+				tests.add(t);
 			}
-			cbt.setQuestionMap(map);
+			cbt.setTests(tests);
 
 			cbt.setYear(year);
 
@@ -103,7 +106,10 @@ public class GetCBT extends HttpServlet {
 				} else if (title.equalsIgnoreCase("Standard UTME Examination")) {
 					cbt.setTime(270);
 					cbt.setNoQ(250);
-					cbt.getQuestionMap().put("English", new ArrayList<Question>());
+					Test t = new Test();
+					t.setSubject("English");
+					t.setQuestions(new ArrayList<Question>());
+					cbt.getTests().add(t);
 				} else if (title.contains("Custom")) {
 					if(!Util.notNull(time)) {
 						cbt.setTime(60);
@@ -137,6 +143,9 @@ public class GetCBT extends HttpServlet {
 				}
 				
 				cbt = Util.setCbtQuestions(cbt, ct2);
+				synchronized (session) {
+					session.setAttribute("cbt", cbt);
+				}
 				String json = new Gson().toJson(cbt);
 				resp.getWriter().write(json);
 			}
