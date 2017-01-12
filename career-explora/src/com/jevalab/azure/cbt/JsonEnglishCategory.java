@@ -1,12 +1,16 @@
 /*** Eclipse Class Decompiler plugin, copyright (c) 2016 Chen Chao (cnfree2000@hotmail.com) ***/
 package com.jevalab.azure.cbt;
 
-import com.jevalab.azure.persistence.Question;
+import java.io.Serializable;
 import java.util.List;
 
-public class JsonEnglishCategory {
+public class JsonEnglishCategory implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -883459092662586609L;
 	String instruction;
-	List<Question> questions;
+	List<com.jevalab.azure.cbt.Question> questions;
 
 	public String getInstruction() {
 		return this.instruction;
@@ -16,7 +20,7 @@ public class JsonEnglishCategory {
 		this.instruction = instruction;
 	}
 
-	public List<Question> getQuestions() {
+	public List<com.jevalab.azure.cbt.Question> getQuestions() {
 		return this.questions;
 	}
 
@@ -28,4 +32,12 @@ public class JsonEnglishCategory {
 		this.instruction = instruction;
 		this.questions = questions;
 	}
+
+	@Override
+	public String toString() {
+		return "JsonEnglishCategory [instruction=" + instruction
+				+ ", questions=" + questions + "]";
+	}
+	
+	
 }

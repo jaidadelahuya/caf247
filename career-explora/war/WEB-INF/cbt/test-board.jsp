@@ -22,24 +22,34 @@
 }
 
 p {
-display: inline;}
+	display: inline;
+}
 </style>
 </head>
 <body id="body" style="padding-top: 0px; height: 100%;">
 
 
 	<div class="container-fluid" id="div-1">
-		<div class="row">
+		<div class="row" style="border-bottom: 1px solid #dadada">
 			<div class="test-board-header">
-				<div class="col-xs-12 col-sm-4">
-					<p style="display: block;"><c:out value='${cbt.username}' /></p>
-					<p style="display: block;"><strong>Year: </strong><c:out value='${cbt.year}' /></p>
+				<div class="col-xs-12 col-sm-4" style="text-align: left;">
+					<p style="display: block; margin-bottom: 2px; margin-top: 4px">
+						<c:out value='${cbt.username}' />
+					</p>
+					<p style="display: block; margin-bottom: 2px">
+						<strong>Year: </strong>
+						<c:out value='${cbt.year}' />
+					</p>
+					<p style="display: block; font-weight: bolder;">
+						<c:out value='${cbt.title}' />
+					</p>
 				</div>
-				<div class="hidden-xs col-sm-4 heading-div">
-					<img alt="" src="${cbt.vendorLogo}"><br>
-					<c:out value='${cbt.title}' />
+				<div class="hidden-xs col-sm-4 heading-div"
+					style="text-align: center">
+					<img style="margin: 2%;" alt="" src="${cbt.vendorLogo}"><br>
 				</div>
-				<div class="col-xs-12 col-sm-4" id="save-div">
+				<div class="col-xs-12 col-sm-4" id="save-div"
+					style="text-align: right">
 					<span id="demo" class="timer"></span>
 				</div>
 			</div>
@@ -54,30 +64,38 @@ display: inline;}
 			<div class="row test-board-question">
 				<div id="div-q" class="col-sm-12"></div>
 			</div>
-			<div class="row test-board-alternative">
-				<div class="col-sm-12">
-					<input type="radio" name="opt" class="opt" id="opt-4" value="A" />
-					A. <span id="opt-a" class="test-board-option"></span>
+			<div class="row">
+				<div class="col-sm-7">
+					<div class="row test-board-alternative">
+						<div class="col-sm-12">
+							<input type="radio" name="opt" class="opt" id="opt-4" value="A" />
+							A. <span id="opt-a" class="test-board-option"></span>
+						</div>
+					</div>
+					<div class="row test-board-alternative">
+						<div class="col-sm-12">
+							<input type="radio" name="opt" class="opt" id="opt-3" value="B" />
+							B. <span id="opt-b" class="test-board-option"></span>
+						</div>
+					</div>
+					<div class="row test-board-alternative">
+						<div class="col-sm-12">
+							<input type="radio" name="opt" class="opt" id="opt-2" value="C" />
+							C. <span id="opt-c" class="test-board-option"></span>
+						</div>
+					</div>
+					<div class="row test-board-alternative">
+						<div class="col-sm-12">
+							<input type="radio" name="opt" class="opt" id="opt-1" value="D" />
+							D. <span id="opt-d" class="test-board-option"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-5">
+					<img class="responsive-im" alt="" src="">
 				</div>
 			</div>
-			<div class="row test-board-alternative">
-				<div class="col-sm-12">
-					<input type="radio" name="opt" class="opt" id="opt-3" value="B" />
-					B. <span id="opt-b" class="test-board-option"></span>
-				</div>
-			</div>
-			<div class="row test-board-alternative">
-				<div class="col-sm-12">
-					<input type="radio" name="opt" class="opt" id="opt-2" value="C" />
-					C. <span id="opt-c" class="test-board-option"></span>
-				</div>
-			</div>
-			<div class="row test-board-alternative">
-				<div class="col-sm-12">
-					<input type="radio" name="opt" class="opt" id="opt-1" value="D" />
-					D. <span id="opt-d" class="test-board-option"></span>
-				</div>
-			</div>
+
 			<div class="row test-board-button-group">
 				<div class="col-sm-12">
 					<div class="btn-group-xs test-btn-grp" role="group"
@@ -88,10 +106,10 @@ display: inline;}
 
 		<div class="row test-board-footer">
 			<div class="col-sm-12">
-				<button id="back" class="btn btn-primary  test-board-button">Back</button>
-				<button id="next" class="btn btn-primary  test-board-button">Next</button>
+				<button id="back" class="btn ca-btn-primary  test-board-button">Back</button>
+				<button id="next" class="btn ca-btn-primary  test-board-button">Next</button>
 				<button id="finish"
-					class="btn btn-primary pull-right  test-board-button">Finish</button>
+					class="btn ca-btn-primary pull-right  test-board-button">Finish</button>
 			</div>
 		</div>
 
@@ -101,16 +119,16 @@ display: inline;}
 		aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: orange;">
+				<div class="modal-header" style="background-color: #3b5998;">
 					<h4 class="modal-title" id="myModalLabel" style="color: white;">Time
 						Up</h4>
 				</div>
 				<div class="modal-body">
 					<h3>Your time is up!</h3>
 				</div>
-				<div class="modal-footer" style="background-color: orange;">
+				<div class="modal-footer" style="background-color: #3b5998;">
 
-					<button type="button" class="btn btn-primary time-up-button">See
+					<button type="button" class="btn ca-btn-primary time-up-button">See
 						result</button>
 				</div>
 			</div>
@@ -122,7 +140,7 @@ display: inline;}
 		role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-md">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: orange;">
+				<div class="modal-header" style="background-color: #3b5998;">
 					<h4 class="modal-title" id="myModalLabel" style="color: white;">Instructions</h4>
 				</div>
 				<div class="modal-body" id="modal-body">
@@ -144,8 +162,8 @@ display: inline;}
 					</ol>
 
 				</div>
-				<div class="modal-footer" style="background-color: orange;">
-					<button class="btn btn-primary start-test">Start Test</button>
+				<div class="modal-footer" style="background-color: #3b5998;">
+					<button class="btn ca-btn-primary start-test">Start Test</button>
 				</div>
 			</div>
 		</div>
@@ -156,7 +174,7 @@ display: inline;}
 		role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: orange;">
+				<div class="modal-header" style="background-color: #3b5998;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -174,8 +192,8 @@ display: inline;}
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer" style="background-color: orange;">
-					<button class="btn btn-primary btn-sm submit-test">Submit</button>
+				<div class="modal-footer" style="background-color: #3b5998;">
+					<button class="btn ca-btn-primary btn-sm submit-test">Submit</button>
 					<button type="button" class="btn btn-default btn-sm"
 						data-dismiss="modal">Cancel</button>
 
@@ -208,7 +226,7 @@ display: inline;}
 					</div>
 				</div>
 				<div class="modal-footer" style="background-color: orange;">
-					<button class="btn btn-primary btn-sm close-window">Close
+					<button class="btn ca-btn-primary btn-sm close-window">Close
 						window</button>
 					<button type="button" class="btn btn-default btn-sm"
 						data-dismiss="modal">Cancel</button>

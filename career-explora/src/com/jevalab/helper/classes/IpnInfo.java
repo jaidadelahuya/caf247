@@ -18,6 +18,10 @@ import com.google.appengine.api.datastore.KeyFactory;
 @Entity
 public class IpnInfo implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6276215089104757647L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Key key;
@@ -34,6 +38,7 @@ public class IpnInfo implements Serializable{
 	private String payerEmail;
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Long logTime;
+	
 
 	@Transient
 	private String response;

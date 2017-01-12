@@ -1165,14 +1165,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/addcareercluster</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>GetQuestions</servlet-name>
-		<servlet-class>com.jevalab.azure.cbt.GetQuestionsServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>GetQuestions</servlet-name>
-		<url-pattern>/azure/questions/get</url-pattern>
-	</servlet-mapping>
+	
 
 	<servlet>
 		<servlet-name>SaveCbtTest</servlet-name>
