@@ -72,6 +72,7 @@ import com.jevalab.azure.admin.EnglishSnippet;
 import com.jevalab.azure.admin.QuestionStats;
 import com.jevalab.azure.cbt.CBT;
 import com.jevalab.azure.cbt.CustomTest2;
+import com.jevalab.azure.cbt.JsonEnglishCategory;
 import com.jevalab.azure.cbt.Test;
 import com.jevalab.azure.cbt.Topic;
 import com.jevalab.azure.notifications.FriendRequestAcceptedNotification;
@@ -90,6 +91,8 @@ import com.jevalab.azure.persistence.AzureUser;
 import com.jevalab.azure.persistence.Collection;
 import com.jevalab.azure.persistence.Community;
 import com.jevalab.azure.persistence.Discussion;
+import com.jevalab.azure.persistence.EnglishCategory;
+import com.jevalab.azure.persistence.EnglishCategoryJpaController;
 import com.jevalab.azure.persistence.GeneralController;
 import com.jevalab.azure.persistence.MultipleIntelligenceTestQuestion;
 import com.jevalab.azure.persistence.MultipleIntelligenceTestQuestionJpaController;
@@ -1827,6 +1830,49 @@ public class Util {
 		}
 		
 		cbt = groupQuestions(cbt, qs);
+		cbt = groupEnglish(cbt);
+		return cbt;
+	}
+
+	private static CBT groupEnglish(CBT cbt) {
+		List<Test> t = cbt.getTests();
+		Iterator<Test> it = t.iterator();
+		while(it.hasNext()) {
+			Test ts = it.next();
+			if(ts.getSubject().equalsIgnoreCase("english")) {
+				it.remove();
+				List<com.jevalab.azure.cbt.Question> list = new ArrayList<>();
+				List<JsonEnglishCategory> jCat = new ArrayList<>();
+				EnglishCategoryJpaController c1 = new EnglishCategoryJpaController();
+				List<EnglishCategory> cList = c1.findEnglishCategoryEntities();
+
+				Collections.shuffle(cList);
+				for (EnglishCategory e : cList) {
+					List<com.jevalab.azure.cbt.Question> qq = ts.getQuestions();
+					for (com.jevalab.azure.cbt.Question qt : qq) {
+						if (e.getCategoryName()
+								.trim()
+								.equalsIgnoreCase(
+										qt.getCategory().trim())) {
+							list.add(qt);
+							
+						}
+					}
+
+					jCat.add(new JsonEnglishCategory(e.getInstruction(),
+							list));
+					list = new ArrayList<>();
+					
+				}
+				Test tt = new Test();
+				tt.setEnglishQuestions(jCat);
+				tt.setSubject(ts.getSubject());
+				t.add(tt);
+				
+				
+			}
+		}
+		cbt.setTests(t);
 		return cbt;
 	}
 

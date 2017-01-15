@@ -26,7 +26,7 @@ import com.jevalab.exceptions.RollbackFailureException;
 import com.jevalab.helper.classes.EntityConverter;
 import com.jevalab.helper.classes.LoginHelper;
 import com.jevalab.helper.classes.PasswordRecovery;
-import com.jevalab.helper.classes.UserPicture;
+
 import com.jevalab.helper.classes.Util;
 
 /**
@@ -128,30 +128,9 @@ public class UserJpaController implements Serializable {
 		}
 	}
 
-	public List<AzureUser> findUserEntities() {
-		return findUserEntities(true, -1, -1);
-	}
+	
 
-	public List<AzureUser> findUserEntities(int maxResults, int firstResult) {
-		return findUserEntities(false, maxResults, firstResult);
-	}
-
-	private List<AzureUser> findUserEntities(boolean all, int maxResults,
-			int firstResult) {
-		EntityManager em = getEntityManager();
-		try {
-			CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-			cq.select(cq.from(AzureUser.class));
-			Query q = em.createQuery(cq);
-			if (!all) {
-				q.setMaxResults(maxResults);
-				q.setFirstResult(firstResult);
-			}
-			return q.getResultList();
-		} finally {
-			em.close();
-		}
-	}
+	
 
 	public AzureUser findUser(String id) {
 		EntityManager em = getEntityManager();
@@ -168,18 +147,7 @@ public class UserJpaController implements Serializable {
 		}
 	}
 
-	public int getUserCount() {
-		EntityManager em = getEntityManager();
-		try {
-			CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-			Root<AzureUser> rt = cq.from(AzureUser.class);
-			cq.select(em.getCriteriaBuilder().count(rt));
-			Query q = em.createQuery(cq);
-			return ((Long) q.getSingleResult()).intValue();
-		} finally {
-			em.close();
-		}
-	}
+	
 
 	public List<AzureUser> findUserBySchool(String sch, int fr, int mr) {
 

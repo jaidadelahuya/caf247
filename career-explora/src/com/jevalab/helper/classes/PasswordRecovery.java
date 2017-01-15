@@ -18,6 +18,11 @@ import com.google.appengine.api.datastore.KeyFactory;
 @Entity
 public class PasswordRecovery implements Serializable, Comparable<PasswordRecovery>{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3046881558223645282L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Key key;

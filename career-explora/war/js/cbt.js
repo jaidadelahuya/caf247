@@ -13,18 +13,18 @@ function getQuestions(data) {
 	var time = data.time;
 	var tests = data.tests;
 	$(".test-time").text(getTime(time));
-	
-	if(tests.length>1) {
-		
-	}else {
+
+	if (tests.length > 1) {
+
+	} else {
 		var test = tests[0];
-		if(test.subject=="English") {
-			info = test.questions;
+		if (test.subject == "English") {
+			info = test.englishQuestions;
 			questions = initEnglishQuestionArray(info);
 			subject = "English"
-		}else {
+		} else {
 			info = test.questions;
-			
+
 			questions = initQuestionArray(info);
 			subject = test.subject;
 		}
@@ -680,17 +680,16 @@ function initEnglishQuestionArray(data) {
 	var questionArray = [];
 	var quest = null;
 	var qs = null;
-
+	console.log(data);
 	for (i = 0; i < data.length; i++) {
 		qs = data[i].questions;
 
 		for (j = 0; j < qs.length; j++) {
 			quest = {
-				subjectName : qs[j].subjectName,
+				subjectName : qs[j].subject,
 				body : qs[j].body,
 				extraText : data[i].instruction,
-				correctAlt : qs[j].correctAlternative,
-				alts : qs[j].alternatives,
+				alts : qs[j].alts,
 				isCorrect : qs[j].isCorrect,
 				choice : ""
 			};
@@ -709,7 +708,7 @@ function initQuestionArray(data) {
 			body : data[i].body,
 			extraText : data[i].extraInfo,
 			alts : data[i].alts,
-			isCorrect : data[i].isCorrect,
+			image : data[i].image,
 			choice : ""
 		};
 		questionArray[i] = quest;
